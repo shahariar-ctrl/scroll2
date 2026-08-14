@@ -2,577 +2,1976 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Glass Carousel · Ring Spin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gradely — NU CGPA Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
+    /* ----- base & light theme — adapted to AI Studio cyan/indigo palette ----- */
+    :root{
+      --bg: #F8FAFC;
+      --bg2: #F1F5F9;
+      --surface: rgba(255,255,255,.75);
+      --surface-hi: rgba(255,255,255,.95);
+      --border: rgba(15,23,42,.08);
+      --border-hi: rgba(15,23,42,.14);
+      --text: #0F172A;
+      --muted: #64748B;
+      --dim: #94A3B8;
+      --primary: #0891B2;
+      --primary-light: #06B6D4;
+      --primary-neon: #22D3EE;
+      --primary-glow: rgba(6,182,212,.2);
+      --accent-indigo: #6366F1;
+      --accent-emerald: #10B981;
+      --accent-amber: #F59E0B;
+      --accent-rose: #F43F5E;
+      --pass-bg: rgba(16,185,129,.12);
+      --pass-text: #059669;
+      --fail-bg: rgba(244,63,94,.12);
+      --fail-text: #E11D48;
+      --grad1: linear-gradient(135deg,#0891B2 0%,#6366F1 100%);
+      --grad2: linear-gradient(135deg,#06B6D4 0%,#6366F1 100%);
+      --grad3: linear-gradient(135deg,#10B981 0%,#06B6D4 100%);
+      --grad-modal: linear-gradient(135deg,#0E7490 0%,#4F46E5 100%);
+      --disp:'Space Grotesk','Noto Sans Bengali',sans-serif;
+      --sans:'Inter','Noto Sans Bengali',sans-serif;
+      --mono:'Space Mono',monospace;
+      --r:18px;
+      --shadow:0 8px 30px rgba(15,23,42,.06);
+      --card:#fff;
+      --header-bg:rgba(255,255,255,.72);
+      --overlay-bg:rgba(248,250,252,.55);
+      --dot-grid:rgba(15,23,42,.12);
     }
-
-    :root {
-      --bg: #030304;
-      --glow: rgba(120, 140, 255, 0.18);
-      --glass-fill: rgba(255, 255, 255, 0.055);
-      --glass-fill-strong: rgba(255, 255, 255, 0.09);
-      --glass-border: rgba(255, 255, 255, 0.16);
-      --glass-border-strong: rgba(255, 255, 255, 0.30);
-      --text-accent: #f5c451;
-      --text-muted: #8e8e93;
+    /* ============================================================
+       PREMIUM DARK THEME — deep obsidian with cyan/indigo aura
+    ============================================================ */
+    [data-theme="dark"]{
+      --bg:#06080E;
+      --bg2:#0D111A;
+      --surface:rgba(16,22,34,.7);
+      --surface-hi:rgba(24,32,48,.88);
+      --border:rgba(255,255,255,.08);
+      --border-hi:rgba(255,255,255,.14);
+      --text:#F8FAFC;
+      --muted:#94A3B8;
+      --dim:#64748B;
+      --shadow:0 12px 40px rgba(0,0,0,.7);
+      --card:rgba(16,22,34,.75);
+      --header-bg:rgba(6,8,14,.82);
+      --overlay-bg:rgba(6,8,14,.68);
+      --grad1:linear-gradient(135deg,#06B6D4 0%,#818CF8 100%);
+      --grad2:linear-gradient(135deg,#22D3EE 0%,#818CF8 100%);
+      --grad3:linear-gradient(135deg,#34D399 0%,#22D3EE 100%);
+      --primary-glow:rgba(6,182,212,.3);
+      --dot-grid:rgba(255,255,255,.08);
     }
+    [data-theme="dark"] .blob{opacity:.18; filter:blur(110px);}
+    [data-theme="dark"] .blob1{background:#06B6D4; top:-200px; left:-160px;}
+    [data-theme="dark"] .blob2{background:#6366F1; top:140px; right:-180px;}
+    [data-theme="dark"] .blob3{background:#22D3EE; bottom:-180px; left:25%;}
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: var(--bg);
-      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
-      touch-action: none;
-    }
-
-    .stage-wrap {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* glass surfaces — deeper, richer, with subtle inner glow */
+    [data-theme="dark"] .glass,
+    [data-theme="dark"] .program-card,
+    [data-theme="dark"] .dept-card,
+    [data-theme="dark"] .modal-card{
       background:
-        radial-gradient(ellipse 60% 50% at 50% 46%, var(--glow), transparent 70%),
-        var(--bg);
+        linear-gradient(180deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,.02) 20%,rgba(255,255,255,.01) 60%,rgba(255,255,255,.04) 100%),
+        rgba(16,22,34,.6);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(32px) saturate(180%);
+      -webkit-backdrop-filter:blur(32px) saturate(180%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.10),
+        inset 0 0 0 1px rgba(255,255,255,.02),
+        inset 0 -16px 28px -16px rgba(255,255,255,.04),
+        0 24px 48px -18px rgba(0,0,0,.7),
+        0 4px 12px rgba(0,0,0,.4);
+    }
+    [data-theme="dark"] .program-card:not(.soon):hover,
+    [data-theme="dark"] .dept-card:not(.soon):hover{
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,.035) 20%,rgba(255,255,255,.015) 60%,rgba(255,255,255,.06) 100%),
+        rgba(24,32,48,.7);
+      border-color:rgba(255,255,255,.14);
+      box-shadow:0 16px 40px -12px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+    [data-theme="dark"] .gsr-pill.ac-2024,
+    [data-theme="dark"] .gsr-pill.ac-pass{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.15);
+      color:var(--text);
     }
 
-    .viewport {
-      position: relative;
-      width: 100%;
-      height: 420px;
-      perspective: 1400px;
-      perspective-origin: 50% 50%;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 8%, #000 22%, #000 78%, rgba(0,0,0,0.35) 92%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 8%, #000 22%, #000 78%, rgba(0,0,0,0.35) 92%, transparent 100%);
-      touch-action: none;
+    /* header bar — deep glass with premium feel */
+    [data-theme="dark"] header.site{
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.01) 50%,rgba(255,255,255,.03) 100%),
+        rgba(6,8,14,.6);
+      backdrop-filter:blur(36px) saturate(180%);
+      -webkit-backdrop-filter:blur(36px) saturate(180%);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 12px 36px rgba(0,0,0,.45);
     }
 
-    .track {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      height: 100%;
-      width: 0;
-      transform-style: preserve-3d;
-      touch-action: none;
-      cursor: grab;
+    /* mobile icon buttons — more refined */
+    [data-theme="dark"] .icon-btn{
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.04) 100%),
+        rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(22px) saturate(180%);
+      -webkit-backdrop-filter:blur(22px) saturate(180%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.15),
+        inset 0 -1px 2px rgba(0,0,0,.3),
+        0 6px 16px rgba(0,0,0,.35);
+      color: #F8FAFC;
+    }
+    [data-theme="dark"] .icon-btn:hover{
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.04) 60%,rgba(255,255,255,.06) 100%),
+        rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.2);
+    }
+    /* table header strips */
+    [data-theme="dark"] .sc-head,
+    [data-theme="dark"] table.marksheet th,
+    [data-theme="dark"] table.gs-table th{
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
+      backdrop-filter:blur(16px) saturate(170%);
+      -webkit-backdrop-filter:blur(16px) saturate(170%);
+    }
+    [data-theme="dark"] tr.total td{
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
+    }
+    /* rest of the original styles — unchanged, only colors adapted */
+    *{box-sizing:border-box;}
+    html{scroll-behavior:auto;}
+    ::view-transition-old(root), ::view-transition-new(root){
+      animation-duration:.42s;
+      animation-timing-function:cubic-bezier(.4,0,.2,1);
+    }
+    @media (prefers-reduced-motion:reduce){ ::view-transition-old(root),::view-transition-new(root){animation:none !important;} }
+    html.legacy-theme-fade *,
+    html.legacy-theme-fade *::before,
+    html.legacy-theme-fade *::after{
+      transition:background-color .28s ease,color .28s ease;
+    }
+    body{
+      margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:15px;
+    }
+    a{color:inherit;text-decoration:none;}
+    button{font-family:inherit;cursor:pointer;}
+    .hidden{display:none !important;}
+    .wrap{max-width:560px;margin:0 auto;padding:0 16px;}
+
+    .blobs{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+    .blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.28;}
+    .blob1{width:520px;height:520px;background:#06B6D4;top:-180px;left:-140px;animation:float1 16s ease-in-out infinite;}
+    .blob2{width:460px;height:460px;background:#818CF8;top:120px;right:-160px;animation:float2 18s ease-in-out infinite;}
+    .blob3{width:420px;height:420px;background:#22D3EE;bottom:-160px;left:30%;animation:float3 20s ease-in-out infinite;}
+    @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,60px)}}
+    @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,40px)}}
+    @keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-40px)}}
+    @media (prefers-reduced-motion:reduce){.blob{animation:none !important;}}
+
+    main, header, footer{position:relative;z-index:1;}
+
+    header.site{
+      position:sticky;top:0;z-index:50;background:var(--header-bg);
+      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+    }
+    .site-inner{
+      max-width:560px;margin:0 auto;padding:14px 16px;display:flex;flex-wrap:wrap;
+      align-items:center;justify-content:space-between;gap:10px 12px;
+    }
+    .logo{display:flex;align-items:center;gap:9px;cursor:pointer;font-family:var(--disp);font-weight:700;font-size:20px;order:1;transition:font-size .15s;}
+    .logo .dot{width:10px;height:10px;border-radius:50%;background:var(--grad1);box-shadow:0 0 14px var(--primary-light);}
+    .logo .accent{background:var(--grad1);-webkit-background-clip:text;background-clip:text;color:transparent;}
+    .logo .accent2{background:var(--grad1);-webkit-background-clip:text;background-clip:text;color:transparent;animation:logoBlink 1s step-start infinite;}
+    @keyframes logoBlink{50%{opacity:0;}}
+    @media (prefers-reduced-motion:reduce){.logo .accent2{animation:none !important;}}
+    .logo .brand-text{background:var(--grad1);-webkit-background-clip:text;background-clip:text;color:transparent;}
+    nav.main-nav{display:none;gap:16px;align-items:center;order:2;}
+    nav.main-nav a{font-size:12.5px;font-weight:600;color:var(--muted);transition:color .2s;white-space:nowrap;position:relative;padding:4px 1px;}
+    nav.main-nav a::after{
+      content:"";position:absolute;left:0;right:100%;bottom:0;height:2px;border-radius:2px;
+      background:var(--grad1);transition:right .25s cubic-bezier(.4,0,.2,1);
+    }
+    nav.main-nav a:hover{color:var(--text);}
+    nav.main-nav a:hover::after{right:0;}
+    .btn{border:none;border-radius:999px;font-weight:700;padding:11px 22px;font-size:14px;transition:.18s;}
+    .btn-grad{background:var(--grad1);color:#fff;box-shadow:0 4px 22px var(--primary-glow);}
+    .btn-grad:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 30px var(--primary-glow);}
+    .btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+    .btn-ghost:hover{
+      border-color:var(--border-hi);
+      background:linear-gradient(135deg,rgba(6,182,212,.05),rgba(99,102,241,.05)),var(--surface-hi);
+      transform:translateY(-2px) scale(1.004);
+      box-shadow:0 5px 11px var(--primary-glow);
     }
 
-    .track.grabbing {
-      cursor: grabbing;
+    .mobile-actions{display:flex;gap:8px;align-items:center;order:2;}
+    .icon-btn{
+      width:38px;height:38px;border-radius:50%;flex-shrink:0;
+      border:1px solid var(--border);background:var(--surface);
+      display:flex;align-items:center;justify-content:center;font-size:15px;transition:.15s;
+    }
+    .icon-btn:hover{border-color:var(--border-hi);background:var(--surface-hi);}
+
+    .theme-toggle{order:5;color:var(--primary);}
+    .theme-toggle svg.theme-icon{width:15px;height:15px;overflow:visible;}
+    .theme-toggle .sun-icon{display:none;}
+    .theme-toggle .moon-icon{display:block;}
+    [data-theme="dark"] .theme-toggle .sun-icon{display:block;}
+    [data-theme="dark"] .theme-toggle .moon-icon{display:none;}
+    [data-theme="dark"] .theme-toggle{color:#fff;}
+
+    @media (max-width:400px){
+      .site-inner{gap:8px 8px;padding:12px 12px;}
+      .logo{font-size:17px;gap:6px;}
+      .logo .dot{width:8px;height:8px;}
+      .mobile-actions{gap:6px;}
+      .icon-btn{width:33px;height:33px;font-size:13px;}
+      .icon-btn svg{width:15px;height:15px;}
+      .theme-toggle svg.theme-icon{width:14px;height:14px;}
     }
 
-    .card {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 230px;
-      height: 300px;
-      margin-left: -115px;
-      margin-top: -150px;
-      border-radius: 22px;
-      will-change: transform, filter, opacity;
-      transform-style: preserve-3d;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-      transition: transform 0.6s cubic-bezier(.22,.9,.32,1), filter 0.6s ease, opacity 0.6s ease;
-      touch-action: none;
+    .mobile-menu-overlay{
+      position:fixed;inset:0;z-index:100;background:var(--overlay-bg);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;
+      opacity:0;pointer-events:none;transform:translateY(-8px);transition:.25s ease;
+    }
+    .mobile-menu-overlay.open{opacity:1;pointer-events:auto;transform:translateY(0);}
+    .mobile-menu-close{
+      position:absolute;top:18px;right:18px;width:42px;height:42px;border-radius:50%;
+      border:1px solid var(--border);background:var(--surface);font-size:16px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .mobile-menu-close:hover{border-color:var(--border-hi);background:var(--surface-hi);}
+    .mobile-menu-links{display:flex;flex-direction:column;align-items:center;gap:28px;}
+    .mobile-menu-links a{font-family:var(--disp);font-size:26px;font-weight:700;color:var(--text);}
+    .mobile-menu-links a:hover{color:var(--primary);}
+
+    @media (min-width:768px){.mobile-menu-overlay{display:none;}}
+
+    .header-search{position:relative;order:6;flex:1 1 100%;display:none;}
+    .header-search.open{display:block;}
+    .header-search input{
+      width:100%;padding:11px 16px;border-radius:999px;border:1px solid var(--border);background:var(--card);
+      color:var(--text);font-size:16px;outline:none;transition:.2s;
+    }
+    .header-search input:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-glow);}
+    .global-search-results{
+      position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:60;
+      background:var(--surface-hi);border:1px solid var(--border);border-radius:14px;
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:var(--shadow);
+      padding:8px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;
+    }
+    .global-search-results:empty{display:none;padding:0;border:none;box-shadow:none;}
+    .gsr-item{
+      display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;
+      border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;text-align:left;width:100%;
+    }
+    .gsr-item:hover{border-color:var(--border-hi);background:var(--surface-hi);}
+    .gsr-main{display:flex;align-items:baseline;gap:8px;min-width:0;flex:1;}
+    .gsr-name{font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .gsr-tag{font-family:var(--mono);font-size:11px;color:var(--dim);font-weight:600;white-space:nowrap;flex-shrink:0;}
+    .gsr-pill{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:4px 11px;border-radius:999px;white-space:nowrap;letter-spacing:.02em;flex-shrink:0;}
+    .gsr-pill.ac-2024,.gsr-pill.ac-pass{background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.14);color:#111;}
+    .gsr-empty{font-family:var(--mono);font-size:12px;color:var(--dim);padding:8px 4px;}
+
+    main{padding-bottom:60px;}
+
+    .glass{
+      background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      box-shadow:var(--shadow);
     }
 
-    .card .glass {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      border-radius: 22px;
-      background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill) 60%);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(18px) saturate(140%);
-      -webkit-backdrop-filter: blur(18px) saturate(140%);
-      box-shadow: 0 20px 50px -15px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 0 40px rgba(255,255,255,0.03);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .hero{padding:44px 0 20px;text-align:center;}
+    .term-chip{
+      display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+      color:var(--accent-emerald);background:var(--pass-bg);border:1px solid rgba(16,185,129,.3);
+      padding:7px 14px;border-radius:999px;margin-bottom:20px;
+    }
+    .term-chip .cursor{width:7px;height:14px;background:var(--accent-emerald);display:inline-block;animation:blink 1s steps(1) infinite;}
+    @keyframes blink{50%{opacity:0;}}
+    h1.hero-title{
+      font-family:var(--disp);font-weight:700;font-size:27px;line-height:1.12;letter-spacing:-.02em;
+      margin:0 0 16px;max-width:820px;margin-left:auto;margin-right:auto;
+    }
+    @media (max-width:767px){
+      h1.hero-title{font-size:26.7px;}
+      .term-chip{font-size:9.9px;padding:6.3px 12.6px;}
+      .hero-cta{font-size:12.6px;padding:9.9px 19.8px;}
+    }
+    h1.hero-title .g{background:var(--grad1);-webkit-background-clip:text;background-clip:text;color:transparent;}
+    p.hero-sub{font-size:12.15px;color:var(--muted);max-width:520px;margin:0 auto 28px;line-height:1.6;}
+    .hero-cta{display:inline-flex;}
+    .i18n-swap{display:inline-block;}
+    p.i18n-swap{display:block;}
+    .i18n-swap.glitching{animation:i18nGlitch 1000ms steps(1,end);}
+    @keyframes i18nGlitch{
+      0%{transform:translate(0,0);filter:none;opacity:1;text-shadow:none;}
+      8%{transform:translate(-3px,1px) skewX(-3deg);filter:hue-rotate(40deg) saturate(2);opacity:.85;text-shadow:-2px 0 #F43F5E,2px 0 #22D3EE;}
+      16%{transform:translate(3px,-1px) skewX(2deg);clip-path:inset(15% 0 55% 0);opacity:.7;}
+      24%{transform:translate(-2px,0);clip-path:inset(0 0 75% 0);opacity:.55;text-shadow:2px 0 #22D3EE,-2px 0 #F43F5E;}
+      33%{transform:translate(2px,1px);clip-path:inset(55% 0 5% 0);opacity:.85;}
+      46%{transform:translate(-1px,-1px);clip-path:inset(0 0 0 0);opacity:.25;text-shadow:3px 0 #F43F5E,-3px 0 #22D3EE;}
+      54%{transform:translate(1px,1px);opacity:.4;text-shadow:-3px 0 #22D3EE,3px 0 #F43F5E;}
+      62%{transform:translate(-2px,-1px) skewX(1deg);clip-path:inset(35% 0 25% 0);opacity:.8;}
+      72%{transform:translate(2px,0);opacity:.6;text-shadow:-1px 0 #F43F5E,1px 0 #22D3EE;}
+      82%{transform:translate(-1px,1px);clip-path:inset(0 0 0 0);opacity:.9;filter:hue-rotate(0deg) saturate(1);}
+      92%{transform:translate(1px,0);opacity:1;text-shadow:none;filter:none;}
+      100%{transform:translate(0,0);opacity:1;text-shadow:none;filter:none;}
+    }
+    @media (prefers-reduced-motion:reduce){.i18n-swap.glitching{animation:none !important;}}
+
+    .section-eyebrow{
+      font-family:var(--mono);font-size:11.5px;color:var(--primary);letter-spacing:.08em;text-align:center;margin-bottom:10px;
+    }
+    h2.section-title{font-family:var(--disp);font-size:26px;font-weight:700;text-align:center;margin:0 0 34px;letter-spacing:-.01em;}
+    @media (max-width:767px){ h2.pick-program-title{font-size:19.5px;} }
+    @media (max-width:479px){ h2.pick-program-title{font-size:17.55px;} }
+    .features{padding:50px 0 20px;}
+    #view-about,#view-contact,#view-faq,#view-privacy,#view-terms{padding-top:36px;}
+    @media (max-width:479px){ #view-about,#view-contact,#view-faq,#view-privacy,#view-terms{padding-top:24px;} }
+    .feat-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+    .feat-card{padding:24px 22px;transition:.25s;position:relative;overflow:hidden;}
+    .feat-card:hover{
+      border-color:var(--border-hi);
+      background:linear-gradient(135deg,rgba(6,182,212,.05),rgba(99,102,241,.05)),var(--surface);
+      transform:translateY(-2px) scale(1.004);
+      box-shadow:0 5px 11px var(--primary-glow);
+    }
+    .feat-icon{
+      width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-size:20px;margin-bottom:16px;color:#fff;font-weight:700;
+    }
+    .feat-icon.i1{background:var(--grad1);} .feat-icon.i2{background:var(--grad2);} .feat-icon.i3{background:var(--grad3);}
+    .feat-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .feat-card h3{font-family:var(--disp);font-size:16.5px;margin:0 0 8px;}
+    .feat-card p{font-size:13px;color:var(--muted);line-height:1.6;margin:0;}
+    .about-subhead{font-family:var(--mono);font-size:11.5px;color:var(--primary);letter-spacing:.08em;margin:36px 0 16px;}
+
+    .social-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:0;}
+    .social-btn{
+      width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+      color:#fff;transition:.25s;box-shadow:0 4px 14px var(--primary-glow);
+    }
+    .social-btn svg{width:21px;height:21px;fill:currentColor;}
+    .social-btn.sb-github svg,.social-btn.sb-facebook svg,.social-btn.sb-whatsapp svg{width:26px;height:26px;}
+    .social-btn:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 8px 20px var(--primary-glow);}
+    .social-btn.sb-github{background:var(--grad1);}
+    .social-btn.sb-facebook{background:var(--grad2);}
+    .social-btn.sb-twitter{background:linear-gradient(135deg,#0891B2 0%,#6366F1 100%);}
+    .social-btn.sb-whatsapp{background:linear-gradient(135deg,#06B6D4 0%,#6366F1 100%);}
+
+    .departments{padding:42px 0 20px;}
+    .quick-search{
+      display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;
+      padding:20px;margin-bottom:26px;
+    }
+    .qs-field{flex:1 1 150px;min-width:140px;max-width:220px;display:flex;flex-direction:column;gap:6px;}
+    .qs-field label{font-family:var(--disp);font-size:12px;font-weight:600;color:var(--text);}
+    .qs-field label .req{color:var(--accent-rose);}
+    .qs-field select{
+      width:100%;padding:11px 30px 11px 14px;border-radius:12px;border:1px solid var(--border);
+      background-color:var(--card);color:var(--text);font-size:13px;font-weight:500;outline:none;cursor:pointer;
+      appearance:none;-webkit-appearance:none;font-family:inherit;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394A3B8'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 12px center;
+      transition:.15s;
+    }
+    .qs-field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow);}
+    .qs-field select:disabled{background-color:var(--bg2);color:var(--dim);cursor:not-allowed;opacity:.75;}
+    .qs-actions{display:flex;gap:10px;flex:0 0 auto;}
+    .qs-actions .btn{padding:11px 22px;white-space:nowrap;}
+    @media (max-width:479px){ .qs-actions{width:100%;} .qs-actions .btn{flex:1;} }
+    @media (min-width:768px){ .quick-search{justify-content:center;} }
+
+    .program-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+    .program-card{
+      padding:26px 22px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;
+      border:1px solid var(--border);background:var(--card);
+      transition:.2s ease;position:relative;width:100%;box-shadow:0 2px 10px rgba(15,23,42,.04);
+    }
+    .program-card:not(.soon):hover{transform:translateY(-3px);border-color:var(--border-hi);box-shadow:0 10px 22px rgba(15,23,42,.09);}
+    .program-card.soon{cursor:not-allowed;}
+    .program-card.soon .pc-icon{filter:grayscale(1) opacity:.55;}
+    .program-card.soon .pc-tag,.program-card.soon h3,.program-card.soon p{color:var(--dim);}
+    .pc-icon{
+      width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+      font-size:21px;margin-bottom:14px;background:var(--bg2);color:#fff;
+    }
+    .pc-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .program-card.acc-2024 .pc-icon{background:linear-gradient(135deg,rgba(6,182,212,.7),rgba(99,102,241,.7));}
+    .program-card.acc-pass .pc-icon{background:linear-gradient(135deg,rgba(16,185,129,.7),rgba(6,182,212,.7));}
+    .pc-tag{font-family:var(--mono);font-size:11.55px;color:var(--primary);letter-spacing:.05em;margin-bottom:6px;}
+    .program-card h3{font-family:var(--disp);font-size:19.8px;margin:0 0 6px;}
+    .program-card p{font-size:12.5px;color:var(--muted);line-height:1.6;margin:0 0 14px;}
+    [data-theme="dark"] .program-card:not(.soon) h3,[data-theme="dark"] .program-card:not(.soon) p{color:#fff;}
+    .pc-arrow{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--primary);transition:color .2s;}
+    .pc-soon{
+      font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.03em;color:var(--primary);
+      padding:5px 13px 5px 11px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;
+      background:linear-gradient(var(--card),var(--card)) padding-box, var(--grad1) border-box;border:1px solid transparent;
+      box-shadow:0 2px 10px var(--primary-glow);
     }
 
-    .card.is-center .glass {
-      border-color: var(--glass-border-strong);
-      box-shadow: 0 30px 70px -18px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 0 60px rgba(255,255,255,0.05), 0 0 0 1px rgba(255,255,255,0.06);
+    .dept-card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+    .dept-card{
+      display:flex;flex-direction:column;align-items:center;text-align:center;gap:9px;width:100%;
+      padding:24px 18px;border-radius:16px;border:1px solid var(--border);background:var(--card);
+      transition:.2s ease;position:relative;min-height:150px;justify-content:center;overflow:hidden;
+      box-shadow:0 2px 10px rgba(15,23,42,.04);
+    }
+    .dept-card::before{
+      content:"";position:absolute;top:-6px;left:8%;right:8%;height:10px;
+      border-radius:0 0 50% 50%/0 0 100% 100%;transition:.25s ease;
+    }
+    .dept-card.acc-2024::before{background:linear-gradient(90deg,rgba(6,182,212,.7),rgba(99,102,241,.7));}
+    .dept-card.acc-pass::before{background:linear-gradient(90deg,rgba(16,185,129,.7),rgba(6,182,212,.7));}
+    .dept-card:not(.soon):hover{
+      transform:translateY(-3px);border-color:var(--border-hi);
+      background:linear-gradient(135deg,rgba(6,182,212,.05),rgba(99,102,241,.05)),var(--card);
+      box-shadow:0 10px 22px rgba(15,23,42,.09);
+    }
+    .dept-card:not(.soon):hover::before{height:12px;}
+    .dc-code{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.04em;order:2;position:relative;z-index:1;}
+    .dc-name{font-family:var(--disp);font-size:15.5px;font-weight:700;line-height:1.32;color:var(--text);order:1;position:relative;z-index:1;transition:color .2s;}
+    .dc-pill{
+      font-family:var(--mono);font-size:10px;font-weight:700;padding:5px 14px;border-radius:999px;
+      letter-spacing:.03em;margin-top:3px;order:3;position:relative;z-index:1;
+    }
+    .dc-pill-soon{background:var(--surface-hi);color:var(--dim);border:1px solid var(--border);}
+    .ac-2024,.ac-pass{backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+    .ac-2024{background:linear-gradient(rgba(6,182,212,.1),rgba(6,182,212,.1)),var(--surface);border:1px solid rgba(6,182,212,.32);color:var(--primary);}
+    .ac-pass{background:linear-gradient(rgba(16,185,129,.1),rgba(16,185,129,.1)),var(--surface);border:1px solid rgba(16,185,129,.32);color:var(--accent-emerald);}
+    .pill-2024{background:rgba(16,185,129,.12);color:var(--accent-emerald);border:1px solid rgba(16,185,129,.3);}
+    @media (min-width:768px){ .dept-card-grid{grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:14px;} }
+
+    .dl-header{margin-bottom:28px;}
+    .dl-header-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;}
+    .prog-heading{
+      font-family:var(--disp);font-weight:700;font-size:24px;line-height:1.15;margin:0;
+      letter-spacing:-.01em;text-align:left;
+    }
+    .dl-underline{width:44px;height:4px;border-radius:99px;background:var(--grad1);margin:12px 0 12px;}
+    .prog-pill{
+      display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;
+      padding:6px 14px 6px 11px;border-radius:999px;letter-spacing:.03em;animation:pillGlow 3s ease-in-out infinite;
+    }
+    .pill-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;animation:dotPulse 2s ease-in-out infinite;}
+    @keyframes dotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(.65);}}
+    @keyframes pillGlow{0%,100%{box-shadow:0 0 0 rgba(6,182,212,0);}50%{box-shadow:0 0 14px var(--primary-glow);}}
+    .dept-sub{
+      display:flex;align-items:center;justify-content:center;gap:7px;
+      color:var(--muted);font-size:13.5px;margin:0;
+    }
+    .sub-spark{width:14px;height:14px;flex-shrink:0;animation:sparkSpin 4.5s ease-in-out infinite;transform-origin:center;}
+    @keyframes sparkSpin{0%,85%{transform:rotate(0deg) scale(1);}92%{transform:rotate(180deg) scale(1.2);}100%{transform:rotate(360deg) scale(1);}}
+    @media (prefers-reduced-motion:reduce){.prog-pill,.pill-dot,.sub-spark{animation:none !important;}}
+
+    .modal-overlay{
+      position:fixed;inset:0;z-index:200;background:rgba(15,23,42,.4);
+      backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+      display:flex;align-items:center;justify-content:center;padding:20px;
+      opacity:0;pointer-events:none;transition:.2s ease;
+    }
+    .modal-overlay.open{opacity:1;pointer-events:auto;}
+    .modal-card{
+      background:var(--card);border-radius:22px;max-width:380px;width:100%;overflow:hidden;
+      box-shadow:0 24px 60px rgba(15,23,42,.28);transform:translateY(12px);transition:.22s ease;max-height:88vh;display:flex;flex-direction:column;
+    }
+    .modal-overlay.open .modal-card{transform:translateY(0);}
+    .modal-card.wide{max-width:640px;}
+    .modal-banner{background:var(--grad1);padding:22px 24px;position:relative;flex-shrink:0;}
+    .modal-banner-icon{
+      width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.22);
+      display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:2px;
+    }
+    .soon-icon{overflow:visible;background:transparent;}
+    .soon-orb{position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;}
+    .orb-core{
+      position:relative;z-index:2;font-size:18px;
+      animation:orbFloat 2.6s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(255,255,255,.6));
+    }
+    .orb-ring{
+      position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.65);
+      opacity:0;animation:orbPulse 2.6s ease-out infinite;
+    }
+    .orb-ring.r2{animation-delay:.87s;}
+    .orb-ring.r3{animation-delay:1.73s;}
+    @keyframes orbPulse{
+      0%{transform:scale(.35);opacity:.85;}
+      70%{opacity:.18;}
+      100%{transform:scale(1.9);opacity:0;}
+    }
+    @keyframes orbFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-3px) scale(1.08);}}
+    @media (prefers-reduced-motion:reduce){.orb-ring,.orb-core{animation:none !important;}}
+    .modal-banner h3{color:#fff;font-family:var(--disp);font-size:20px;font-weight:700;margin:0 0 4px;}
+    .modal-banner p{color:rgba(255,255,255,.85);font-size:12.5px;margin:0;}
+    .modal-close{
+      position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;
+      background:rgba(255,255,255,.2);border:none;color:#fff;font-size:15px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .modal-close:hover{background:rgba(255,255,255,.32);}
+    .modal-body{padding:22px 24px;overflow-y:auto;}
+    .modal-body h3{font-family:var(--disp);font-size:21px;margin:0 0 4px;}
+    .soon-code{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--primary);letter-spacing:.05em;margin-bottom:16px;}
+    .soon-msg{font-size:13.5px;color:var(--text);line-height:1.6;margin:0 0 14px;}
+    .soon-msg strong{color:var(--primary);}
+    .soon-note{background:var(--bg2);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.6;}
+
+    .si-section-label{
+      display:flex;align-items:center;gap:8px;font-family:var(--disp);font-weight:700;font-size:14px;
+      margin-bottom:16px;border-left:3px solid var(--primary-light);padding-left:10px;
+    }
+    .si-grid{display:grid;grid-template-columns:1fr;gap:14px;}
+    .si-field label{
+      display:block;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--dim);
+      letter-spacing:.05em;margin-bottom:6px;text-transform:uppercase;
+    }
+    .si-field input,.si-field select{
+      width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--border);
+      background:var(--card);font-size:13.5px;color:var(--text);outline:none;font-family:inherit;
+    }
+    .si-field input:focus,.si-field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow);}
+    @media (max-width:767px){ .si-field input,.si-field select{font-size:16px;} }
+    .si-field.readonly input{background:var(--bg2);color:var(--muted);}
+    .si-field.highlight input{background:rgba(245,158,11,.12);color:var(--accent-amber);font-weight:700;border-color:rgba(245,158,11,.3);}
+    @media (min-width:560px){.si-grid{grid-template-columns:1fr 1fr;}}
+    .modal-footer{padding:18px 24px 22px;border-top:1px solid var(--border);flex-shrink:0;}
+    .modal-footer .btn{width:100%;}
+
+    .faq{padding:56px 0 30px;max-width:100%;margin:0 auto;}
+    .faq-cat{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin:26px 0 10px;padding:0 4px;}
+    .faq-cat:first-child{margin-top:6px;}
+    .faq-item{border-bottom:1px solid var(--border);}
+    .faq-q{
+      width:100%;text-align:left;background:none;border:none;color:var(--text);padding:18px 4px;
+      display:flex;justify-content:space-between;align-items:center;font-family:var(--disp);font-size:14.5px;font-weight:600;gap:10px;
+    }
+    .faq-q .plus{font-family:var(--mono);color:var(--accent-rose);font-size:20px;transition:.2s;flex-shrink:0;margin-left:14px;}
+    .faq-item.open .plus{transform:rotate(45deg);}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+    .faq-item.open .faq-a{max-height:320px;}
+    .faq-a p{color:var(--muted);font-size:13.5px;line-height:1.7;padding:0 4px 20px;margin:0;}
+
+    footer.site{border-top:1px solid var(--border);padding:40px 0 26px;margin-top:30px;overflow-x:hidden;max-width:100vw;}
+    .footer-grid{display:grid;grid-template-columns:1fr;gap:30px;padding-bottom:24px;max-width:100%;}
+    .foot-brand{text-align:center;}
+    .foot-brand p{font-size:13px;color:var(--muted);line-height:1.7;margin:12px 0 0;max-width:340px;margin-left:auto;margin-right:auto;}
+    .foot-links-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;text-align:center;max-width:100%;}
+    .foot-col-title{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;white-space:nowrap;}
+    .foot-col{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0;}
+    .foot-col a{font-size:12.5px;color:var(--muted);overflow-wrap:break-word;word-break:break-word;}
+    .foot-col a:hover{color:var(--text);}
+    .foot-copy{font-family:var(--mono);font-size:10.5px;color:var(--dim);text-align:center;border-top:1px solid var(--border);padding-top:18px;line-height:1.6;}
+    @media (max-width:359px){ .foot-links-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;} .foot-col-title{font-size:9px;} .foot-col a{font-size:11.5px;} }
+    @media (min-width:768px){
+      .footer-grid{grid-template-columns:2fr 3fr;align-items:start;gap:30px;}
+      .foot-brand{text-align:left;}
+      .foot-brand p{margin-left:0;margin-right:0;}
+      .foot-links-row{gap:24px;text-align:left;}
+      .foot-col{align-items:flex-start;}
+      .foot-col-title{font-size:10.5px;}
+      .foot-col a{font-size:13px;}
     }
 
-    .card .glass::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 30%);
-      pointer-events: none;
+    #view-grading{padding-top:32px;}
+    #view-deptlist{padding-top:32px;}
+    .result-panel{
+      padding:28px 24px;position:relative;overflow:hidden;margin-bottom:28px;
+    }
+    .result-panel::before{
+      content:"";position:absolute;width:260px;height:260px;border-radius:50%;top:-130px;right:-90px;
+      background:radial-gradient(circle,rgba(6,182,212,.09),transparent 70%);pointer-events:none;
+    }
+    .rp-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;position:relative;z-index:1;}
+    .rp-num{font-family:var(--disp);font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1;background:var(--grad1);-webkit-background-clip:text;background-clip:text;color:transparent;}
+    .rp-lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--dim);margin-top:7px;}
+    .cls{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.02em;flex-shrink:0;margin-top:3px;}
+    .cls-fail{background:var(--fail-bg);color:var(--fail-text);border:1px solid rgba(244,63,94,.3);}
+    .cls-first{background:var(--pass-bg);color:var(--pass-text);border:1px solid rgba(16,185,129,.3);}
+    .cls-second{background:rgba(245,158,11,.10);color:var(--accent-amber);border:1px solid rgba(245,158,11,.3);}
+    .cls-third{background:rgba(6,182,212,.10);color:var(--primary);border:1px solid rgba(6,182,212,.3);}
+    .rp-bar-track{position:relative;height:6px;border-radius:999px;background:var(--bg2);margin-top:20px;z-index:1;}
+    .rp-bar-fill{position:absolute;top:0;left:0;height:100%;border-radius:999px;background:var(--grad1);transition:width .5s cubic-bezier(.4,0,.2,1);}
+    .rp-tick{position:absolute;top:-3px;width:2px;height:12px;background:var(--border-hi);border-radius:1px;}
+    .rp-bar-scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:6px;position:relative;z-index:1;}
+
+    .rp-divider{height:1px;background:var(--border);margin:22px 0;position:relative;z-index:1;}
+
+    .rp-stats{display:flex;position:relative;z-index:1;}
+    .rp-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;padding:0 4px;}
+    .rp-stat:not(:last-child)::after{content:"";position:absolute;right:0;top:8%;height:84%;width:1px;background:var(--border);}
+    .rp-stat-n{font-family:var(--disp);font-size:17px;font-weight:800;letter-spacing:-.01em;}
+    .rp-stat-l{font-family:var(--mono);font-size:8px;color:var(--dim);letter-spacing:.08em;}
+
+    .rp-export{
+      margin-top:22px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;
+      padding:13px;border-radius:999px;border:1px solid var(--primary-glow);
+      background:linear-gradient(135deg,rgba(6,182,212,.15),rgba(99,102,241,.15));
+      font-weight:700;font-size:13.5px;color:var(--text);transition:.2s ease;position:relative;z-index:1;
+    }
+    .rp-export:hover{
+      border-color:rgba(6,182,212,.35);background:linear-gradient(135deg,rgba(6,182,212,.25),rgba(99,102,241,.25));
+      transform:translateY(-2px);box-shadow:0 6px 16px var(--primary-glow);
+    }
+    .rp-export-icon{width:20px;height:20px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--primary);flex-shrink:0;}
+
+    .dept-title-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:14px;}
+    h2.dept-title{font-family:var(--disp);font-size:20px;font-weight:700;margin:0;}
+    @media (max-width:767px){ h2.dept-title{font-size:16.5px;} }
+
+    .year-pills{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+    .year-pill{
+      font-family:var(--mono);font-size:13.5px;font-weight:700;padding:9px 16px;border-radius:999px;
+      border:1px solid var(--border);background:var(--surface);color:var(--muted);
+    }
+    .year-pill.active{background:var(--grad1);color:#fff;border-color:transparent;}
+    @media (max-width:479px){
+      .year-pills{flex-wrap:nowrap;gap:5px;}
+      .year-pill{padding:8px 6px;font-size:11px;flex:1 1 0;text-align:center;white-space:nowrap;}
+      .grade-actions .btn{padding:10px 14px;font-size:12.5px;}
+      .grade-actions .btn-icon{gap:6px;}
     }
 
-    .card .glass::after {
-      content: "";
-      position: absolute;
-      top: -40%;
-      left: -20%;
-      width: 60%;
-      height: 180%;
-      background: linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.10) 45%, rgba(255,255,255,0) 55%);
-      transform: rotate(8deg);
-      pointer-events: none;
+    .subject-card{overflow:hidden;margin-bottom:22px;}
+    .sc-head{padding:14px 18px;border-bottom:1px solid var(--border);font-weight:700;font-size:14px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+    .sc-head-title{display:flex;align-items:flex-start;gap:8px;min-width:0;overflow:visible;text-overflow:clip;white-space:normal;word-break:break-word;line-height:1.3;}
+    .sc-head .reset-btn{flex-shrink:0;}
+    .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    table.marksheet{width:100%;border-collapse:collapse;min-width:608px;table-layout:fixed;}
+    table.marksheet th{
+      text-align:center;font-family:var(--mono);font-size:11px;color:var(--dim);text-transform:uppercase;
+      letter-spacing:.06em;font-weight:700;padding:13px 18px;border-bottom:1px solid var(--border);white-space:nowrap;
+    }
+    table.marksheet td{padding:15px 18px;border-bottom:1px solid var(--border);font-size:14px;white-space:nowrap;text-align:center;}
+    table.marksheet tr:last-child td{border-bottom:none;}
+    table.marksheet td.code{font-family:var(--mono);color:var(--dim);font-size:14px;}
+    table.marksheet th.paper,table.marksheet td.paper{padding-left:10px;padding-right:10px;}
+    table.marksheet th.paper{text-align:center;}
+    table.marksheet td.paper{text-align:left;white-space:normal;word-break:break-word;}
+    tr.total td.paper{text-align:center;}
+    table.marksheet td.marks{font-family:var(--mono);color:var(--dim);font-size:14px;width:136px;padding-left:10px;padding-right:20px;white-space:nowrap;text-align:center;}
+    table.marksheet th.code,table.marksheet td.code{width:102px;padding-left:20px;padding-right:10px;white-space:nowrap;}
+    table.marksheet th.credit,table.marksheet td.credit{width:72px;padding-left:10px;padding-right:10px;white-space:nowrap;}
+    table.marksheet th.grade,table.marksheet td.grade{width:139px;padding-left:10px;padding-right:10px;white-space:nowrap;}
+    table.marksheet th.marks{width:136px;padding-left:10px;padding-right:20px;}
+    tr.total td{font-family:var(--disp);font-weight:700;font-size:15.5px;background:rgba(15,23,42,.03);}
+
+    .grading-scale-card{padding:24px 22px;margin-top:22px;}
+    .gs-row{display:flex;flex-direction:column;gap:18px;align-items:stretch;}
+    .gs-row .grading-scale-card{flex:1 1 0;min-width:0;max-width:100%;margin-top:0;}
+    @media (min-width:768px){ .gs-row{flex-direction:row;align-items:flex-start;} .gs-row .grading-scale-card{flex:1 1 50%;} }
+    .gs-title{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--primary);letter-spacing:.05em;margin:0 0 16px;text-transform:uppercase;}
+    table.gs-table{width:100%;border-collapse:collapse;}
+    table.gs-table th{
+      text-align:center;font-family:var(--mono);font-size:11px;color:var(--dim);text-transform:uppercase;
+      letter-spacing:.06em;font-weight:700;padding:10px 12px;border-bottom:1px solid var(--border);
+    }
+    table.gs-table td{padding:11px 12px;border-bottom:1px solid var(--border);font-size:13.5px;text-align:center;font-family:var(--mono);color:var(--muted);}
+    table.gs-table tr:last-child td{border-bottom:none;}
+    table.gs-table td.gs-letter{font-family:var(--disp);font-weight:700;color:var(--text);}
+    table.gs-table td.gs-class{font-family:var(--disp);font-weight:700;color:var(--text);}
+    table.gs-table td.gs-class.gs-fail{color:var(--fail-text);}
+    table.gs-table td.gs-range{font-family:var(--mono);color:var(--text);}
+
+    @media (max-width:767px){
+      .table-scroll{overflow-x:visible;}
+      table.marksheet{display:block;width:100%;min-width:0;}
+      table.marksheet thead{display:none;}
+      table.marksheet tbody{display:block;}
+      table.marksheet tr{
+        position:relative;
+        display:flex;flex-wrap:wrap;align-items:center;column-gap:8px;row-gap:2px;
+        padding:14px 16px 12px 10px;
+      }
+      table.marksheet tr,table.marksheet td{border-bottom:none !important;}
+      table.marksheet tr{border-bottom:1px solid var(--border) !important;}
+      table.marksheet tr:last-child{border-bottom:none !important;}
+      table.marksheet td{
+        padding:0 !important;width:auto !important;text-align:left;white-space:normal;
+        font-size:13px !important;background:none !important;
+      }
+      table.marksheet td.paper{
+        order:1;flex:1 1 100%;font-family:var(--disp);font-weight:700;font-size:15.5px !important;
+        color:var(--text);word-break:break-word;
+      }
+      table.marksheet td.code{order:2;font-family:var(--mono);font-size:12.5px !important;color:var(--dim);margin-top:3px;}
+      table.marksheet td.code::after{content:' • ';color:var(--dim);}
+      table.marksheet td.credit{order:3;font-family:var(--mono);font-size:12.5px !important;color:var(--dim);margin-top:3px;}
+      table.marksheet td.credit::after{content:' Credits';}
+      table.marksheet td.marks{order:4;margin-left:auto;margin-top:3px;font-family:var(--mono);font-size:12.5px !important;color:var(--dim);}
+      table.marksheet td.grade{
+        position:relative;
+        order:5;flex:1 1 100%;display:flex;align-items:center;justify-content:space-between;
+        margin-top:7px;padding-top:7px !important;
+      }
+      table.marksheet td.grade::after{
+        content:'';position:absolute;top:0;left:0;width:50%;height:1px;background:var(--border);
+      }
+      table.marksheet td.grade::before{
+        content:'GRADE';font-family:var(--mono);font-size:10.5px;font-weight:700;
+        letter-spacing:.06em;color:var(--dim);
+      }
+      table.marksheet td.grade select.grade-select{width:auto;}
+
+      tr.total{
+        background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(99,102,241,.06)) !important;
+        border-radius:14px;border-bottom:none !important;padding:14px 16px !important;margin-top:8px;
+      }
+      tr.total::before{display:none;}
+      tr.total td:first-child{display:none;}
+      tr.total td.paper{order:1;flex:1 1 100%;font-size:15.5px !important;margin-bottom:2px;}
+      tr.total td.credit{order:2;font-size:17px !important;font-weight:700;color:var(--text);}
+      tr.total td.credit::after{content:none;}
+      tr.total td.credit::before{content:'CREDITS ';font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--dim);text-transform:uppercase;}
+      tr.total td[colspan]{order:3;margin-left:auto;text-align:right;font-size:19px !important;font-weight:800;color:var(--primary);}
+      tr.total td[colspan]::before{content:'GPA ';font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--dim);text-transform:uppercase;}
     }
 
-    .card-content {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+    select.grade-select{
+      background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);
+      font-family:var(--mono);font-size:14px;font-weight:700;padding:9px 22px 9px 10px;appearance:none;cursor:pointer;
+      max-width:100%;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394A3B8'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 8px center;
     }
+    select.grade-select:focus{outline:none;border-color:var(--primary);}
 
-    .browser-bar {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 10px 12px 8px;
-      flex-shrink: 0;
-    }
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.25);
-    }
+    .empty-year{padding:50px 20px;text-align:center;}
+    .empty-year .et{font-family:var(--disp);font-size:17px;margin-bottom:6px;}
+    .empty-year .ed{font-size:13px;color:var(--muted);}
 
-    .site {
-      flex: 1;
-      margin: 0 12px 12px;
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 14px;
-      color: #fff;
-    }
-    .site h4 {
-      margin: 0 0 4px;
-      font-size: 12.5px;
-      font-weight: 600;
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-    }
-    .site p {
-      margin: 0;
-      font-size: 9.5px;
-      opacity: 0.55;
-      font-weight: 400;
-    }
-    .site.dark1 { background: linear-gradient(160deg,#0d1f14,#03130a 70%); }
-    .site.dark1::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 70% 20%, rgba(120,255,180,0.18), transparent 60%); }
-    .site.solar { background: linear-gradient(180deg,#1a2033,#05070d 75%); }
-    .site.solar::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 60% 15%, rgba(255,190,90,0.20), transparent 55%); }
-    .site.fin { background: linear-gradient(160deg,#f4f3f0,#e8e6e1); color:#141311; }
-    .site.fin p { opacity:0.5; }
-    .site.fin::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 90%, rgba(0,0,0,0.05), transparent 60%); }
+    .grade-actions{display:flex;flex-direction:row;justify-content:center;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap;}
+    .btn-icon{display:inline-flex;align-items:center;gap:8px;}
+    .ico-bubble{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;line-height:1;}
+    .ico-flip{display:inline-block;transform:rotate(90deg);}
+    .ico-grad{background:var(--grad1);color:#fff;}
 
-    .glyph-wrap {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .reset-btn{
+      display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;flex-shrink:0;
+      border:1px solid var(--primary-glow);background:rgba(6,182,212,.1);color:var(--primary-light);font-family:var(--mono);
+      font-size:11px;font-weight:700;letter-spacing:.03em;transition:.18s ease;
     }
-    .glyph-wrap svg { filter: drop-shadow(0 10px 25px rgba(0,0,0,0.5)); }
+    .reset-btn:hover{border-color:var(--primary);color:#fff;background:var(--primary);transform:translateY(-1px);}
+    .reset-btn .rico{font-size:12px;line-height:1;}
 
-    /* navigation arrows */
-    .nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.18);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      color: rgba(255,255,255,0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 50;
-      transition: background .2s, transform .2s, border-color .2s;
-      touch-action: manipulation;
-    }
-    .nav-btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.32); }
-    .nav-btn:active { transform: translateY(-50%) scale(0.92); }
-    .nav-btn.prev { left: 4%; }
-    .nav-btn.next { right: 4%; }
-    .nav-btn svg { width: 18px; height: 18px; }
+    .back-row{text-align:center;}
+    :focus-visible{outline:2px solid var(--primary);outline-offset:2px;}
 
-    @media (max-width: 640px) {
-      .nav-btn { width: 38px; height: 38px; }
-      .nav-btn.prev { left: 2%; }
-      .nav-btn.next { right: 2%; }
-      .card { width: 170px; height: 230px; margin-left: -85px; margin-top: -115px; }
+    @media (max-width:767px){
+      .site-inner{justify-content:flex-start;}
+      .mobile-actions{margin-left:auto;}
     }
+    .qs-field:nth-child(3){flex:1 1 100%;max-width:100%;}
+    @media (max-width:767px){ .qs-field:nth-child(1),.qs-field:nth-child(2){flex:1 1 calc(50% - 7px);min-width:0;max-width:none;} }
 
-    .caption {
-      position: absolute;
-      bottom: 9%;
-      left: 0;
-      right: 0;
-      text-align: center;
-      color: rgba(255,255,255,0.5);
-      font-size: 12px;
-      letter-spacing: 0.02em;
-      font-weight: 500;
-      pointer-events: none;
-      transition: opacity .3s ease;
+    @media (min-width: 480px){
+      .wrap{max-width:600px;padding:0 22px;}
+      .site-inner{max-width:600px;padding:14px 22px;}
+      h1.hero-title{font-size:31.7px;}
+      .program-card{padding:28px 26px;}
+      .qs-field:nth-child(3){flex:1 1 150px;max-width:220px;}
+      .rp-num{font-size:50px;}
+      .rp-export{width:fit-content;padding:12px 26px;margin-left:auto;}
     }
+    @media (min-width: 768px){
+      .wrap{max-width:720px;padding:0 24px;}
+      .site-inner{max-width:720px;padding:16px 24px;}
+      .logo{font-size:22px;gap:10px;}
+      .logo .dot{width:11px;height:11px;}
+      h1.hero-title{font-size:48px;}
+      p.hero-sub{font-size:17px;}
+      h2.section-title{font-size:32px;margin-bottom:44px;}
+      .hero{padding:49px 0 23px;}
+      .features{padding:70px 0 20px;}
+      .departments{padding:60px 0 20px;}
+      .faq{padding:80px 0 30px;max-width:760px;}
+      .feat-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+      .program-grid{grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;}
+      nav.main-nav{display:flex;gap:26px;order:3;}
+      nav.main-nav a{font-size:14px;}
+      .site-inner{flex-wrap:nowrap;}
+      .header-search{display:block;order:2;flex:1 1 auto;max-width:320px;margin:0 auto;}
+      .mobile-actions{display:none;}
+      .rp-num{font-size:56px;}
+      .result-panel{padding:36px 32px;}
+      .rp-stat-n{font-size:20px;}
+      h2.dept-title{font-size:24px;}
+      table.marksheet td{padding:17px 20px;font-size:15px;}
+      table.marksheet th{font-size:11.5px;padding:14px 20px;}
+      table.marksheet td.code,table.marksheet td.marks{font-size:15px;}
+      table.marksheet th.code,table.marksheet td.code{padding-left:33px;}
+      table.marksheet th.marks,table.marksheet td.marks{padding-right:33px;}
+      tr.total td{font-size:17px;}
+      select.grade-select{font-size:14.5px;padding:10px 24px 10px 12px;}
+      .sc-head{font-size:15px;}
+    }
+    @media (min-width: 1024px){ .wrap{max-width:960px;} .site-inner{max-width:960px;} .logo{font-size:24px;gap:11px;} .logo .dot{width:12px;height:12px;} .qs-field:nth-child(3){flex:1 1 150px;max-width:220px;} }
+    @media (min-width: 1280px){ .wrap{max-width:1100px;} .site-inner{max-width:1100px;} .logo{font-size:26px;gap:12px;} .logo .dot{width:13px;height:13px;} }
+    @media (min-width: 1440px){ .wrap{max-width:1180px;} .site-inner{max-width:1180px;} .logo{font-size:28px;gap:13px;} .logo .dot{width:14px;height:14px;} }
+    @media (min-width: 1920px){ .wrap{max-width:1320px;} .site-inner{max-width:1320px;} body{font-size:16.5px;} h1.hero-title{font-size:60px;} .logo{font-size:30px;gap:14px;} .logo .dot{width:15px;height:15px;} }
   </style>
 </head>
 <body>
-<div class="stage-wrap">
-  <div class="viewport" id="viewport">
-    <div class="track" id="track"></div>
+
+<div class="blobs"><div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div></div>
+
+<header class="site">
+  <div class="site-inner">
+    <div class="logo" onclick="showView('home')">
+      <span class="dot"></span> <span class="brand-text">Gradely</span><span class="logo-dots"><span class="accent">.</span><span class="accent2">.</span></span>
+    </div>
+    <nav class="main-nav">
+      <a href="#" onclick="showView('home');return false;">Home</a>
+      <a href="#" onclick="showView('about');return false;">About</a>
+      <a href="#" onclick="showView('contact');return false;">Contact</a>
+      <a href="#" onclick="showView('faq');return false;">FAQ</a>
+    </nav>
+    <div class="header-search" id="headerSearch">
+      <input type="text" id="globalDeptSearch" placeholder="Search any department… (e.g. Physics)" oninput="globalSearch(this.value)">
+      <div id="globalSearchResults" class="global-search-results"></div>
+    </div>
+    <button class="icon-btn theme-toggle" id="themeToggleBtn" aria-label="Toggle dark mode" title="Toggle dark mode" onclick="toggleTheme()">
+      <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4l1.4-1.4M17 7l1.4-1.4"/></svg>
+      <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+    </button>
+    <div class="mobile-actions">
+      <button class="icon-btn" aria-label="Search" onclick="toggleMobileSearch()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="gradSearchIcon" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#06B6D4"/><stop offset="1" stop-color="#6366F1"/></linearGradient></defs>
+          <circle cx="11" cy="11" r="7" stroke="url(#gradSearchIcon)" stroke-width="2"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="url(#gradSearchIcon)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Home" onclick="showView('home')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="gradHomeIcon" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#06B6D4"/><stop offset="1" stop-color="#6366F1"/></linearGradient></defs>
+          <path d="M3 11.5L12 4l9 7.5" stroke="url(#gradHomeIcon)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" stroke="url(#gradHomeIcon)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Menu" onclick="openMobileMenu()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="gradMenuIcon" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#06B6D4"/><stop offset="1" stop-color="#6366F1"/></linearGradient></defs>
+          <line x1="3" y1="6" x2="21" y2="6" stroke="url(#gradMenuIcon)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="url(#gradMenuIcon)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="3" y1="18" x2="21" y2="18" stroke="url(#gradMenuIcon)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
   </div>
+</header>
 
-  <button class="nav-btn prev" id="prevBtn" aria-label="Previous">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-  <button class="nav-btn next" id="nextBtn" aria-label="Next">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-
-  <div class="caption" id="caption"></div>
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+  <button class="mobile-menu-close" aria-label="Close menu" onclick="closeMobileMenu()">✕</button>
+  <nav class="mobile-menu-links">
+    <a href="#" onclick="closeMobileMenu();showView('about');return false;">About</a>
+    <a href="#" onclick="closeMobileMenu();showView('contact');return false;">Contact</a>
+    <a href="#" onclick="closeMobileMenu();showView('faq');return false;">FAQ</a>
+  </nav>
 </div>
 
+<main class="wrap">
+
+  <!-- ================= HOME VIEW ================= -->
+  <section id="view-home">
+
+    <div class="hero">
+      <span class="term-chip"><span class="i18n-swap" data-en="// updated for 2024–2025 syllabus" data-bn="// ২০২৪–২০২৫ সিলেবাস অনুযায়ী">// updated for 2024–2025 syllabus</span> <span class="cursor"></span></span>
+      <h1 class="hero-title"><span class="i18n-swap" data-en="Stop guessing your CGPA." data-bn="CGPA হিসাব নিয়ে স্ট্রেস?">Stop guessing your CGPA.</span><br><span class="g i18n-swap" style="font-size:0.7em;" data-en="We've already done the hard part." data-bn="চিল! হিসাবটা আমরা সামলে নিয়েছি।">We've already done the hard part.</span></h1>
+      <p class="hero-sub i18n-swap" data-en="The calculator NU students actually deserve — accurate math, grade-weighted calculations, auto-save, all in one place. Fast, easy, zero hassle." data-bn="NU শিক্ষার্থীদের জন্য তৈরি স্মার্ট CGPA Calculator — নির্ভুল হিসাব, গ্রেড-ওয়েটেড ক্যালকুলেশন ও অটো-সেভ সুবিধা, সব এক জায়গায়। দ্রুত, সহজ, একদম ঝামেলাহীন।">The calculator NU students actually deserve — accurate math, grade-weighted calculations, auto-save, all in one place. Fast, easy, zero hassle.</p>
+      <button class="btn btn-grad hero-cta i18n-swap" onclick="goSection('departments')" data-en="Browse programs ↓" data-bn="প্রোগ্রাম দেখুন ↓">Browse programs ↓</button>
+    </div>
+
+    <div class="departments" id="departments">
+      <div class="section-eyebrow">// browse programs</div>
+      <h2 class="section-title pick-program-title">Pick your program, we'll do the rest</h2>
+
+      <div class="quick-search glass">
+        <div class="qs-field">
+          <label>Program <span class="req">*</span></label>
+          <select id="qsProgram" onchange="qsProgramChange()">
+            <option value="">— Select Program —</option>
+            <option value="honours">Honours</option>
+            <option value="pass">Degree (Pass Course)</option>
+            <option value="masters">Masters</option>
+            <option value="prelim">Preliminary to Master's</option>
+          </select>
+        </div>
+        <div class="qs-field">
+          <label>Session <span class="req">*</span></label>
+          <select id="qsSession" onchange="qsSessionChange()" disabled>
+            <option value="">— Select Session —</option>
+          </select>
+        </div>
+        <div class="qs-field">
+          <label>Subject</label>
+          <select id="qsSubject" disabled>
+            <option value="">— Select Subject —</option>
+          </select>
+        </div>
+        <div class="qs-actions">
+          <button class="btn btn-grad" onclick="qsGo()">Go</button>
+          <button class="btn btn-ghost" onclick="qsReset()">Reset</button>
+        </div>
+      </div>
+
+      <div class="program-grid" id="programGrid"></div>
+    </div>
+
+    <div class="features">
+      <div class="section-eyebrow">// why gradely</div>
+      <h2 class="section-title">Built different, obviously</h2>
+      <div class="feat-grid">
+        <div class="glass feat-card acc-i1">
+          <div class="feat-icon i1"><svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/><path d="M4 21h16"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M14 9h1"/><path d="M14 13h1"/><path d="M10 21v-4a2 2 0 0 1 2-2 2 2 0 0 1 2 2v4"/></svg></div>
+          <h3>Auto-save</h3>
+          <p>Your grades save as you type. Close the tab, touch grass, come back — nothing's lost.</p>
+        </div>
+        <div class="glass feat-card acc-i2">
+          <div class="feat-icon i2"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg></div>
+          <h3>Every department, both syllabi</h3>
+          <p>BSc, BBA, BSS, BA — 2024–2025 and 2013–2014 credit structures, all accurate.</p>
+        </div>
+        <div class="glass feat-card acc-i3">
+          <div class="feat-icon i3"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+          <h3>Actually mobile-friendly</h3>
+          <p>Built for the phone in your hand, not just the laptop on your desk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT VIEW ================= -->
+  <section id="view-about" class="hidden">
+    <div class="section-eyebrow">// about us</div>
+    <h2 class="section-title" style="margin-bottom:24px;">Built by students, for students</h2>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Gradely started as a late-night side project because doing NU's CGPA math by hand — across four years, ten grade bands and two different syllabuses — was genuinely not it. So we built a calculator that actually gets it right, and actually looks like something made in 2026.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Every department across BSc, BBA, BSS and BA Honours is covered, for both the 2024–2025 and 2013–2014 syllabuses, plus the Degree Pass course. Everything is grade-weighted and calculated live as you type — no sign-up, no spreadsheet, no cap.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Gradely is an independent educational project and isn't affiliated with National University Bangladesh — just students trying to make results day a little less stressful for everyone else.</p>
+    </div>
+
+    <h3 class="about-subhead">// by the numbers</h3>
+    <div class="feat-grid">
+      <div class="glass feat-card acc-i1">
+          <div class="feat-icon i1"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg></div>
+        <h3>3 programs</h3>
+        <p>Honours (BSc, BBA, BSS, BA), Degree Pass, and Masters — all in one place.</p>
+      </div>
+      <div class="glass feat-card acc-i2">
+          <div class="feat-icon i2"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></div>
+        <h3>2 syllabuses</h3>
+        <p>Full support for both the 2024–2025 and 2013–2014 credit structures, side by side.</p>
+      </div>
+      <div class="glass feat-card acc-i3">
+          <div class="feat-icon i3"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3>0 sign-ups</h3>
+        <p>No account, no email, no password. Your grades never leave your browser.</p>
+      </div>
+    </div>
+
+    <h3 class="about-subhead">// how it works</h3>
+    <div class="feat-grid">
+      <div class="glass feat-card acc-i1">
+          <div class="feat-icon i1">1</div>
+        <h3>Pick your department</h3>
+        <p>Choose your program, session and subject from the quick search or the department grid.</p>
+      </div>
+      <div class="glass feat-card acc-i2">
+          <div class="feat-icon i2">2</div>
+        <h3>Enter your grades</h3>
+        <p>Type in the letter grade for each course — everything saves automatically as you go.</p>
+      </div>
+      <div class="glass feat-card acc-i3">
+          <div class="feat-icon i3">3</div>
+        <h3>Get your CGPA instantly</h3>
+        <p>See your year-by-year GPA and running CGPA update live, no calculator or spreadsheet needed.</p>
+      </div>
+    </div>
+
+    <div class="back-row" style="margin-top:26px;">
+      <button class="btn btn-ghost btn-icon" onclick="showView('home')"><span class="ico-bubble ico-grad"><span class="ico-flip">↓</span></span>Back to home</button>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT VIEW ================= -->
+  <section id="view-contact" class="hidden">
+    <div class="section-eyebrow">// contact</div>
+    <h2 class="section-title" style="margin-bottom:14px;">Get in touch</h2>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;text-align:center;max-width:520px;margin:0 auto 32px;">Gradely's built and maintained by a small group of students, so every message actually gets read — whether it's a bug report, a missing program, or just feedback on what to build next.</p>
+
+    <h3 class="about-subhead">// reach out</h3>
+    <div class="feat-grid">
+      <div class="glass feat-card acc-i1">
+          <div class="feat-icon i1"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
+        <h3>Email us</h3>
+        <p>Found a bug, a wrong subject, or a wrong credit value? Send it over and we'll fix it fast.</p>
+        <p style="margin-top:12px;"><a href="mailto:hello@gradely.app" style="color:var(--primary);font-weight:700;">hello@gradely.app</a></p>
+      </div>
+      <div class="glass feat-card acc-i2">
+          <div class="feat-icon i2"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Suggest a program</h3>
+        <p>Studying something that isn't listed yet, like Computer Science or Masters? Let us know and we'll prioritise it.</p>
+      </div>
+      <div class="glass feat-card acc-i3">
+          <div class="feat-icon i3"><svg viewBox="0 0 24 24"><path d="m10.29 3.86-8.18 14.18A2 2 0 0 0 4 21h16a2 2 0 0 0 1.89-2.96L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+        <h3>Report an issue</h3>
+        <p>Something look off in the grade table or GPA math? Tell us the program and year and we'll take a look.</p>
+      </div>
+    </div>
+
+    <h3 class="about-subhead">// good to know</h3>
+    <div class="feat-grid">
+      <div class="glass feat-card acc-i1">
+          <div class="feat-icon i1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Response time</h3>
+        <p>We're students too, so replies usually land within 2–3 days — sooner for anything that affects your CGPA.</p>
+      </div>
+      <div class="glass feat-card acc-i2">
+          <div class="feat-icon i2"><svg viewBox="0 0 24 24"><path d="m12 2 2.4 6.5L21 11l-6.6 2.5L12 20l-2.4-6.5L3 11l6.6-2.5Z"/></svg></div>
+        <h3>Request a feature</h3>
+        <p>Want a transcript export, dark mode, or something else entirely? Tell us what would make results day easier.</p>
+      </div>
+      <div class="glass feat-card acc-i3">
+          <div class="feat-icon i3"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 4.9.8c0 1.7-2.4 2-2.4 3.7"/><path d="M12 17h.01"/></svg></div>
+        <h3>Check the FAQ first</h3>
+        <p>Quick question about grading, syllabuses, or how your data is stored? It might already be answered <a href="#" onclick="showView('faq');return false;" style="color:var(--primary);font-weight:700;">here</a>.</p>
+      </div>
+    </div>
+
+    <h3 class="about-subhead">// find us online</h3>
+    <div class="social-links">
+      <a href="https://github.com/gradely" target="_blank" rel="noopener" class="social-btn sb-github" aria-label="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55 0-.27-.01-1-.02-1.96-3.17.69-3.84-1.53-3.84-1.53-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.53-.29-5.19-1.27-5.19-5.63 0-1.24.44-2.26 1.17-3.06-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.14-1.17 3.14-1.17.62 1.58.23 2.75.11 3.04.73.8 1.17 1.82 1.17 3.06 0 4.37-2.67 5.34-5.21 5.62.41.36.77 1.07.77 2.15 0 1.55-.01 2.8-.01 3.18 0 .3.2.66.79.55A11.26 11.26 0 0 0 23.25 11.75C23.25 5.48 18.27.5 12 .5Z"/></svg>
+      </a>
+      <a href="https://facebook.com/gradely" target="_blank" rel="noopener" class="social-btn sb-facebook" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.78 8.44-4.94 8.44-9.94Z"/></svg>
+      </a>
+      <a href="https://x.com/gradely" target="_blank" rel="noopener" class="social-btn sb-twitter" aria-label="Twitter / X">
+        <svg viewBox="0 0 24 24"><path d="M18.9 2.25h3.3l-7.2 8.23 8.47 11.27h-6.63l-5.19-6.79-5.94 6.79H2.4l7.7-8.8L2 2.25h6.8l4.69 6.2 5.4-6.2Zm-1.16 17.5h1.83L7.35 4.14H5.38L17.74 19.75Z"/></svg>
+      </a>
+      <a href="https://wa.me/8801234567890" target="_blank" rel="noopener" class="social-btn sb-whatsapp" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.29-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/><path d="M12.02 2C6.5 2 2 6.48 2 12c0 1.87.52 3.62 1.42 5.12L2 22l4.99-1.31A9.96 9.96 0 0 0 12.02 22C17.55 22 22 17.52 22 12S17.55 2 12.02 2Zm0 18.13c-1.63 0-3.14-.44-4.44-1.2l-.32-.19-3.05.8.81-2.98-.21-.31A8.13 8.13 0 0 1 3.87 12c0-4.5 3.66-8.15 8.15-8.15 4.49 0 8.15 3.65 8.15 8.15 0 4.5-3.66 8.13-8.15 8.13Z"/></svg>
+      </a>
+    </div>
+
+    <div class="back-row" style="margin-top:26px;">
+      <button class="btn btn-ghost btn-icon" onclick="showView('home')"><span class="ico-bubble ico-grad"><span class="ico-flip">↓</span></span>Back to home</button>
+    </div>
+  </section>
+
+  <!-- ================= FAQ VIEW ================= -->
+  <section id="view-faq" class="hidden">
+    <div class="faq" style="padding-top:0;">
+      <div class="section-eyebrow">// faq</div>
+      <h2 class="section-title">Questions, answered</h2>
+      <div id="faqList"></div>
+    </div>
+    <div class="back-row" style="margin-top:10px;">
+      <button class="btn btn-ghost btn-icon" onclick="showView('home')"><span class="ico-bubble ico-grad"><span class="ico-flip">↓</span></span>Back to home</button>
+    </div>
+  </section>
+
+  <!-- ================= PRIVACY VIEW ================= -->
+  <section id="view-privacy" class="hidden">
+    <div class="section-eyebrow">// privacy policy</div>
+    <h2 class="section-title" style="margin-bottom:24px;">Your grades stay yours</h2>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Gradely doesn't ask for an account, an email, or a password — so there's nothing to leak in the first place. The grades you enter are saved only in your own browser's local storage, on your own device.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Nothing you type into the calculator is sent to a server, sold, or shared with anyone, including us. Clear your browser data or hit "Reset calculator" and it's gone for good.</p>
+    </div>
+
+    <h3 class="about-subhead">// what we don't collect</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">No accounts, no email addresses, no phone numbers, no passwords. We don't run ad trackers, don't build user profiles, and don't sell or share data with advertisers — there simply isn't any to sell.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">If you email us or message us through the Contact page, we only use that information to reply to you — never for marketing, and never passed on to third parties.</p>
+    </div>
+
+    <h3 class="about-subhead">// how local storage works</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Your grades are stored using your browser's built-in local storage, tied to this specific browser on this specific device. They're not synced to any account, so they won't automatically follow you to another phone, laptop, or browser.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Clearing your browser's site data, using private/incognito mode, or hitting "Reset calculator" will permanently erase that saved data — we have no copy to restore it from.</p>
+    </div>
+
+    <h3 class="about-subhead">// cookies & analytics</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Gradely doesn't use tracking cookies or third-party analytics scripts. Like most websites, our hosting provider may automatically generate basic technical logs (such as page requests and general traffic volume) for security and uptime purposes — these logs don't contain your grades or any personal identifiers.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">If that ever changes — say, adding privacy-friendly, non-identifying analytics to see which features people actually use — this page will be updated to reflect it.</p>
+    </div>
+
+    <h3 class="about-subhead">// third-party links</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Occasional links (like the mailto link on Contact) point outside Gradely. We're not responsible for the privacy practices of external sites or services you reach through those links — check their own policies if you're unsure.</p>
+    </div>
+
+    <h3 class="about-subhead">// who this is for</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Gradely is built for current and prospective National University Bangladesh students, generally university-aged. It isn't designed or marketed for young children, and we don't knowingly collect any data from them — largely because we don't collect personal data from anyone in the first place.</p>
+    </div>
+
+    <h3 class="about-subhead">// changes to this policy</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Gradely is an independent, non-commercial student project. This policy may be updated as the project evolves; check back here for the latest version. Questions? Reach out on the <a href="#" onclick="showView('contact');return false;" style="color:var(--primary);font-weight:700;">Contact page</a>.</p>
+    </div>
+
+    <div class="back-row" style="margin-top:26px;">
+      <button class="btn btn-ghost btn-icon" onclick="showView('home')"><span class="ico-bubble ico-grad"><span class="ico-flip">↓</span></span>Back to home</button>
+    </div>
+  </section>
+
+  <!-- ================= TERMS VIEW ================= -->
+  <section id="view-terms" class="hidden">
+    <div class="section-eyebrow">// terms of use</div>
+    <h2 class="section-title" style="margin-bottom:24px;">The fine print, kept short</h2>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Gradely is an independent educational project built by students, for students. It is not affiliated with, endorsed by, or officially connected to National University Bangladesh in any way.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">By using this site, you're agreeing to the terms below. If you don't agree with them, the simplest option is to not use Gradely.</p>
+    </div>
+
+    <h3 class="about-subhead">// not an official record</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">The calculator is provided for informational and convenience purposes only. While we do our best to keep grading scales, credit values and syllabus data accurate, Gradely is not an official record and should never replace your official transcript or result sheet from the university.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Use Gradely as a helpful estimate, not a guarantee — always confirm your final CGPA against official university documents before relying on it for anything important, like admissions, scholarships or job applications.</p>
+    </div>
+
+    <h3 class="about-subhead">// acceptable use</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Gradely is free to use for its intended purpose: calculating your own GPA/CGPA. Please don't try to scrape, mass-download, reverse-engineer for resale, or otherwise abuse the site in a way that disrupts it for other students.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Don't use Gradely to submit false information to the university or any third party, or in any way that violates applicable law.</p>
+    </div>
+
+    <h3 class="about-subhead">// availability</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Gradely is a free, independently maintained student project — not a commercial product with an uptime guarantee. It may occasionally be slow, offline for maintenance, or change/discontinue features without notice.</p>
+    </div>
+
+    <h3 class="about-subhead">// limitation of liability</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">By using this site, you agree it's provided "as is," without warranties of any kind, express or implied. To the fullest extent permitted by law, Gradely and the students behind it aren't liable for any decisions made, or losses incurred, based on a CGPA figure shown here.</p>
+    </div>
+
+    <h3 class="about-subhead">// changes to these terms</h3>
+    <div class="glass" style="padding:28px 24px;">
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">These terms may be updated as Gradely evolves; the latest version will always be posted on this page. Spot something wrong or unclear? Let us know on the <a href="#" onclick="showView('contact');return false;" style="color:var(--primary);font-weight:700;">Contact page</a> and we'll take a look.</p>
+    </div>
+
+    <div class="back-row" style="margin-top:26px;">
+      <button class="btn btn-ghost btn-icon" onclick="showView('home')"><span class="ico-bubble ico-grad"><span class="ico-flip">↓</span></span>Back to home</button>
+    </div>
+  </section>
+
+  <!-- ================= DEPARTMENT LIST VIEW ================= -->
+  <section id="view-deptlist" class="hidden">
+    <div class="dl-header">
+      <div class="dl-header-row">
+        <h2 class="prog-heading" id="deptListTitle">
+          <span id="deptListTitleText">Honours Program</span>
+        </h2>
+        <span class="prog-pill pill-2024" id="deptListPill"><i class="pill-dot"></i>2024–2025 Session</span>
+      </div>
+      <div class="dl-underline"></div>
+      <p class="dept-sub">
+        <svg class="sub-spark" viewBox="0 0 24 24" aria-hidden="true">
+          <defs><linearGradient id="sparkGradA" x1="0" y1="0" x2="24" y2="24">
+            <stop offset="0" stop-color="#06B6D4"/><stop offset="1" stop-color="#6366F1"/>
+          </linearGradient></defs>
+          <path d="M12 2 L14.3 9.3 L21.5 12 L14.3 14.7 L12 22 L9.7 14.7 L2.5 12 L9.7 9.3 Z" fill="url(#sparkGradA)"/>
+        </svg>
+        Pick your department, we'll do the rest
+      </p>
+    </div>
+    <div id="deptGroups"></div>
+
+    <div class="back-row" style="margin-top:26px;">
+      <button class="btn btn-ghost btn-icon" onclick="goSection('departments')"><span class="ico-bubble ico-grad"><span class="ico-flip">↓</span></span>Back to programs</button>
+    </div>
+
+    <div class="gs-row" style="margin-top:22px;">
+      <div class="glass grading-scale-card">
+        <h3 class="gs-title">// grading scale</h3>
+        <table class="gs-table">
+          <thead><tr><th>Numerical Grade</th><th>Letter Grade</th><th>Grade Point</th></tr></thead>
+          <tbody id="gradingScaleBody"></tbody>
+        </table>
+      </div>
+
+      <div class="glass grading-scale-card">
+        <h3 class="gs-title">// class determination</h3>
+        <table class="gs-table">
+          <thead><tr><th>CGPA Range</th><th>Class</th></tr></thead>
+          <tbody id="classScaleBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GRADING VIEW ================= -->
+  <section id="view-grading" class="hidden">
+
+    <div class="glass result-panel">
+      <div class="rp-top">
+        <div>
+          <div class="rp-num" id="sealCgpa">0.00</div>
+          <div class="rp-lbl">CUMULATIVE GPA</div>
+        </div>
+        <span class="cls cls-fail" id="sealClass">Fail</span>
+      </div>
+      <div class="rp-bar-track">
+        <div class="rp-bar-fill" id="cfBarFill" style="width:0%"></div>
+        <div class="rp-tick" style="left:50%" title="Third Class · 2.00"></div>
+        <div class="rp-tick" style="left:56.25%" title="Second Class · 2.25"></div>
+        <div class="rp-tick" style="left:75%" title="First Class · 3.00"></div>
+      </div>
+      <div class="rp-bar-scale"><span>0.00</span><span>4.00</span></div>
+
+      <div class="rp-divider"></div>
+
+      <div class="rp-stats">
+        <div class="rp-stat"><div class="rp-stat-n" id="statY1">0.00</div><div class="rp-stat-l">YEAR 1</div></div>
+        <div class="rp-stat"><div class="rp-stat-n" id="statY2">0.00</div><div class="rp-stat-l">YEAR 2</div></div>
+        <div class="rp-stat"><div class="rp-stat-n" id="statY3">0.00</div><div class="rp-stat-l">YEAR 3</div></div>
+        <div class="rp-stat"><div class="rp-stat-n" id="statY4">0.00</div><div class="rp-stat-l">YEAR 4</div></div>
+        <div class="rp-stat"><div class="rp-stat-n" id="statCredits">0</div><div class="rp-stat-l">CREDITS</div></div>
+      </div>
+
+      <button class="rp-export" onclick="openStudentInfoModal('transcript')">
+        <span class="rp-export-icon">↓</span>Export transcript
+      </button>
+    </div>
+
+
+    <div class="dept-title-row">
+      <h2 class="dept-title" id="gradingDeptTitle">Department of Accounting<br><span style="font-size:0.8em;">(2024–2025)</span></h2>
+    </div>
+
+    <div class="year-pills" id="yearPills"></div>
+
+    <div class="glass subject-card" id="subjectPanel"></div>
+
+    <div class="grade-actions">
+      <button class="btn btn-ghost btn-icon" onclick="openStudentInfoModal('year')"><span class="ico-bubble ico-grad">↓</span>Download Result</button>
+      <button class="btn btn-ghost btn-icon" onclick="openProgram(activeSyllabus)"><span class="ico-bubble ico-grad"><span class="ico-flip">↓</span></span>Back to departments</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= SOON-DEPARTMENT POPUP ================= -->
+<div class="modal-overlay" id="soonModalOverlay" onclick="if(event.target===this) closeSoonModal()">
+  <div class="modal-card">
+    <div class="modal-banner">
+      <div class="modal-banner-icon soon-icon">
+        <span class="soon-orb">
+          <span class="orb-ring r1"></span>
+          <span class="orb-ring r2"></span>
+          <span class="orb-ring r3"></span>
+          <span class="orb-core">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <defs><linearGradient id="sparkGradB" x1="0" y1="0" x2="24" y2="24">
+                <stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity=".7"/>
+              </linearGradient></defs>
+              <path d="M12 2 L14.3 9.3 L21.5 12 L14.3 14.7 L12 22 L9.7 14.7 L2.5 12 L9.7 9.3 Z" fill="url(#sparkGradB)"/>
+            </svg>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="modal-body">
+      <h3 id="soonDeptName">Department</h3>
+      <div class="soon-code" id="soonDeptCode">CODE</div>
+      <p class="soon-msg">The result calculator for this one will be <strong>available soon</strong> — we're still building out the credit structure.</p>
+      <div class="soon-note" id="soonDeptNote">This syllabus version may have a slightly different grading system once it's added.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-grad" onclick="closeSoonModal()">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= STUDENT INFORMATION / DOWNLOAD POPUP ================= -->
+<div class="modal-overlay" id="studentInfoOverlay" onclick="if(event.target===this) closeStudentInfoModal()">
+  <div class="modal-card wide">
+    <div class="modal-banner">
+      <button class="modal-close" aria-label="Close" onclick="closeStudentInfoModal()">✕</button>
+      <h3 id="siModalTitle">Download Result</h3>
+      <p id="siModalSub">Review your information, then download as PDF</p>
+    </div>
+    <div class="modal-body">
+      <div class="si-section-label">📋 Student Information</div>
+      <div class="si-grid">
+        <div class="si-field"><label>Student Name</label><input type="text" placeholder="Enter full name"></div>
+        <div class="si-field"><label>Father's Name</label><input type="text" placeholder="Enter father's name"></div>
+        <div class="si-field"><label>Mother's Name</label><input type="text" placeholder="Enter mother's name"></div>
+        <div class="si-field"><label>Examination Roll</label><input type="text" placeholder="e.g., 1234567"></div>
+        <div class="si-field"><label>Registration No</label><input type="text" placeholder="e.g., 1234567890"></div>
+        <div class="si-field"><label>Examination Year</label><input type="text" placeholder="e.g., 2024"></div>
+        <div class="si-field"><label>Session</label><input type="text" placeholder="e.g., 2021-22"></div>
+        <div class="si-field">
+          <label>Student Type</label>
+          <select><option value="">-- Select --</option><option>Regular</option><option>Improvement</option><option>Private</option></select>
+        </div>
+        <div class="si-field"><label>College Name</label><input type="text" placeholder="e.g., Government College, Dhaka"></div>
+        <div class="si-field readonly"><label>Subject</label><input type="text" id="siSubject" readonly></div>
+        <div class="si-field highlight"><label>Subject Result</label><input type="text" id="siResult" readonly></div>
+        <div class="si-field readonly"><label>CGPA</label><input type="text" id="siCgpa" readonly></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-grad" onclick="downloadTranscript()">🖨 Download PDF</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap footer-grid">
+    <div class="foot-brand">
+      <div class="logo"><span class="dot"></span><span class="brand-text">Gradely</span><span class="logo-dots"><span class="accent">.</span><span class="accent2">.</span></span></div>
+      <p>Grade-weighted. Auto-saved. The CGPA calculator NU actually deserved.</p>
+    </div>
+    <div class="foot-links-row">
+      <div class="foot-col">
+        <div class="foot-col-title">Product</div>
+        <a href="#" onclick="goSection('departments');return false;">Programs</a>
+        <a href="#" onclick="showView('faq');return false;">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-title">Company</div>
+        <a href="#" onclick="showView('about');return false;">About</a>
+        <a href="#" onclick="showView('contact');return false;">Contact</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-title">Legal</div>
+        <a href="#" onclick="showView('privacy');return false;">Privacy</a>
+        <a href="#" onclick="showView('terms');return false;">Terms</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="foot-copy">© 2026 Gradely · Educational demo project · not affiliated with National University Bangladesh</div>
+  </div>
+</footer>
+
 <script>
-  (function() {
-    // ----- card data (glass style) -----
-    const cards = [
-      { label: "Analytics", html: `<div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="site dark1"><h4>Build faster, ship ahead</h4><p>Realtime workspace analytics</p></div>` },
-      { label: "Envelope", html: `<div class="glyph-wrap"><svg width="120" height="90" viewBox="0 0 120 90"><defs><linearGradient id="envG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="0.5" stop-color="#c9d3e0" stop-opacity="0.5"/><stop offset="1" stop-color="#8992a3" stop-opacity="0.35"/></linearGradient></defs><rect x="4" y="4" width="112" height="82" rx="16" fill="url(#envG)" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><path d="M8 14 L60 54 L112 14" fill="none" stroke="rgba(10,12,20,0.55)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>` },
-      { label: "Solar", html: `<div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="site solar"><h4>$0 electricity bills — 7 years</h4><p>Residential solar financing</p></div>` },
-      { label: "Spark", html: `<div class="glyph-wrap"><svg width="90" height="130" viewBox="0 0 90 130"><defs><linearGradient id="starG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#9aa4b8"/></linearGradient></defs><path d="M45 0 C48 45 45 48 90 65 C45 82 48 85 45 130 C42 85 45 82 0 65 C45 48 42 45 45 0 Z" fill="url(#starG)" opacity="0.92"/></svg></div>` },
-      { label: "Finance", html: `<div class="browser-bar"><span class="dot" style="background:rgba(0,0,0,0.15)"></span><span class="dot" style="background:rgba(0,0,0,0.15)"></span><span class="dot" style="background:rgba(0,0,0,0.15)"></span></div><div class="site fin"><h4>Discover a faster path to flow</h4><p>Global transfers, reimagined</p></div>` },
-      { label: "Ledger", html: `<div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="site dark1" style="background:linear-gradient(160deg,#141026,#050310 75%)"><h4>Every transaction, one clean view</h4><p>Portfolio & ledger sync</p></div>` },
-      { label: "Pulse", html: `<div class="glyph-wrap"><svg width="130" height="80" viewBox="0 0 130 80"><polyline points="4,50 30,50 42,15 58,65 70,35 84,50 126,50" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>` }
-    ];
+  /* ---------------- data ---------------- */
+  const GRADES = [
+    {g:'A+', pt:4.00, range:'80% Above'},{g:'A', pt:3.75, range:'75% to 79%'},
+    {g:'A-', pt:3.50, range:'70% to 74%'},{g:'B+', pt:3.25, range:'65% to 69%'},
+    {g:'B', pt:3.00, range:'60% to 64%'},{g:'B-', pt:2.75, range:'55% to 59%'},
+    {g:'C+', pt:2.50, range:'50% to 54%'},{g:'C', pt:2.25, range:'45% to 49%'},
+    {g:'D', pt:2.00, range:'40% to 44%'},{g:'F', pt:0.00, range:'Below 40%'},
+  ];
 
-    const n = cards.length;
-    const track = document.getElementById('track');
-    const caption = document.getElementById('caption');
-    const SPACING = 190;
+  const CLASSES = [
+    {range:'3.00 – 4.00', cls:'First Class'},
+    {range:'2.25 – 2.99', cls:'Second Class'},
+    {range:'2.00 – 2.24', cls:'Third Class'},
+    {range:'Below 2.00', cls:'Fail', fail:true},
+  ];
 
-    // build cards
-    cards.forEach((c, i) => {
-      const el = document.createElement('div');
-      el.className = 'card';
-      el.dataset.index = i;
-      el.innerHTML = `<div class="glass"><div class="card-content">${c.html}</div></div>`;
-      track.appendChild(el);
-    });
-
-    const cardEls = Array.from(track.children);
-
-    // ----- state (ring-spin style) -----
-    let angle = 0;            // continuous angular offset (in card units)
-    let velocity = 0;
-    let rafId = null;
-    let lastActive = 0;
-
-    // ----- helpers -----
-    function shortestDiff(i, cur) {
-      let raw = i - cur;
-      let d = ((raw % n) + n) % n;
-      if (d > n/2) d -= n;
-      return d;
+  const DEPTS = {
+    '2024':{
+      'BSc Honours':['Biochemistry and Molecular Biology','Botany','Chemistry','Computer Science'],
+      'BBA Honours':['Accounting'],
+      'BSS Honours':['Anthropology','Economics'],
+      'BA Honours':['Arabic','Bangla','English (Soon)'],
+    },
+    '2013':{
+      'BSc Honours':['Home Economics','Mathematics','Physics','Psychology (Soon)'],
+      'BBA Honours':['Accounting'],
+      'BSS Honours':['Anthropology','Economics'],
+      'BA Honours':['Arabic','Bangla','English'],
+    },
+    'pass2024':{
+      'BA (Degree Pass)':['General BA'],
+      'Degree (Pass Course)':['Accounting','Botany','Chemistry','Computer Science','Economics','Management','Marketing','Physics','Statistics (Soon)'],
+    },
+    'pass2013':{
+      'BA (Degree Pass)':['General BA'],
+      'Degree (Pass Course)':['Accounting','Botany','Chemistry','Economics','Management','Marketing','Physics','Statistics','Zoology (Soon)'],
+    },
+    'masters2013':{
+      'Masters':['Accounting','Bangla','Botany','Economics','English','History','Mathematics','Physics','Sociology','Zoology (Soon)'],
+    },
+    'prelim2013':{
+      'Preliminary to Master\'s':['Accounting','Bangla','Botany','Economics','English','History','Mathematics','Physics','Sociology','Zoology (Soon)'],
     }
+  };
 
-    // render based on angular offset (fractional card index)
-    function render(offset) {
-      // offset is in "card units" — 0..n-1 continuous
-      cardEls.forEach((el, i) => {
-        let diff = shortestDiff(i, offset);
-        const absDiff = Math.abs(diff);
-        const x = diff * SPACING;
-        const rot = Math.max(-42, Math.min(42, -diff * 34));
-        const z = -absDiff * 130;
-        const scale = Math.max(0.5, 1 - absDiff * 0.14);
-        const opacity = absDiff > 3.2 ? 0 : Math.max(0, 1 - absDiff * 0.30);
-        const blur = Math.min(6, absDiff * 1.7);
+  const PROGRAMS = [
+    {key:'2024', title:'Honours', tag:'2024–2025 Syllabus', desc:"Explore Honours programs and calculate your CGPA with the updated syllabus.", icon:'<svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>', active:true},
+    {key:'2013', title:'Honours', tag:'2013–2014 Syllabus', desc:'Explore Honours programs and calculate your CGPA with the old syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>', active:true},
+    {key:'pass2024', title:'Degree Pass', tag:'2024–2025 Syllabus', desc:"Explore Degree Pass programs and calculate your CGPA with the updated syllabus.", icon:'<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>', active:true},
+    {key:'pass2013', title:'Degree Pass', tag:'2013–2014 Syllabus', desc:'Explore Degree Pass programs and calculate your CGPA with the old syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>', active:true},
+    {key:'masters2024', title:'Masters', tag:'2024–2025 Syllabus', desc:'Explore Masters programs and calculate your CGPA with the updated syllabus.', icon:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>', active:false},
+    {key:'masters2013', title:'Masters', tag:'2013–2014 Syllabus', desc:'Explore Masters programs and calculate your CGPA with the old syllabus.', icon:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>', active:true},
+    {key:'prelim2024', title:'Preliminary to Master\'s', tag:'2024–2025 Syllabus', desc:'Explore Preliminary to Master\'s programs and calculate your CGPA with the updated syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg>', active:false},
+    {key:'prelim2013', title:'Preliminary to Master\'s', tag:'2013–2014 Syllabus', desc:'Explore Preliminary to Master\'s programs and calculate your CGPA with the old syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg>', active:true},
+  ];
 
-        el.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${rot}deg) scale(${scale})`;
-        el.style.opacity = opacity;
-        el.style.filter = `blur(${blur}px)`;
-        el.style.zIndex = 100 - Math.round(absDiff * 10);
-        el.classList.toggle('is-center', absDiff < 0.5);
+  const PROGRAM_YEARS = {
+    '2024':4, '2013':4,
+    'pass2024':3, 'pass2013':3,
+    'masters2024':1, 'masters2013':1,
+    'prelim2024':2, 'prelim2013':2,
+  };
+
+  const SUBJECTS_BY_YEAR = {
+    1: [
+      {code:'ACC-101', name:'Principles of Accounting', credit:4},
+      {code:'ACC-103', name:'Principles of Finance', credit:4},
+      {code:'ACC-105', name:'Principles of Marketing', credit:4},
+      {code:'ACC-107', name:'Principles of Management', credit:4},
+      {code:'ACC-109', name:'Micro Economics', credit:4},
+      {code:'GED-101', name:'Emergence of Independent Bangladesh', credit:4},
+    ],
+    2: [
+      {code:'ACC-201', name:'Macro Economics', credit:4},
+      {code:'ACC-203', name:'Business Statistics', credit:4},
+      {code:'ACC-205', name:'Organizational Behaviour', credit:4},
+      {code:'ACC-207', name:'Business Communication', credit:4},
+      {code:'ACC-209', name:'Money, Banking and Financial Markets', credit:4},
+      {code:'GED-201', name:'Bangladesh Studies', credit:4},
+    ],
+    3: [
+      {code:'ACC-301', name:'Cost and Management Accounting', credit:4},
+      {code:'ACC-303', name:'Corporate Finance', credit:4},
+      {code:'ACC-305', name:'Marketing Management', credit:4},
+      {code:'ACC-307', name:'Human Resource Management', credit:4},
+      {code:'ACC-309', name:'Business Law', credit:4},
+      {code:'GED-301', name:'Environment and Sustainable Development', credit:4},
+    ],
+    4: [
+      {code:'ACC-401', name:'Strategic Management', credit:4},
+      {code:'ACC-403', name:'Auditing', credit:4},
+      {code:'ACC-405', name:'International Business', credit:4},
+      {code:'ACC-407', name:'Taxation', credit:4},
+      {code:'ACC-409', name:'Research Methodology', credit:4},
+      {code:'GED-401', name:'Bangladesh in Global Context', credit:4},
+    ],
+  };
+  const YEAR_LABELS = {1:'First Year', 2:'Second Year', 3:'Third Year', 4:'Fourth Year'};
+
+  const FAQS = [
+    ['How is my NU CGPA actually calculated?','We multiply each course\'s grade point by its credit value, add those up across every course, then divide by total credits attempted — same formula NU uses, just live as you type.','General'],
+    ['What\'s the NU grading scale?','Standard 4.00 scale: A+ (4.00) down to F (0.00), split across ten bands from 80% Above down to below 40%. It\'s built into every calculator here.','General'],
+    ['Is Gradely free to use?','Completely — no account, no subscription, no hidden paywall. It\'s a passion project built by students, for students.','General'],
+    ['How accurate is this compared to my official NU result?','As accurate as the grade points and credits you enter. We use NU\'s official grading formula, so if your inputs match your marksheet, your CGPA will match too — but always treat your official NU result as final.','General'],
+    ['Which programs are covered?','BSc, BBA, BSS and BA Honours, plus the Degree Pass course, across both the 2024–2025 and 2013–2014 syllabuses.','Departments & coverage'],
+    ['What if my department or subject isn\'t listed yet?','Head to the Contact page and tell us what\'s missing — we\'re adding departments regularly and prioritise based on what students ask for.','Departments & coverage'],
+    ['Can I calculate my CGPA across all four years at once?','Yes — enter grades year by year and Gradely rolls them up into one running CGPA automatically, no manual re-adding required.','Departments & coverage'],
+    ['Does this save my progress?','Yes — everything saves locally in your browser as you go. No account, no sign-up, no cap.','Data & privacy'],
+    ['Is my data stored on a server somewhere?','No. Your grades stay on your own device in your browser\'s local storage — we never see them, and nothing is uploaded anywhere.','Data & privacy'],
+    ['Does Gradely work on mobile?','Yes, it\'s built mobile-first — every calculator, table and dropdown is designed to work cleanly on a phone screen, not just a laptop.','Using Gradely'],
+  ];
+
+  let activeSyllabus = '2024';
+  let currentDept = 'Accounting';
+  let currentYear = 1;
+
+  function accentClassFor(key){
+    if(key.includes('2024')||key.includes('2013')) return 'acc-2024';
+    return 'acc-pass';
+  }
+
+  function renderPrograms(){
+    document.getElementById('programGrid').innerHTML = PROGRAMS.filter(p=>p.active).map(p=>`
+      <button class="glass program-card ${accentClassFor(p.key)}" onclick="openProgram('${p.key}')">
+        <div class="pc-icon">${p.icon}</div>
+        <div class="pc-tag">${p.tag}</div>
+        <h3>${p.title}</h3>
+        <p>${p.desc}</p>
+        <span class="pc-arrow">Browse →</span>
+      </button>`).join('');
+  }
+
+  const SESSION_LABELS = {'2024':'2024–2025 Session','2013':'2013–2014 Session','pass2024':'2024–2025 Session','pass2013':'2013–2014 Session','masters2024':'2024–2025 Session','masters2013':'2013–2014 Session','prelim2024':'2024–2025 Session','prelim2013':'2013–2014 Session'};
+  const SESSION_SHORT = {'2024':'2024–2025','2013':'2013–2014','pass2024':'2024–2025','pass2013':'2013–2014','masters2024':'2024–2025','masters2013':'2013–2014','prelim2024':'2024–2025','prelim2013':'2013–2014'};
+  function glassPillClassFor(key){
+    if(key.includes('2024')||key.includes('2013')) return 'ac-2024';
+    return 'ac-pass';
+  }
+  function deptAbbrev(name){
+    const words = name.split(' ').filter(w=>w && !['and','of'].includes(w.toLowerCase()));
+    if(words.length>=2) return words.slice(0,4).map(w=>w[0]).join('').toUpperCase();
+    return name.replace(/[^A-Za-z]/g,'').slice(0,3).toUpperCase();
+  }
+  function deptCodeNum(name){
+    let h=0;
+    for(let i=0;i<name.length;i++){ h=(h*31+name.charCodeAt(i))>>>0; }
+    return String(10+(h%89)).padStart(2,'0');
+  }
+  function deptCode(name){ return deptAbbrev(name)+'-'+deptCodeNum(name); }
+
+  function updateDeptHeading(prog, key){
+    document.getElementById('deptListTitleText').textContent = prog ? (prog.title + ' Program') : key;
+    const pill = document.getElementById('deptListPill');
+    pill.textContent = SESSION_LABELS[key] || (prog?prog.tag:'');
+    pill.className = 'prog-pill ' + glassPillClassFor(key);
+  }
+
+  function openProgram(key){
+    activeSyllabus = key;
+    const prog = PROGRAMS.find(p=>p.key===key);
+    updateDeptHeading(prog, key);
+    renderDeptGroups();
+    showView('deptlist');
+  }
+
+  function renderDeptGroups(){
+    const groups = DEPTS[activeSyllabus] || {};
+    const el = document.getElementById('deptGroups');
+    let all = [];
+    Object.entries(groups).forEach(([progName, list])=>{
+      list.forEach(d=> all.push({name:d, progName}));
+    });
+    all.sort((a,b)=> a.name.replace(' (Soon)','').localeCompare(b.name.replace(' (Soon)','')));
+    el.innerHTML = `<div class="dept-card-grid">${all.map(d=>{
+      const soon = d.name.includes('(Soon)');
+      const clean = d.name.replace(' (Soon)','');
+      const code = deptCode(clean);
+      const sessionLabel = SESSION_SHORT[activeSyllabus] || SESSION_LABELS[activeSyllabus] || '';
+      const pillCls = glassPillClassFor(activeSyllabus);
+      const onclickAttr = soon
+        ? `onclick="openSoonModal('${clean.replace(/'/g,"\\'")}','${deptCode(clean)}')"`
+        : `onclick="openGrading('${clean.replace(/'/g,"\\'")}')"`;
+      return `<button class="dept-card ${accentClassFor(activeSyllabus)} ${soon?'soon':''}" ${onclickAttr}>
+          <span class="dc-code">${code}</span>
+          <span class="dc-name">${clean}</span>
+          <span class="dc-pill ${soon ? 'dc-pill-soon' : pillCls}">${soon ? 'Coming Soon' : sessionLabel}</span>
+        </button>`;
+    }).join('')}</div>`;
+  }
+
+  const PROGRAM_GROUPS = {
+    honours: [{key:'2024', label:'2024–2025'}, {key:'2013', label:'2013–2014'}],
+    pass: [{key:'pass2024', label:'2024–2025'}, {key:'pass2013', label:'2013–2014'}],
+    masters: [{key:'masters2013', label:'2013–2014'}],
+    prelim: [{key:'prelim2013', label:'2013–2014'}],
+  };
+  function qsProgramChange(){
+    const prog = document.getElementById('qsProgram').value;
+    const sessionSel = document.getElementById('qsSession');
+    qsResetSubject();
+    if(!prog){
+      sessionSel.innerHTML = '<option value="">— Select Session —</option>';
+      sessionSel.disabled = true;
+      return;
+    }
+    const opts = PROGRAM_GROUPS[prog] || [];
+    if(!opts.length){
+      sessionSel.innerHTML = '<option value="">Coming soon</option>';
+      sessionSel.disabled = true;
+      return;
+    }
+    sessionSel.disabled = false;
+    sessionSel.innerHTML = '<option value="">— Select Session —</option>' +
+      opts.map(o=>`<option value="${o.key}">${o.label}</option>`).join('');
+  }
+  function qsResetSubject(){
+    const subjSel = document.getElementById('qsSubject');
+    subjSel.innerHTML = '<option value="">— Select Subject —</option>';
+    subjSel.disabled = true;
+  }
+  function qsSessionChange(){
+    const key = document.getElementById('qsSession').value;
+    const subjSel = document.getElementById('qsSubject');
+    if(!key){ qsResetSubject(); return; }
+    const groups = DEPTS[key] || {};
+    let all = [];
+    Object.values(groups).forEach(list=> list.forEach(d=>{ if(!d.includes('(Soon)')) all.push(d); }));
+    all.sort((a,b)=>a.localeCompare(b));
+    subjSel.disabled = false;
+    subjSel.innerHTML = '<option value="">— Select Subject —</option>' +
+      all.map(d=>`<option value="${d.replace(/"/g,'&quot;')}">${d}</option>`).join('');
+  }
+  function qsGo(){
+    const key = document.getElementById('qsSession').value;
+    const dept = document.getElementById('qsSubject').value;
+    if(!key){
+      document.getElementById('qsSession').focus();
+      return;
+    }
+    const prog = PROGRAMS.find(p=>p.key===key);
+    if(dept){
+      activeSyllabus = key;
+      updateDeptHeading(prog, key);
+      openGrading(dept);
+    } else {
+      openProgram(key);
+    }
+  }
+  function qsReset(){
+    document.getElementById('qsProgram').value = '';
+    qsProgramChange();
+  }
+
+  function clearGlobalSearch(){
+    document.getElementById('globalDeptSearch').value='';
+    document.getElementById('globalSearchResults').innerHTML='';
+    const box = document.getElementById('headerSearch');
+    if(box) box.classList.remove('open');
+  }
+  function toggleTheme(){
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const applyTheme = ()=>{
+      if(isDark){ html.removeAttribute('data-theme'); }
+      else{ html.setAttribute('data-theme','dark'); }
+      try{ localStorage.setItem('gradely-theme', isDark ? 'light' : 'dark'); }catch(e){}
+    };
+    if(document.startViewTransition){ document.startViewTransition(applyTheme); }
+    else{ applyTheme(); }
+  }
+  function toggleMobileSearch(){
+    const box = document.getElementById('headerSearch');
+    box.classList.toggle('open');
+    if(box.classList.contains('open')){
+      const input = document.getElementById('globalDeptSearch');
+      try{ input.focus({preventScroll:true}); }catch(e){ input.focus(); }
+    }
+    else clearGlobalSearch();
+  }
+  function openMobileMenu(){
+    document.getElementById('mobileMenuOverlay').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeMobileMenu(){
+    document.getElementById('mobileMenuOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  document.addEventListener('click', function(e){
+    const box = document.querySelector('.header-search');
+    if(box && !box.contains(e.target) && !e.target.closest('.icon-btn')) clearGlobalSearch();
+  });
+  window.addEventListener('scroll', function(){
+    const box = document.querySelector('.header-search');
+    if(box && box.classList.contains('open') && window.innerWidth < 768) clearGlobalSearch();
+  }, {passive:true});
+  function globalSearch(val){
+    const f = val.trim().toLowerCase();
+    const results = document.getElementById('globalSearchResults');
+    if(!f){ results.innerHTML=''; return; }
+    let matches = [];
+    PROGRAMS.filter(p=>p.active).forEach(p=>{
+      const groups = DEPTS[p.key] || {};
+      Object.entries(groups).forEach(([progName, list])=>{
+        list.forEach(d=>{
+          if(d.includes('(Soon)')) return;
+          if(d.toLowerCase().includes(f)){
+            matches.push({dept:d, program:p, progName:progName});
+          }
+        });
       });
-      const idx = ((Math.round(offset) % n) + n) % n;
-      caption.textContent = cards[idx].label;
-      return idx;
-    }
-
-    // snap to nearest card with haptic
-    function snapToNearest(offset, vel) {
-      let rounded = Math.round(offset);
-      // directional bias: if velocity is high, move one extra step
-      let extra = 0;
-      const absVel = Math.abs(vel);
-      if (absVel > 4.5) {
-        extra = vel > 0 ? 1 : -1;
-      } else if (absVel > 2.5) {
-        extra = vel > 0 ? 0.5 : -0.5;
-      }
-      let target = rounded + extra;
-      target = ((target % n) + n) % n;
-      let diff = shortestDiff(target, offset);
-      let finalOffset = offset + diff;
-      // smooth snap via animation
-      angle = finalOffset;
-      velocity = 0;
-      rafId = requestAnimationFrame(animate);
-      // haptic on snap
-      triggerHaptic(Math.min(0.8, absVel / 6));
-    }
-
-    // ----- haptic (cross-device) -----
-    const supportsVibration = !!navigator.vibrate;
-    let audioCtx = null;
-
-    function ensureAudio() {
-      if (!audioCtx) {
-        const AC = window.AudioContext || window.webkitAudioContext;
-        if (AC) audioCtx = new AC();
-      }
-      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-    }
-
-    function makeNoiseBuffer(durationSec) {
-      const sampleRate = audioCtx.sampleRate;
-      const length = Math.max(1, Math.floor(sampleRate * durationSec));
-      const buffer = audioCtx.createBuffer(1, length, sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < length; i++) {
-        data[i] = (Math.random() * 2 - 1) * (1 - i/length);
-      }
-      return buffer;
-    }
-
-    function tickSound(strength) {
-      if (!audioCtx) return;
-      const t0 = audioCtx.currentTime;
-      const isStrong = strength === 'strong';
-      const osc = audioCtx.createOscillator();
-      const oscGain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(isStrong ? 160 : 260, t0);
-      osc.frequency.exponentialRampToValueAtTime(isStrong ? 90 : 150, t0 + 0.04);
-      oscGain.gain.setValueAtTime(0.0001, t0);
-      oscGain.gain.exponentialRampToValueAtTime(isStrong ? 0.10 : 0.025, t0 + 0.003);
-      oscGain.gain.exponentialRampToValueAtTime(0.0001, t0 + (isStrong ? 0.07 : 0.04));
-      osc.connect(oscGain).connect(audioCtx.destination);
-      osc.start(t0);
-      osc.stop(t0 + 0.08);
-
-      const noiseSrc = audioCtx.createBufferSource();
-      noiseSrc.buffer = makeNoiseBuffer(0.02);
-      const noiseFilter = audioCtx.createBiquadFilter();
-      noiseFilter.type = 'highpass';
-      noiseFilter.frequency.value = 1500;
-      const noiseGain = audioCtx.createGain();
-      noiseGain.gain.setValueAtTime(isStrong ? 0.5 : 0.01, t0);
-      noiseGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.02);
-      noiseSrc.connect(noiseFilter).connect(noiseGain).connect(audioCtx.destination);
-      noiseSrc.start(t0);
-    }
-
-    function triggerHaptic(intensity = 0.4) {
-      const ms = intensity > 0.6 ? 12 : (intensity > 0.3 ? 8 : 5);
-      const strength = ms >= 12 ? 'strong' : 'light';
-      if (supportsVibration) {
-        navigator.vibrate(ms);
-      } else {
-        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        tickSound(strength);
-      }
-      // visual pulse on center card
-      const idx = ((Math.round(angle) % n) + n) % n;
-      const el = cardEls[idx];
-      if (el) {
-        const glass = el.querySelector('.glass');
-        if (glass) {
-          glass.style.transition = 'box-shadow 100ms ease-out, border-color 100ms ease-out';
-          glass.style.boxShadow = '0 0 0 2px var(--text-accent), 0 0 14px rgba(245,196,81,0.5)';
-          glass.style.borderColor = 'var(--text-accent)';
-          setTimeout(() => {
-            glass.style.boxShadow = '';
-            glass.style.borderColor = '';
-          }, strength === 'strong' ? 180 : 110);
-        }
-      }
-    }
-
-    // ----- animation loop (ring-spin style) -----
-    function animate() {
-      angle += velocity;
-      velocity *= 0.94;
-      const active = render(angle);
-      if (active !== lastActive) {
-        triggerHaptic(0.3);
-        lastActive = active;
-      }
-      if (Math.abs(velocity) > 0.0008) {
-        rafId = requestAnimationFrame(animate);
-      } else {
-        const step = 1; // each card is 1 unit
-        const target = Math.round(angle / step) * step;
-        angle += (target - angle) * 0.2;
-        render(angle);
-        if (Math.abs(target - angle) > 0.001) {
-          rafId = requestAnimationFrame(animate);
-        } else {
-          angle = target;
-          render(angle);
-          triggerHaptic(0.6);
-        }
-      }
-    }
-
-    // ----- pointer events (adapted from ring-spin) -----
-    const stage = document.getElementById('viewport');
-    let dragging = false, lastX = 0, lastT = 0;
-
-    function onPointerDown(e) {
-      ensureAudio();
-      if (rafId) cancelAnimationFrame(rafId);
-      dragging = true;
-      lastX = e.clientX;
-      lastT = performance.now();
-      velocity = 0;
-      if (stage.setPointerCapture) stage.setPointerCapture(e.pointerId);
-      track.classList.add('grabbing');
-      cardEls.forEach(el => el.style.transition = 'none');
-      e.preventDefault?.();
-    }
-
-    function onPointerMove(e) {
-      if (!dragging) return;
-      const now = performance.now();
-      const dx = e.clientX - lastX;
-      const dt = Math.max(now - lastT, 1);
-      // map drag to angle change (sensitivity)
-      angle += dx * 0.012;
-      velocity = (dx * 0.012) * (16 / dt);
-      lastX = e.clientX;
-      lastT = now;
-      render(angle);
-      e.preventDefault?.();
-    }
-
-    function onPointerUp(e) {
-      if (!dragging) return;
-      dragging = false;
-      track.classList.remove('grabbing');
-      cardEls.forEach(el => el.style.transition = '');
-      if (Math.abs(velocity) > 0.01) {
-        rafId = requestAnimationFrame(animate);
-      } else {
-        snapToNearest(angle, velocity);
-      }
-      if (stage.releasePointerCapture) stage.releasePointerCapture(e.pointerId);
-      e.preventDefault?.();
-    }
-
-    // attach pointer events
-    stage.addEventListener('pointerdown', onPointerDown);
-    stage.addEventListener('pointermove', onPointerMove);
-    stage.addEventListener('pointerup', onPointerUp);
-    stage.addEventListener('pointercancel', onPointerUp);
-
-    // touch fallback
-    stage.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 1) {
-        const touch = e.touches[0];
-        onPointerDown({ clientX: touch.clientX, pointerId: 0, preventDefault: () => e.preventDefault() });
-      }
-    }, { passive: false });
-    stage.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 1) {
-        const touch = e.touches[0];
-        onPointerMove({ clientX: touch.clientX, preventDefault: () => e.preventDefault() });
-      }
-    }, { passive: false });
-    stage.addEventListener('touchend', (e) => {
-      onPointerUp({ pointerId: 0, preventDefault: () => e.preventDefault() });
-    }, { passive: false });
-
-    // buttons
-    document.getElementById('prevBtn').addEventListener('click', () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      angle = Math.round(angle) - 1;
-      render(angle);
-      triggerHaptic(0.5);
     });
-    document.getElementById('nextBtn').addEventListener('click', () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      angle = Math.round(angle) + 1;
-      render(angle);
-      triggerHaptic(0.5);
+    if(!matches.length){ results.innerHTML = `<div class="gsr-empty">no matches — try a different name</div>`; return; }
+    results.innerHTML = matches.slice(0,8).map(m=>`
+      <button class="gsr-item" onclick="jumpToDept('${m.program.key}','${m.dept.replace(/'/g,"\\'")}')">
+        <span class="gsr-main">
+          <span class="gsr-name">${m.dept}</span>
+          <span class="gsr-tag">${SESSION_SHORT[m.program.key] || m.program.tag}</span>
+        </span>
+        <span class="gsr-pill ${glassPillClassFor(m.program.key)}">${m.program.title.toUpperCase()}</span>
+      </button>`).join('');
+  }
+  function jumpToDept(progKey, deptName){
+    activeSyllabus = progKey;
+    const prog = PROGRAMS.find(p=>p.key===progKey);
+    updateDeptHeading(prog, progKey);
+    clearGlobalSearch();
+    openGrading(deptName);
+  }
+
+  function openSoonModal(name, code){
+    document.getElementById('soonDeptName').textContent = name;
+    document.getElementById('soonDeptCode').textContent = code;
+    document.getElementById('soonModalOverlay').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeSoonModal(){
+    document.getElementById('soonModalOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+
+  function openStudentInfoModal(mode){
+    document.getElementById('siModalTitle').textContent = mode==='transcript' ? 'Download Full Transcript' : 'Download Result';
+    document.getElementById('siModalSub').textContent = mode==='transcript'
+      ? "Review your information, then download your full transcript as PDF"
+      : "Review your information, then download this result as PDF";
+    document.getElementById('siSubject').value = `${deptCodeNum(currentDept)} - ${currentDept}`;
+    document.getElementById('siResult').value = 'In Progress';
+    document.getElementById('siCgpa').value = document.getElementById('sealCgpa').textContent;
+    document.getElementById('studentInfoOverlay').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeStudentInfoModal(){
+    document.getElementById('studentInfoOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  function downloadTranscript(){
+    closeStudentInfoModal();
+    alert('Your PDF is ready — check your downloads in a moment.');
+  }
+
+  function renderFaq(){
+    let lastCat = null;
+    document.getElementById('faqList').innerHTML = FAQS.map((f,i)=>{
+      const cat = f[2] || '';
+      const heading = (cat && cat !== lastCat) ? `<div class="faq-cat">${cat}</div>` : '';
+      lastCat = cat;
+      return `${heading}
+      <div class="faq-item glass" style="margin-bottom:10px;padding:0 18px;" onclick="toggleFaq(${i})" id="faq-${i}">
+        <button class="faq-q">${f[0]}<span class="plus">+</span></button>
+        <div class="faq-a"><p>${f[1]}</p></div>
+      </div>`;
+    }).join('');
+  }
+  function toggleFaq(i){ document.getElementById('faq-'+i).classList.toggle('open'); }
+
+  function showView(id, pushState){
+    document.querySelectorAll('main.wrap > section[id^="view-"]').forEach(sec=>{
+      sec.classList.toggle('hidden', sec.id !== 'view-'+id);
     });
+    clearGlobalSearch();
+    closeMobileMenu();
+    closeSoonModal();
+    closeStudentInfoModal();
+    window.scrollTo({top:0});
+    if(pushState !== false){
+      history.pushState({view:id}, '', '#'+id);
+    }
+  }
 
-    // keyboard
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        if (rafId) cancelAnimationFrame(rafId);
-        angle = Math.round(angle) - 1;
-        render(angle);
-        triggerHaptic(0.4);
-        e.preventDefault();
-      }
-      if (e.key === 'ArrowRight') {
-        if (rafId) cancelAnimationFrame(rafId);
-        angle = Math.round(angle) + 1;
-        render(angle);
-        triggerHaptic(0.4);
-        e.preventDefault();
-      }
+  // Make browser/device back button step through in-app views one at a time,
+  // like a normal multi-page site, instead of leaving the app immediately.
+  history.replaceState({view:'home'}, '', '#home');
+  window.addEventListener('popstate', function(e){
+    const id = (e.state && e.state.view) ? e.state.view : 'home';
+    showView(id, false);
+  });
+
+  function goSection(id){
+    showView('home');
+    const el = document.getElementById(id);
+    if(el) el.scrollIntoView();
+  }
+
+  (function(){
+    let i18nCurrentLang = 'en';
+    let i18nResizeTimer = null;
+
+    function lockI18nHeights(){
+      const hero = document.querySelector('.hero');
+      if(!hero) return;
+      const swaps = document.querySelectorAll('.i18n-swap');
+      const savedTexts = [];
+      swaps.forEach(el=>{ savedTexts.push(el.textContent); });
+      hero.style.minHeight = '0px';
+      swaps.forEach(el=>{ el.textContent = el.dataset.en; });
+      const hEn = hero.getBoundingClientRect().height;
+      swaps.forEach(el=>{ el.textContent = el.dataset.bn; });
+      const hBn = hero.getBoundingClientRect().height;
+      hero.style.minHeight = Math.max(hEn, hBn) + 'px';
+      swaps.forEach((el,i)=>{ el.textContent = savedTexts[i]; });
+    }
+
+    function glitchSwap(){
+      const nextLang = i18nCurrentLang === 'en' ? 'bn' : 'en';
+      document.querySelectorAll('.i18n-swap').forEach(el=>{
+        el.classList.add('glitching');
+        setTimeout(()=>{ el.textContent = el.dataset[nextLang]; }, 450);
+        setTimeout(()=>{ el.classList.remove('glitching'); }, 1000);
+      });
+      i18nCurrentLang = nextLang;
+    }
+
+    window.addEventListener('load', ()=>{
+      lockI18nHeights();
+      setInterval(glitchSwap, 10000);
     });
-
-    // auto-play (gentle)
-    let autoplay = setInterval(() => {
-      if (!dragging) {
-        if (rafId) cancelAnimationFrame(rafId);
-        angle = Math.round(angle) + 1;
-        render(angle);
-        triggerHaptic(0.2);
-      }
-    }, 4000);
-    function stopAutoplay() { clearInterval(autoplay); }
-    stage.addEventListener('pointerdown', stopAutoplay);
-    stage.addEventListener('touchstart', stopAutoplay);
-    document.getElementById('prevBtn').addEventListener('click', stopAutoplay);
-    document.getElementById('nextBtn').addEventListener('click', stopAutoplay);
-
-    // initial render
-    render(0);
-    lastActive = 0;
+    window.addEventListener('resize', ()=>{
+      clearTimeout(i18nResizeTimer);
+      i18nResizeTimer = setTimeout(lockI18nHeights, 200);
+    });
   })();
+
+  const YEAR_NUM_LABEL = {1:'1st', 2:'2nd', 3:'3rd', 4:'4th'};
+
+  function renderYearPills(){
+    const wrap = document.getElementById('yearPills');
+    const totalYears = PROGRAM_YEARS[activeSyllabus] || 1;
+    if(totalYears <= 1){
+      wrap.innerHTML = '';
+      wrap.style.display = 'none';
+      return;
+    }
+    wrap.style.display = '';
+    let html = '';
+    for(let y=1; y<=totalYears; y++){
+      html += `<button class="year-pill${y===currentYear?' active':''}" onclick="setYear(${y})">${YEAR_NUM_LABEL[y]||y+'th'} Year</button>`;
+    }
+    wrap.innerHTML = html;
+  }
+
+  function openGrading(deptName){
+    currentDept = deptName; currentYear = 1;
+    const prog = PROGRAMS.find(p=>p.key===activeSyllabus);
+    document.getElementById('gradingDeptTitle').innerHTML = `Department of ${deptName}<br><span style="font-size:0.8em;">(${prog?SESSION_SHORT[prog.key]:''})</span>`;
+    renderYearPills();
+    showView('grading');
+    renderYear();
+  }
+
+  function setYear(y){
+    currentYear = y;
+    document.querySelectorAll('.year-pill').forEach((p,i)=>p.classList.toggle('active', i===y-1));
+    renderYear();
+  }
+
+  function renderYear(){
+    const panel = document.getElementById('subjectPanel');
+    const subjects = SUBJECTS_BY_YEAR[currentYear] || [];
+    panel.innerHTML = `
+      <div class="sc-head">
+        <span class="sc-head-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-top:1px"><defs><linearGradient id="gradBookIcon" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#06B6D4"/><stop offset="1" stop-color="#6366F1"/></linearGradient></defs><path d="M4 5.5C4 4.67 4.67 4 5.5 4H11a1 1 0 0 1 1 1v14a1 1 0 0 0-1-1H5.5A1.5 1.5 0 0 1 4 16.5v-11Z" stroke="url(#gradBookIcon)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 5.5c0-.83-.67-1.5-1.5-1.5H13a1 1 0 0 0-1 1v14a1 1 0 0 1 1-1h5.5a1.5 1.5 0 0 0 1.5-1.5v-11Z" stroke="url(#gradBookIcon)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> ${currentDept} — ${YEAR_LABELS[currentYear] || ''}</span>
+        <button class="reset-btn" onclick="resetGrades()"><span class="rico">↻</span>Reset</button>
+      </div>
+      <div class="table-scroll">
+      <table class="marksheet">
+        <thead><tr><th class="code">Code</th><th class="paper">Paper title</th><th class="credit">Credit</th><th class="grade">Grade</th><th class="marks">Range</th></tr></thead>
+        <tbody id="subjectRows"></tbody>
+      </table>
+      </div>`;
+    document.getElementById('subjectRows').innerHTML = subjects.map((s,i)=>`
+      <tr>
+        <td class="code">${s.code}</td><td class="paper">${s.name}</td><td class="credit">${s.credit}</td>
+        <td class="grade"><select class="grade-select" data-idx="${i}" onchange="recalc()">
+          <option value="">—</option>
+          ${GRADES.map(g=>`<option value="${g.g}">${g.g} (${g.pt.toFixed(2)})</option>`).join('')}
+        </select></td>
+        <td class="marks" id="marks-${i}">—</td>
+      </tr>`).join('') + `<tr class="total"><td></td><td class="paper">Year Total</td><td class="credit" id="totalCredits">0</td><td colspan="2" id="totalGpa">0.00</td></tr>`;
+    loadGrades();
+    recalc();
+  }
+
+  function gradeStorageKey(dept=currentDept, year=currentYear){ return `gradely:grades:${dept}:${year}`; }
+  function saveGrades(){
+    const vals = {};
+    document.querySelectorAll('#subjectRows select').forEach(sel=>{ vals[sel.dataset.idx] = sel.value; });
+    try{ localStorage.setItem(gradeStorageKey(), JSON.stringify(vals)); }catch(e){}
+  }
+  function loadGrades(){
+    let vals = {};
+    try{ vals = JSON.parse(localStorage.getItem(gradeStorageKey())) || {}; }catch(e){ vals = {}; }
+    document.querySelectorAll('#subjectRows select').forEach(sel=>{
+      if(vals[sel.dataset.idx] !== undefined) sel.value = vals[sel.dataset.idx];
+    });
+  }
+
+  function yearStats(dept, year){
+    const subjects = SUBJECTS_BY_YEAR[year] || [];
+    let vals = {};
+    try{ vals = JSON.parse(localStorage.getItem(gradeStorageKey(dept, year))) || {}; }catch(e){ vals = {}; }
+    let creditsEarned=0, points=0;
+    subjects.forEach((s,i)=>{
+      const g = vals[i];
+      const grade = GRADES.find(x=>x.g===g);
+      if(grade){ creditsEarned += s.credit; points += s.credit*grade.pt; }
+    });
+    return { credits: creditsEarned, gpa: creditsEarned ? points/creditsEarned : 0 };
+  }
+
+  function updateSummaryCard(){
+    let totalEarnedPoints = 0;
+    let totalCreditsAll = 0;
+
+    for(let y=1; y<=4; y++){
+      const st = yearStats(currentDept, y);
+      document.getElementById('statY'+y).textContent = st.gpa.toFixed(2);
+      if(st.credits > 0){
+        totalEarnedPoints += st.credits * st.gpa;
+        totalCreditsAll += st.credits;
+      }
+    }
+
+    const cumulativeGpa = totalCreditsAll > 0 ? totalEarnedPoints / totalCreditsAll : 0;
+
+    document.getElementById('sealCgpa').textContent = cumulativeGpa.toFixed(2);
+    document.getElementById('statCredits').textContent = totalCreditsAll;
+    document.getElementById('cfBarFill').style.width = Math.min(100, (cumulativeGpa/4)*100) + '%';
+
+    const cls = document.getElementById('sealClass');
+    cls.className='cls';
+    if(totalCreditsAll===0){cls.classList.add('cls-fail');cls.textContent='Fail';}
+    else if(cumulativeGpa>=3.00){cls.classList.add('cls-first');cls.textContent='First Class';}
+    else if(cumulativeGpa>=2.25){cls.classList.add('cls-second');cls.textContent='Second Class';}
+    else if(cumulativeGpa>=2.00){cls.classList.add('cls-third');cls.textContent='Third Class';}
+    else{cls.classList.add('cls-fail');cls.textContent='Fail';}
+  }
+
+  function recalc(){
+    let creditsEarned=0, points=0;
+    document.querySelectorAll('#subjectRows select').forEach(sel=>{
+      const i=+sel.dataset.idx, credit=(SUBJECTS_BY_YEAR[currentYear]||[])[i].credit;
+      const grade = GRADES.find(g=>g.g===sel.value);
+      const m = document.getElementById('marks-'+i);
+      if(grade){ creditsEarned+=credit; points+=credit*grade.pt; m.textContent=grade.range; }
+      else{ m.textContent='—'; }
+    });
+    const gpa = creditsEarned ? points/creditsEarned : 0;
+    document.getElementById('totalCredits').textContent = creditsEarned;
+    document.getElementById('totalGpa').textContent = gpa.toFixed(2);
+
+    saveGrades();
+    updateSummaryCard();
+  }
+  function resetGrades(){
+    document.querySelectorAll('#subjectRows select').forEach(s=>s.value='');
+    try{ localStorage.removeItem(gradeStorageKey()); }catch(e){}
+    recalc();
+  }
+
+  function renderGradingScale(){
+    const body = document.getElementById('gradingScaleBody');
+    if(!body) return;
+    body.innerHTML = GRADES.map(g=>`
+      <tr>
+        <td>${g.range}</td>
+        <td class="gs-letter">${g.g}</td>
+        <td>${g.pt.toFixed(2)}</td>
+      </tr>`).join('');
+  }
+  function renderClassScale(){
+    const body = document.getElementById('classScaleBody');
+    if(!body) return;
+    body.innerHTML = CLASSES.map(c=>`
+      <tr>
+        <td class="gs-range">${c.range}</td>
+        <td class="gs-class ${c.fail?'gs-fail':''}">${c.cls}</td>
+      </tr>`).join('');
+  }
+  renderPrograms();
+  renderFaq();
+  renderGradingScale();
+  renderClassScale();
 </script>
+
 </body>
 </html>
