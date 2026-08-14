@@ -1,232 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glass Carousel</title>
-<style>
-  :root{
-    --bg: #030304;
-    --glow: rgba(120,140,255,0.18);
-    --glass-fill: rgba(255,255,255,0.055);
-    --glass-fill-strong: rgba(255,255,255,0.09);
-    --glass-border: rgba(255,255,255,0.16);
-    --glass-border-strong: rgba(255,255,255,0.30);
-  }
-  *{box-sizing:border-box;}
-  html,body{
-    margin:0; padding:0; height:100%;
-    background: var(--bg);
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
-    overflow:hidden;
-    -webkit-font-smoothing:antialiased;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Glass Carousel · Momentum + Haptic</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-  .stage-wrap{
-    position:relative;
-    width:100%;
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:
-      radial-gradient(ellipse 60% 50% at 50% 46%, var(--glow), transparent 70%),
-      var(--bg);
-  }
+    :root {
+      --bg: #030304;
+      --glow: rgba(120, 140, 255, 0.18);
+      --glass-fill: rgba(255, 255, 255, 0.055);
+      --glass-fill-strong: rgba(255, 255, 255, 0.09);
+      --glass-border: rgba(255, 255, 255, 0.16);
+      --glass-border-strong: rgba(255, 255, 255, 0.30);
+    }
 
-  /* the perspective viewport — edges fade to black/transparent = "edge blur" */
-  .viewport{
-    position:relative;
-    width:100%;
-    height:420px;
-    perspective: 1400px;
-    perspective-origin: 50% 50%;
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(0,0,0,0.35) 8%,
-      #000 22%,
-      #000 78%,
-      rgba(0,0,0,0.35) 92%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(0,0,0,0.35) 8%,
-      #000 22%,
-      #000 78%,
-      rgba(0,0,0,0.35) 92%,
-      transparent 100%
-    );
-  }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      touch-action: none;
+    }
 
-  .track{
-    position:absolute;
-    top:0; left:50%; height:100%;
-    width:0;
-    transform-style: preserve-3d;
-    touch-action: pan-y;
-    cursor: grab;
-  }
-  .track.grabbing{ cursor:grabbing; }
+    .stage-wrap {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 46%, var(--glow), transparent 70%),
+        var(--bg);
+    }
 
-  .card{
-    position:absolute;
-    top:50%; left:0;
-    width:230px; height:300px;
-    margin-left:-115px; margin-top:-150px;
-    border-radius:22px;
-    will-change: transform, filter, opacity;
-    transition: transform .6s cubic-bezier(.22,.9,.32,1), filter .6s ease, opacity .6s ease;
-    transform-style: preserve-3d;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    user-select:none;
-  }
+    .viewport {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      perspective: 1400px;
+      perspective-origin: 50% 50%;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 8%, #000 22%, #000 78%, rgba(0,0,0,0.35) 92%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 8%, #000 22%, #000 78%, rgba(0,0,0,0.35) 92%, transparent 100%);
+      touch-action: none;
+    }
 
-  .card .glass{
-    position:relative;
-    width:100%; height:100%;
-    border-radius:22px;
-    background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill) 60%);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(18px) saturate(140%);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    box-shadow:
-      0 20px 50px -15px rgba(0,0,0,0.6),
-      inset 0 1px 0 rgba(255,255,255,0.35),
-      inset 0 0 40px rgba(255,255,255,0.03);
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
+    .track {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      height: 100%;
+      width: 0;
+      transform-style: preserve-3d;
+      touch-action: none;
+      cursor: grab;
+    }
 
-  .card.is-center .glass{
-    border-color: var(--glass-border-strong);
-    box-shadow:
-      0 30px 70px -18px rgba(0,0,0,0.7),
-      inset 0 1px 0 rgba(255,255,255,0.5),
-      inset 0 0 60px rgba(255,255,255,0.05),
-      0 0 0 1px rgba(255,255,255,0.06);
-  }
+    .track.grabbing {
+      cursor: grabbing;
+    }
 
-  /* subtle top sheen on every glass card */
-  .card .glass::before{
-    content:"";
-    position:absolute; inset:0;
-    background: linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 30%);
-    pointer-events:none;
-  }
-  /* faint reflective sweep */
-  .card .glass::after{
-    content:"";
-    position:absolute;
-    top:-40%; left:-20%;
-    width:60%; height:180%;
-    background: linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.10) 45%, rgba(255,255,255,0) 55%);
-    transform: rotate(8deg);
-    pointer-events:none;
-  }
+    .card {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 230px;
+      height: 300px;
+      margin-left: -115px;
+      margin-top: -150px;
+      border-radius: 22px;
+      will-change: transform, filter, opacity;
+      transform-style: preserve-3d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      transition: transform 0.6s cubic-bezier(.22,.9,.32,1), filter 0.6s ease, opacity 0.6s ease;
+      touch-action: none;
+    }
 
-  .card-content{
-    position:relative;
-    z-index:2;
-    width:100%; height:100%;
-    display:flex; flex-direction:column;
-  }
+    .card .glass {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 22px;
+      background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill) 60%);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: 0 20px 50px -15px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 0 40px rgba(255,255,255,0.03);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  /* --- content variants --- */
-  .browser-bar{
-    display:flex; align-items:center; gap:5px;
-    padding:10px 12px 8px;
-    flex-shrink:0;
-  }
-  .dot{ width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.25); }
-  .site{
-    flex:1;
-    margin:0 12px 12px;
-    border-radius:12px;
-    overflow:hidden;
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    padding:14px;
-    color:#fff;
-  }
-  .site h4{
-    margin:0 0 4px;
-    font-size:12.5px;
-    font-weight:600;
-    line-height:1.3;
-    letter-spacing:-0.01em;
-  }
-  .site p{
-    margin:0;
-    font-size:9.5px;
-    opacity:0.55;
-    font-weight:400;
-  }
-  .site.dark1{ background: linear-gradient(160deg,#0d1f14,#03130a 70%); }
-  .site.dark1::before{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 70% 20%, rgba(120,255,180,0.18), transparent 60%); }
-  .site.solar{ background: linear-gradient(180deg,#1a2033,#05070d 75%); }
-  .site.solar::before{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 60% 15%, rgba(255,190,90,0.20), transparent 55%); }
-  .site.fin{ background: linear-gradient(160deg,#f4f3f0,#e8e6e1); color:#141311; }
-  .site.fin p{ opacity:0.5; }
-  .site.fin::before{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 90%, rgba(0,0,0,0.05), transparent 60%); }
+    .card.is-center .glass {
+      border-color: var(--glass-border-strong);
+      box-shadow: 0 30px 70px -18px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 0 60px rgba(255,255,255,0.05), 0 0 0 1px rgba(255,255,255,0.06);
+    }
 
-  .glyph-wrap{
-    width:100%; height:100%;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .glyph-wrap svg{ filter: drop-shadow(0 10px 25px rgba(0,0,0,0.5)); }
+    .card .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 30%);
+      pointer-events: none;
+    }
 
-  /* nav arrows */
-  .nav-btn{
-    position:absolute; top:50%; transform:translateY(-50%);
-    width:46px; height:46px; border-radius:50%;
-    background: rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.18);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color:rgba(255,255,255,0.85);
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer;
-    z-index:50;
-    transition: background .2s, transform .2s, border-color .2s;
-  }
-  .nav-btn:hover{ background: rgba(255,255,255,0.14); border-color:rgba(255,255,255,0.32); }
-  .nav-btn:active{ transform: translateY(-50%) scale(0.92); }
-  .nav-btn.prev{ left:4%; }
-  .nav-btn.next{ right:4%; }
-  .nav-btn svg{ width:18px; height:18px; }
+    .card .glass::after {
+      content: "";
+      position: absolute;
+      top: -40%;
+      left: -20%;
+      width: 60%;
+      height: 180%;
+      background: linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.10) 45%, rgba(255,255,255,0) 55%);
+      transform: rotate(8deg);
+      pointer-events: none;
+    }
 
-  @media (max-width: 640px){
-    .nav-btn{ width:38px; height:38px; }
-    .nav-btn.prev{ left:2%; }
-    .nav-btn.next{ right:2%; }
-    .card{ width:170px; height:230px; margin-left:-85px; margin-top:-115px; }
-  }
+    .card-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
 
-  .caption{
-    position:absolute;
-    bottom:9%;
-    left:0; right:0;
-    text-align:center;
-    color:rgba(255,255,255,0.5);
-    font-size:12px;
-    letter-spacing:0.02em;
-    font-weight:500;
-    pointer-events:none;
-    transition: opacity .3s ease;
-  }
-</style>
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 10px 12px 8px;
+      flex-shrink: 0;
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .site {
+      flex: 1;
+      margin: 0 12px 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 14px;
+      color: #fff;
+    }
+    .site h4 {
+      margin: 0 0 4px;
+      font-size: 12.5px;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+    .site p {
+      margin: 0;
+      font-size: 9.5px;
+      opacity: 0.55;
+      font-weight: 400;
+    }
+    .site.dark1 { background: linear-gradient(160deg,#0d1f14,#03130a 70%); }
+    .site.dark1::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 70% 20%, rgba(120,255,180,0.18), transparent 60%); }
+    .site.solar { background: linear-gradient(180deg,#1a2033,#05070d 75%); }
+    .site.solar::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 60% 15%, rgba(255,190,90,0.20), transparent 55%); }
+    .site.fin { background: linear-gradient(160deg,#f4f3f0,#e8e6e1); color:#141311; }
+    .site.fin p { opacity:0.5; }
+    .site.fin::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 90%, rgba(0,0,0,0.05), transparent 60%); }
+
+    .glyph-wrap {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .glyph-wrap svg { filter: drop-shadow(0 10px 25px rgba(0,0,0,0.5)); }
+
+    /* navigation arrows */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: rgba(255,255,255,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 50;
+      transition: background .2s, transform .2s, border-color .2s;
+      touch-action: manipulation;
+    }
+    .nav-btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.32); }
+    .nav-btn:active { transform: translateY(-50%) scale(0.92); }
+    .nav-btn.prev { left: 4%; }
+    .nav-btn.next { right: 4%; }
+    .nav-btn svg { width: 18px; height: 18px; }
+
+    @media (max-width: 640px) {
+      .nav-btn { width: 38px; height: 38px; }
+      .nav-btn.prev { left: 2%; }
+      .nav-btn.next { right: 2%; }
+      .card { width: 170px; height: 230px; margin-left: -85px; margin-top: -115px; }
+    }
+
+    .caption {
+      position: absolute;
+      bottom: 9%;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      font-weight: 500;
+      pointer-events: none;
+      transition: opacity .3s ease;
+    }
+  </style>
 </head>
 <body>
-
 <div class="stage-wrap">
   <div class="viewport" id="viewport">
     <div class="track" id="track"></div>
@@ -243,167 +260,286 @@
 </div>
 
 <script>
-(function(){
-  // ---- card definitions (content variety, purely decorative/original) ----
-  const cards = [
-    { label: "Analytics", html: `
-      <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-      <div class="site dark1">
-        <h4>Build faster, ship ahead of the curve</h4>
-        <p>Realtime workspace analytics</p>
-      </div>` },
-    { label: "Envelope", html: `
-      <div class="glyph-wrap">
-        <svg width="120" height="90" viewBox="0 0 120 90">
-          <defs>
-            <linearGradient id="envG" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
-              <stop offset="0.5" stop-color="#c9d3e0" stop-opacity="0.5"/>
-              <stop offset="1" stop-color="#8992a3" stop-opacity="0.35"/>
-            </linearGradient>
-          </defs>
-          <rect x="4" y="4" width="112" height="82" rx="16" fill="url(#envG)" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
-          <path d="M8 14 L60 54 L112 14" fill="none" stroke="rgba(10,12,20,0.55)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>` },
-    { label: "Solar", html: `
-      <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-      <div class="site solar">
-        <h4>$0 electricity bills — 7 years</h4>
-        <p>Residential solar financing</p>
-      </div>` },
-    { label: "Spark", html: `
-      <div class="glyph-wrap">
-        <svg width="90" height="130" viewBox="0 0 90 130">
-          <defs>
-            <linearGradient id="starG" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#ffffff"/>
-              <stop offset="1" stop-color="#9aa4b8"/>
-            </linearGradient>
-          </defs>
-          <path d="M45 0 C48 45 45 48 90 65 C45 82 48 85 45 130 C42 85 45 82 0 65 C45 48 42 45 45 0 Z" fill="url(#starG)" opacity="0.92"/>
-        </svg>
-      </div>` },
-    { label: "Finance", html: `
-      <div class="browser-bar"><span class="dot" style="background:rgba(0,0,0,0.15)"></span><span class="dot" style="background:rgba(0,0,0,0.15)"></span><span class="dot" style="background:rgba(0,0,0,0.15)"></span></div>
-      <div class="site fin">
-        <h4>Discover a faster path to financial flow</h4>
-        <p>Global transfers, reimagined</p>
-      </div>` },
-    { label: "Ledger", html: `
-      <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-      <div class="site dark1" style="background:linear-gradient(160deg,#141026,#050310 75%)">
-        <h4>Every transaction, one clean view</h4>
-        <p>Portfolio &amp; ledger sync</p>
-      </div>` },
-    { label: "Pulse", html: `
-      <div class="glyph-wrap">
-        <svg width="130" height="80" viewBox="0 0 130 80">
-          <polyline points="4,50 30,50 42,15 58,65 70,35 84,50 126,50" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>` }
-  ];
+  (function() {
+    // ----- card data -----
+    const cards = [
+      { label: "Analytics", html: `<div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="site dark1"><h4>Build faster, ship ahead</h4><p>Realtime workspace analytics</p></div>` },
+      { label: "Envelope", html: `<div class="glyph-wrap"><svg width="120" height="90" viewBox="0 0 120 90"><defs><linearGradient id="envG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="0.5" stop-color="#c9d3e0" stop-opacity="0.5"/><stop offset="1" stop-color="#8992a3" stop-opacity="0.35"/></linearGradient></defs><rect x="4" y="4" width="112" height="82" rx="16" fill="url(#envG)" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><path d="M8 14 L60 54 L112 14" fill="none" stroke="rgba(10,12,20,0.55)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>` },
+      { label: "Solar", html: `<div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="site solar"><h4>$0 electricity bills — 7 years</h4><p>Residential solar financing</p></div>` },
+      { label: "Spark", html: `<div class="glyph-wrap"><svg width="90" height="130" viewBox="0 0 90 130"><defs><linearGradient id="starG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#9aa4b8"/></linearGradient></defs><path d="M45 0 C48 45 45 48 90 65 C45 82 48 85 45 130 C42 85 45 82 0 65 C45 48 42 45 45 0 Z" fill="url(#starG)" opacity="0.92"/></svg></div>` },
+      { label: "Finance", html: `<div class="browser-bar"><span class="dot" style="background:rgba(0,0,0,0.15)"></span><span class="dot" style="background:rgba(0,0,0,0.15)"></span><span class="dot" style="background:rgba(0,0,0,0.15)"></span></div><div class="site fin"><h4>Discover a faster path to flow</h4><p>Global transfers, reimagined</p></div>` },
+      { label: "Ledger", html: `<div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="site dark1" style="background:linear-gradient(160deg,#141026,#050310 75%)"><h4>Every transaction, one clean view</h4><p>Portfolio & ledger sync</p></div>` },
+      { label: "Pulse", html: `<div class="glyph-wrap"><svg width="130" height="80" viewBox="0 0 130 80"><polyline points="4,50 30,50 42,15 58,65 70,35 84,50 126,50" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>` }
+    ];
 
-  const n = cards.length;
-  const track = document.getElementById('track');
-  const caption = document.getElementById('caption');
+    const n = cards.length;
+    const track = document.getElementById('track');
+    const caption = document.getElementById('caption');
+    const SPACING = 190;
 
-  cards.forEach((c, i) => {
-    const el = document.createElement('div');
-    el.className = 'card';
-    el.dataset.index = i;
-    el.innerHTML = `<div class="glass"><div class="card-content">${c.html}</div></div>`;
-    el.addEventListener('click', () => { if(!dragged) goTo(i); });
-    track.appendChild(el);
-  });
-
-  const cardEls = Array.from(track.children);
-  let current = 0;
-  let dragStartX = 0, dragCurrentX = 0, dragging = false, dragged = false, baseCurrent = 0;
-  const SPACING = 190;
-
-  function shortestDiff(i, cur){
-    let raw = i - cur;
-    let d = ((raw % n) + n) % n; // 0..n-1
-    if (d > n/2) d -= n;
-    return d;
-  }
-
-  function render(offset){
-    // offset: fractional current position (for live drag)
-    cardEls.forEach((el, i) => {
-      let diff = shortestDiff(i, offset);
-      const absDiff = Math.abs(diff);
-      const x = diff * SPACING;
-      const rot = Math.max(-42, Math.min(42, -diff * 34));
-      const z = -absDiff * 130;
-      const scale = Math.max(0.5, 1 - absDiff * 0.14);
-      const opacity = absDiff > 3.2 ? 0 : Math.max(0, 1 - absDiff * 0.30);
-      const blur = Math.min(6, absDiff * 1.7);
-
-      el.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${rot}deg) scale(${scale})`;
-      el.style.opacity = opacity;
-      el.style.filter = `blur(${blur}px)`;
-      el.style.zIndex = 100 - Math.round(absDiff * 10);
-      el.classList.toggle('is-center', absDiff < 0.5);
+    // build cards
+    cards.forEach((c, i) => {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.dataset.index = i;
+      el.innerHTML = `<div class="glass"><div class="card-content">${c.html}</div></div>`;
+      track.appendChild(el);
     });
-    const idx = ((Math.round(offset) % n) + n) % n;
-    caption.textContent = cards[idx].label;
-  }
 
-  function goTo(i){
-    current = ((i % n) + n) % n;
-    // choose shortest path representation for `current` relative to previous render baseline
-    render(current);
-  }
+    const cardEls = Array.from(track.children);
 
-  render(current);
+    // ----- state -----
+    let current = 0;               // index (rounded)
+    let targetOffset = 0;          // fractional position (for smooth animation)
 
-  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    // ----- helpers -----
+    function shortestDiff(i, cur) {
+      let raw = i - cur;
+      let d = ((raw % n) + n) % n;
+      if (d > n/2) d -= n;
+      return d;
+    }
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') goTo(current - 1);
-    if (e.key === 'ArrowRight') goTo(current + 1);
-  });
+    // render based on fractional offset (0..n-1 continuous)
+    function render(offset) {
+      cardEls.forEach((el, i) => {
+        let diff = shortestDiff(i, offset);
+        const absDiff = Math.abs(diff);
+        const x = diff * SPACING;
+        const rot = Math.max(-42, Math.min(42, -diff * 34));
+        const z = -absDiff * 130;
+        const scale = Math.max(0.5, 1 - absDiff * 0.14);
+        const opacity = absDiff > 3.2 ? 0 : Math.max(0, 1 - absDiff * 0.30);
+        const blur = Math.min(6, absDiff * 1.7);
 
-  // ---- drag / swipe with wrap ----
-  function pointerDown(x){
-    dragging = true; dragged = false;
-    dragStartX = x; baseCurrent = current;
-    track.classList.add('grabbing');
-    cardEls.forEach(el => el.style.transition = 'filter .6s ease, opacity .6s ease');
-  }
-  function pointerMove(x){
-    if(!dragging) return;
-    const dx = x - dragStartX;
-    if (Math.abs(dx) > 4) dragged = true;
-    const offset = baseCurrent - dx / SPACING;
-    render(offset);
-  }
-  function pointerUp(x){
-    if(!dragging) return;
-    dragging = false;
-    track.classList.remove('grabbing');
-    cardEls.forEach(el => el.style.transition = '');
-    const dx = x - dragStartX;
-    const delta = Math.round(-dx / SPACING);
-    goTo(baseCurrent + delta);
-    setTimeout(() => { dragged = false; }, 50);
-  }
+        el.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${rot}deg) scale(${scale})`;
+        el.style.opacity = opacity;
+        el.style.filter = `blur(${blur}px)`;
+        el.style.zIndex = 100 - Math.round(absDiff * 10);
+        el.classList.toggle('is-center', absDiff < 0.5);
+      });
+      const idx = ((Math.round(offset) % n) + n) % n;
+      caption.textContent = cards[idx].label;
+    }
 
-  track.addEventListener('pointerdown', (e) => { track.setPointerCapture(e.pointerId); pointerDown(e.clientX); });
-  track.addEventListener('pointermove', (e) => pointerMove(e.clientX));
-  track.addEventListener('pointerup', (e) => pointerUp(e.clientX));
-  track.addEventListener('pointercancel', (e) => pointerUp(e.clientX));
+    function goTo(i, animate = true) {
+      let idx = ((i % n) + n) % n;
+      current = idx;
+      targetOffset = idx;
+      if (!animate) {
+        render(targetOffset);
+      } else {
+        // smooth transition via render; cards have CSS transition
+        render(targetOffset);
+      }
+    }
 
-  // gentle autoplay, pauses on interaction
-  let autoplay = setInterval(() => goTo(current + 1), 3200);
-  function stopAutoplay(){ clearInterval(autoplay); }
-  track.addEventListener('pointerdown', stopAutoplay);
-  document.getElementById('prevBtn').addEventListener('click', stopAutoplay);
-  document.getElementById('nextBtn').addEventListener('click', stopAutoplay);
-})();
+    // init
+    goTo(0, false);
+
+    // ----- momentum + haptic (scroll-like) -----
+    let pointerId = null;
+    let isDragging = false;
+    let startX = 0;
+    let startOffset = 0;
+    let lastX = 0;
+    let lastMoveTime = 0;
+    let velocity = 0;
+    let momentumId = null;
+    let hapticActive = false;
+
+    // haptic feedback (simple pattern)
+    function triggerHaptic(intensity = 0.6) {
+      if (navigator.vibrate) {
+        // pattern: short + medium depending on intensity
+        if (intensity > 0.7) {
+          navigator.vibrate([8, 15, 8]);
+        } else if (intensity > 0.4) {
+          navigator.vibrate([6, 10, 6]);
+        } else {
+          navigator.vibrate(6);
+        }
+      }
+      // iOS / macOS haptic via HapticFeedback (if available)
+      if (window.HapticFeedback && window.HapticFeedback.impact) {
+        try {
+          window.HapticFeedback.impact('medium');
+        } catch(_) {}
+      }
+      // fallback: try to use webkit (safari on iOS)
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.haptic) {
+        try { window.webkit.messageHandlers.haptic.postMessage('medium'); } catch(_) {}
+      }
+    }
+
+    function snapToNearest(offset, vel) {
+      let rounded = Math.round(offset);
+      // if velocity is high, move one extra step (fast flick)
+      let extra = 0;
+      if (Math.abs(vel) > 4.5) {
+        extra = vel > 0 ? 1 : -1;
+      } else if (Math.abs(vel) > 2.5) {
+        extra = vel > 0 ? 0.5 : -0.5;
+      }
+      let target = rounded + extra;
+      // wrap
+      target = ((target % n) + n) % n;
+      // if the diff is large, pick the shortest path
+      let diff = shortestDiff(target, offset);
+      let finalOffset = offset + diff;
+      // smooth snap
+      goTo(Math.round(finalOffset), true);
+      // haptic on snap
+      triggerHaptic(Math.min(0.9, Math.abs(vel) / 8));
+    }
+
+    function startMomentum(vel) {
+      if (momentumId) cancelAnimationFrame(momentumId);
+      let startVel = vel;
+      let pos = targetOffset;
+      const damping = 0.97;
+      const minVel = 0.08;
+
+      function step() {
+        if (Math.abs(startVel) < minVel) {
+          snapToNearest(pos, startVel);
+          momentumId = null;
+          return;
+        }
+        pos += startVel * 0.012; // scale
+        startVel *= damping;
+        // wrap offset
+        if (pos > n) pos -= n;
+        if (pos < 0) pos += n;
+        targetOffset = pos;
+        render(pos);
+        momentumId = requestAnimationFrame(step);
+      }
+      momentumId = requestAnimationFrame(step);
+    }
+
+    // ----- pointer events -----
+    function onPointerDown(e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
+      if (momentumId) { cancelAnimationFrame(momentumId); momentumId = null; }
+      isDragging = true;
+      pointerId = e.pointerId || 0;
+      startX = clientX;
+      lastX = clientX;
+      startOffset = targetOffset;
+      lastMoveTime = performance.now();
+      velocity = 0;
+      track.classList.add('grabbing');
+      // disable transition during drag for instant response
+      cardEls.forEach(el => el.style.transition = 'none');
+      // haptic at drag start (light)
+      triggerHaptic(0.2);
+      // capture
+      if (track.setPointerCapture) track.setPointerCapture(e.pointerId);
+      e.preventDefault?.();
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
+      const now = performance.now();
+      const dt = Math.max(1, now - lastMoveTime);
+      const dx = clientX - lastX;
+      velocity = (dx / dt) * 16; // normalize to ~frame velocity
+      lastX = clientX;
+      lastMoveTime = now;
+
+      const delta = (clientX - startX) / SPACING;
+      let offset = startOffset - delta;
+      // wrap
+      while (offset < 0) offset += n;
+      while (offset >= n) offset -= n;
+      targetOffset = offset;
+      render(offset);
+      e.preventDefault?.();
+    }
+
+    function onPointerUp(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      track.classList.remove('grabbing');
+      cardEls.forEach(el => el.style.transition = '');
+      // compute final velocity
+      const now = performance.now();
+      const dt = Math.max(1, now - lastMoveTime);
+      if (dt < 100) {
+        // if recent move, use velocity
+      } else {
+        velocity = 0;
+      }
+      // if velocity is significant, start momentum
+      if (Math.abs(velocity) > 0.2) {
+        startMomentum(velocity * 0.7);
+        // haptic on flick
+        triggerHaptic(Math.min(0.9, Math.abs(velocity) / 6));
+      } else {
+        snapToNearest(targetOffset, 0);
+      }
+      if (e.pointerId !== undefined && track.releasePointerCapture) {
+        try { track.releasePointerCapture(e.pointerId); } catch(_) {}
+      }
+      e.preventDefault?.();
+    }
+
+    // attach events (pointer + touch)
+    track.addEventListener('pointerdown', onPointerDown);
+    track.addEventListener('pointermove', onPointerMove);
+    track.addEventListener('pointerup', onPointerUp);
+    track.addEventListener('pointercancel', onPointerUp);
+    // also support touch (fallback)
+    track.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        const ev = { clientX: touch.clientX, pointerId: 0, pointerType: 'touch', preventDefault: () => e.preventDefault() };
+        onPointerDown(ev);
+      }
+    }, { passive: false });
+    track.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        const ev = { clientX: touch.clientX, preventDefault: () => e.preventDefault() };
+        onPointerMove(ev);
+      }
+    }, { passive: false });
+    track.addEventListener('touchend', (e) => {
+      onPointerUp({ pointerId: 0, preventDefault: () => e.preventDefault() });
+    }, { passive: false });
+
+    // buttons
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      if (momentumId) cancelAnimationFrame(momentumId);
+      goTo(current - 1);
+      triggerHaptic(0.5);
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (momentumId) cancelAnimationFrame(momentumId);
+      goTo(current + 1);
+      triggerHaptic(0.5);
+    });
+
+    // keyboard
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { goTo(current - 1); triggerHaptic(0.4); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { goTo(current + 1); triggerHaptic(0.4); e.preventDefault(); }
+    });
+
+    // auto-play (gentle, pauses on interaction)
+    let autoplay = setInterval(() => { goTo(current + 1); triggerHaptic(0.2); }, 3800);
+    function stopAutoplay() { clearInterval(autoplay); }
+    track.addEventListener('pointerdown', stopAutoplay);
+    track.addEventListener('touchstart', stopAutoplay);
+    document.getElementById('prevBtn').addEventListener('click', stopAutoplay);
+    document.getElementById('nextBtn').addEventListener('click', stopAutoplay);
+
+    // re-init rendering
+    render(targetOffset);
+  })();
 </script>
 </body>
 </html>
