@@ -311,10 +311,11 @@
     .hero{padding:44px 0 20px;text-align:center;}
     .term-chip{
       display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
-      color:var(--accent-emerald);background:var(--pass-bg);border:1px solid rgba(16,185,129,.3);
+      color:var(--pass-text);background:var(--pass-bg);border:1px solid rgba(16,185,129,.3);
       padding:7px 14px;border-radius:999px;margin-bottom:20px;
     }
-    .term-chip .cursor{width:7px;height:14px;background:var(--accent-emerald);display:inline-block;animation:blink 1s steps(1) infinite;}
+    [data-theme="dark"] .term-chip{color:var(--accent-emerald);}
+    .term-chip .cursor{width:7px;height:14px;background:currentColor;display:inline-block;animation:blink 1s steps(1) infinite;}
     @keyframes blink{50%{opacity:0;}}
     h1.hero-title{
       font-family:var(--disp);font-weight:700;font-size:27px;line-height:1.3;letter-spacing:-.02em;
@@ -932,9 +933,9 @@
           </select>
         </div>
         <div class="qs-field">
-          <label>Subject</label>
+          <label>Department</label>
           <select id="qsSubject" disabled>
-            <option value="">— Select Subject —</option>
+            <option value="">— Select Department —</option>
           </select>
         </div>
         <div class="qs-actions">
@@ -1479,14 +1480,14 @@
   };
 
   const PROGRAMS = [
-    {key:'2024', title:'Honours', tag:'2024–2025 Syllabus', desc:"Explore Honours programs and calculate your CGPA with the updated syllabus.", icon:'<svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>', active:true},
-    {key:'2013', title:'Honours', tag:'2013–2014 Syllabus', desc:'Explore Honours programs and calculate your CGPA with the old syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>', active:true},
-    {key:'pass2024', title:'Degree Pass', tag:'2024–2025 Syllabus', desc:"Explore Degree Pass programs and calculate your CGPA with the updated syllabus.", icon:'<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>', active:true},
-    {key:'pass2013', title:'Degree Pass', tag:'2013–2014 Syllabus', desc:'Explore Degree Pass programs and calculate your CGPA with the old syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>', active:true},
-    {key:'masters2024', title:'Masters', tag:'2024–2025 Syllabus', desc:'Explore Masters programs and calculate your CGPA with the updated syllabus.', icon:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>', active:false},
-    {key:'masters2013', title:'Masters', tag:'2013–2014 Syllabus', desc:'Explore Masters programs and calculate your CGPA with the old syllabus.', icon:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>', active:true},
-    {key:'prelim2024', title:'Preliminary to Master\'s', tag:'2024–2025 Syllabus', desc:'Explore Preliminary to Master\'s programs and calculate your CGPA with the updated syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg>', active:false},
-    {key:'prelim2013', title:'Preliminary to Master\'s', tag:'2013–2014 Syllabus', desc:'Explore Preliminary to Master\'s programs and calculate your CGPA with the old syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg>', active:true},
+    {key:'2024', title:'Honours', tag:'2024–2025 Syllabus', desc:"Explore Honours programs and calculate your CGPA using the updated syllabus.", icon:'<svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>', active:true},
+    {key:'2013', title:'Honours', tag:'2013–2014 Syllabus', desc:'Explore Honours programs and calculate your CGPA using the old syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg>', active:true},
+    {key:'pass2024', title:'Degree Pass', tag:'2024–2025 Syllabus', desc:"Explore Degree Pass programs and calculate your CGPA using the updated syllabus.", icon:'<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>', active:true},
+    {key:'pass2013', title:'Degree Pass', tag:'2013–2014 Syllabus', desc:'Explore Degree Pass programs and calculate your CGPA using the old syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>', active:true},
+    {key:'masters2024', title:'Masters', tag:'2024–2025 Syllabus', desc:'Explore Masters programs and calculate your CGPA using the updated syllabus.', icon:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>', active:false},
+    {key:'masters2013', title:'Masters', tag:'2013–2014 Syllabus', desc:'Explore Masters programs and calculate your CGPA using the current syllabus.', icon:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>', active:true},
+    {key:'prelim2024', title:'Preliminary to Master\'s', tag:'2024–2025 Syllabus', desc:'Explore Preliminary to Master\'s programs and calculate your CGPA using the updated syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg>', active:false},
+    {key:'prelim2013', title:'Preliminary to Master\'s', tag:'2013–2014 Syllabus', desc:'Explore Preliminary to Master\'s programs and calculate your CGPA using the current syllabus.', icon:'<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg>', active:true},
   ];
 
   const PROGRAM_YEARS = {
@@ -1650,7 +1651,7 @@
   }
   function qsResetSubject(){
     const subjSel = document.getElementById('qsSubject');
-    subjSel.innerHTML = '<option value="">— Select Subject —</option>';
+    subjSel.innerHTML = '<option value="">— Select Department —</option>';
     subjSel.disabled = true;
   }
   function qsSessionChange(){
@@ -1662,7 +1663,7 @@
     Object.values(groups).forEach(list=> list.forEach(d=>{ if(!d.includes('(Soon)')) all.push(d); }));
     all.sort((a,b)=>a.localeCompare(b));
     subjSel.disabled = false;
-    subjSel.innerHTML = '<option value="">— Select Subject —</option>' +
+    subjSel.innerHTML = '<option value="">— Select Department —</option>' +
       all.map(d=>`<option value="${d.replace(/"/g,'&quot;')}">${d}</option>`).join('');
   }
   function qsGo(){
