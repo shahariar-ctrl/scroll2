@@ -117,7 +117,7 @@
         linear-gradient(180deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,.035) 20%,rgba(255,255,255,.015) 60%,rgba(255,255,255,.06) 100%),
         rgba(24,32,48,.7);
       border-color:rgba(255,255,255,.14);
-      box-shadow:0 16px 40px -12px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,.04);
+      box-shadow:0 16px 40px -12px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,.04), 0 5px 11px var(--primary-glow);
     }
     [data-theme="dark"] .gsr-pill.ac-2024,
     [data-theme="dark"] .gsr-pill.ac-pass{
@@ -139,25 +139,15 @@
         0 12px 36px rgba(0,0,0,.45);
     }
 
-    /* mobile icon buttons — more refined */
+    /* mobile icon buttons — transparent, blends into header bar */
     [data-theme="dark"] .icon-btn{
-      background:
-        linear-gradient(180deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.04) 100%),
-        rgba(255,255,255,.02);
-      border:1px solid rgba(255,255,255,.12);
-      backdrop-filter:blur(22px) saturate(180%);
-      -webkit-backdrop-filter:blur(22px) saturate(180%);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.15),
-        inset 0 -1px 2px rgba(0,0,0,.3),
-        0 6px 16px rgba(0,0,0,.35);
+      background:transparent;
+      border:1px solid var(--border);
       color: #F8FAFC;
     }
     [data-theme="dark"] .icon-btn:hover{
-      background:
-        linear-gradient(180deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.04) 60%,rgba(255,255,255,.06) 100%),
-        rgba(255,255,255,.06);
-      border-color:rgba(255,255,255,.2);
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.16);
     }
     /* table header strips */
     [data-theme="dark"] .sc-head,
@@ -242,7 +232,7 @@
     .mobile-actions{display:flex;gap:8px;align-items:center;order:2;}
     .icon-btn{
       width:38px;height:38px;border-radius:50%;flex-shrink:0;
-      border:1px solid var(--border);background:var(--surface);
+      border:1px solid var(--border);background:transparent;
       display:flex;align-items:center;justify-content:center;font-size:15px;transition:.15s;
     }
     .icon-btn:hover{border-color:var(--border-hi);background:var(--surface-hi);}
@@ -426,7 +416,7 @@
       border:1px solid var(--border);background:var(--card);
       transition:.2s ease;position:relative;width:100%;box-shadow:0 2px 10px rgba(15,23,42,.04);
     }
-    .program-card:not(.soon):hover{transform:translateY(-3px);border-color:var(--border-hi);box-shadow:0 10px 22px rgba(15,23,42,.09);}
+    .program-card:not(.soon):hover{transform:translateY(-3px);border-color:var(--border-hi);box-shadow:0 10px 22px rgba(15,23,42,.09),0 5px 11px var(--primary-glow);}
     .program-card.soon{cursor:not-allowed;}
     .program-card.soon .pc-icon{filter:grayscale(1); opacity:.55;}
     .program-card.soon .pc-tag,.program-card.soon h3,.program-card.soon p{color:var(--dim);}
@@ -465,7 +455,7 @@
     .dept-card:not(.soon):hover{
       transform:translateY(-3px);border-color:var(--border-hi);
       background:linear-gradient(135deg,rgba(6,182,212,.05),rgba(99,102,241,.05)),var(--card);
-      box-shadow:0 10px 22px rgba(15,23,42,.09);
+      box-shadow:0 10px 22px rgba(15,23,42,.09),0 5px 11px var(--primary-glow);
     }
     .dept-card:not(.soon):hover::before{height:12px;}
     .dc-code{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.04em;order:2;position:relative;z-index:1;}
@@ -914,9 +904,9 @@
   <section id="view-home">
 
     <div class="hero">
-      <span class="term-chip"><span class="i18n-swap" data-en="// updated for 2024–2025 syllabus" data-bn="// ২০২৪–২০২৫ সিলেবাস অনুযায়ী প্রস্তুত">// updated for 2024–2025 syllabus</span> <span class="cursor"></span></span>
+      <span class="term-chip"><span class="i18n-swap" data-en="// 2024–2025 syllabus included" data-bn="// ২০২৪–২০২৫ সিলেবাস সংযোজিত">// 2024–2025 syllabus included</span> <span class="cursor"></span></span>
       <h1 class="hero-title"><span class="i18n-swap" data-en="Stop guessing your CGPA." data-bn="CGPA হিসাব নিয়ে স্ট্রেস?">Stop guessing your CGPA.</span><br><span class="g i18n-swap" style="font-size:0.7em;" data-en="We've already done the hard part." data-bn="চিল! হিসাবটা আমরা সামলে নিয়েছি।">We've already done the hard part.</span></h1>
-      <p class="hero-sub i18n-swap" data-en="The calculator NU students actually deserve — accurate math, grade-weighted calculations, auto-save, all in one place. Fast, easy, zero hassle." data-bn="NU শিক্ষার্থীদের জন্য তৈরি স্মার্ট CGPA Calculator — নির্ভুল হিসাব, গ্রেড-ওয়েটেড ক্যালকুলেশন ও অটো-সেভ সুবিধা, সব এক জায়গায়। দ্রুত, সহজ, একদম ঝামেলাহীন।">The calculator NU students actually deserve — accurate math, grade-weighted calculations, auto-save, all in one place. Fast, easy, zero hassle.</p>
+      <p class="hero-sub i18n-swap" data-en="The calculator NU students actually deserve — accurate math, grade-weighted calculations, auto-save, all in one place.<br>Fast, easy, zero hassle." data-bn="NU শিক্ষার্থীদের জন্য তৈরি স্মার্ট CGPA Calculator — নির্ভুল হিসাব,<br> গ্রেড-ওয়েটেড ক্যালকুলেশন ও অটো-সেভ সুবিধা, সব এক জায়গায়।<br> দ্রুত,সহজ, একদম ঝামেলাহীন।">The calculator NU students actually deserve — accurate math, grade-weighted calculations, auto-save, all in one place.<br>Fast, easy, zero hassle.</p>
       <button class="btn btn-grad hero-cta i18n-swap" onclick="goSection('departments')" data-en="Browse programs ↓" data-bn="প্রোগ্রাম দেখুন ↓">Browse programs ↓</button>
     </div>
 
@@ -1390,6 +1380,59 @@
 </footer>
 
 <script>
+  /* ============================================================
+     THEME ENGINE — auto-follow OS preference with manual override
+     ============================================================ */
+
+  // Apply theme by setting or removing the data-theme attribute
+  function applyTheme(theme) {
+    const html = document.documentElement;
+    if (theme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+    } else {
+      html.removeAttribute('data-theme');
+    }
+  }
+
+  // Get the current effective theme ('dark' or 'light')
+  function getCurrentTheme() {
+    const html = document.documentElement;
+    return html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  }
+
+  // Initialize theme: use saved preference, or fallback to system preference
+  function initTheme() {
+    const saved = localStorage.getItem('gradely-theme');
+    if (saved === 'dark' || saved === 'light') {
+      applyTheme(saved);
+    } else {
+      // No saved preference — follow system
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(systemDark ? 'dark' : 'light');
+    }
+  }
+
+  // Toggle between light and dark, save preference
+  function toggleTheme() {
+    const current = getCurrentTheme();
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem('gradely-theme', next);
+  }
+
+  // Listen for system theme changes — only if user hasn't manually overridden
+  const systemThemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  systemThemeMedia.addEventListener('change', function(e) {
+    const saved = localStorage.getItem('gradely-theme');
+    // Only auto-switch if user has never manually set a preference
+    if (!saved) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+
+  // Run theme init as soon as possible
+  initTheme();
+
   /* ---------------- data ---------------- */
   const GRADES = [
     {g:'A+', pt:4.00, range:'80% Above'},{g:'A', pt:3.75, range:'75% to 79%'},
@@ -1649,17 +1692,7 @@
     const box = document.getElementById('headerSearch');
     if(box) box.classList.remove('open');
   }
-  function toggleTheme(){
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    const applyTheme = ()=>{
-      if(isDark){ html.removeAttribute('data-theme'); }
-      else{ html.setAttribute('data-theme','dark'); }
-      try{ localStorage.setItem('gradely-theme', isDark ? 'light' : 'dark'); }catch(e){}
-    };
-    if(document.startViewTransition){ document.startViewTransition(applyTheme); }
-    else{ applyTheme(); }
-  }
+
   function toggleMobileSearch(){
     const box = document.getElementById('headerSearch');
     box.classList.toggle('open');
@@ -1765,6 +1798,7 @@
   }
   function toggleFaq(i){ document.getElementById('faq-'+i).classList.toggle('open'); }
 
+  /* --- i18n swap with innerHTML support for line breaks --- */
   function showView(id, pushState){
     document.querySelectorAll('main.wrap > section[id^="view-"]').forEach(sec=>{
       sec.classList.toggle('hidden', sec.id !== 'view-'+id);
@@ -1802,21 +1836,21 @@
       if(!hero) return;
       const swaps = document.querySelectorAll('.i18n-swap');
       const savedTexts = [];
-      swaps.forEach(el=>{ savedTexts.push(el.textContent); });
+      swaps.forEach(el=>{ savedTexts.push(el.innerHTML); });
       hero.style.minHeight = '0px';
-      swaps.forEach(el=>{ el.textContent = el.dataset.en; });
+      swaps.forEach(el=>{ el.innerHTML = el.dataset.en; });
       const hEn = hero.getBoundingClientRect().height;
-      swaps.forEach(el=>{ el.textContent = el.dataset.bn; });
+      swaps.forEach(el=>{ el.innerHTML = el.dataset.bn; });
       const hBn = hero.getBoundingClientRect().height;
       hero.style.minHeight = Math.max(hEn, hBn) + 'px';
-      swaps.forEach((el,i)=>{ el.textContent = savedTexts[i]; });
+      swaps.forEach((el,i)=>{ el.innerHTML = savedTexts[i]; });
     }
 
     function glitchSwap(){
       const nextLang = i18nCurrentLang === 'en' ? 'bn' : 'en';
       document.querySelectorAll('.i18n-swap').forEach(el=>{
         el.classList.add('glitching');
-        setTimeout(()=>{ el.textContent = el.dataset[nextLang]; }, 450);
+        setTimeout(()=>{ el.innerHTML = el.dataset[nextLang]; }, 450);
         setTimeout(()=>{ el.classList.remove('glitching'); }, 1000);
       });
       i18nCurrentLang = nextLang;
