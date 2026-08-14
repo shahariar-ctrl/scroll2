@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Glass Carousel · Momentum + Haptic</title>
+  <title>Glass Carousel · Ring Spin</title>
   <style>
     * {
       box-sizing: border-box;
@@ -18,6 +18,8 @@
       --glass-fill-strong: rgba(255, 255, 255, 0.09);
       --glass-border: rgba(255, 255, 255, 0.16);
       --glass-border-strong: rgba(255, 255, 255, 0.30);
+      --text-accent: #f5c451;
+      --text-muted: #8e8e93;
     }
 
     html, body {
@@ -261,7 +263,7 @@
 
 <script>
   (function() {
-    // ----- card data -----
+    // ----- card data (glass style) -----
     const cards = [
       { label: "Analytics", html: `<div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="site dark1"><h4>Build faster, ship ahead</h4><p>Realtime workspace analytics</p></div>` },
       { label: "Envelope", html: `<div class="glyph-wrap"><svg width="120" height="90" viewBox="0 0 120 90"><defs><linearGradient id="envG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="0.5" stop-color="#c9d3e0" stop-opacity="0.5"/><stop offset="1" stop-color="#8992a3" stop-opacity="0.35"/></linearGradient></defs><rect x="4" y="4" width="112" height="82" rx="16" fill="url(#envG)" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><path d="M8 14 L60 54 L112 14" fill="none" stroke="rgba(10,12,20,0.55)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>` },
@@ -288,9 +290,11 @@
 
     const cardEls = Array.from(track.children);
 
-    // ----- state -----
-    let current = 0;               // index (rounded)
-    let targetOffset = 0;          // fractional position (for smooth animation)
+    // ----- state (ring-spin style) -----
+    let angle = 0;            // continuous angular offset (in card units)
+    let velocity = 0;
+    let rafId = null;
+    let lastActive = 0;
 
     // ----- helpers -----
     function shortestDiff(i, cur) {
@@ -300,8 +304,9 @@
       return d;
     }
 
-    // render based on fractional offset (0..n-1 continuous)
+    // render based on angular offset (fractional card index)
     function render(offset) {
+      // offset is in "card units" — 0..n-1 continuous
       cardEls.forEach((el, i) => {
         let diff = shortestDiff(i, offset);
         const absDiff = Math.abs(diff);
@@ -320,225 +325,253 @@
       });
       const idx = ((Math.round(offset) % n) + n) % n;
       caption.textContent = cards[idx].label;
+      return idx;
     }
 
-    function goTo(i, animate = true) {
-      let idx = ((i % n) + n) % n;
-      current = idx;
-      targetOffset = idx;
-      if (!animate) {
-        render(targetOffset);
-      } else {
-        // smooth transition via render; cards have CSS transition
-        render(targetOffset);
-      }
-    }
-
-    // init
-    goTo(0, false);
-
-    // ----- momentum + haptic (scroll-like) -----
-    let pointerId = null;
-    let isDragging = false;
-    let startX = 0;
-    let startOffset = 0;
-    let lastX = 0;
-    let lastMoveTime = 0;
-    let velocity = 0;
-    let momentumId = null;
-    let hapticActive = false;
-
-    // haptic feedback (simple pattern)
-    function triggerHaptic(intensity = 0.6) {
-      if (navigator.vibrate) {
-        // pattern: short + medium depending on intensity
-        if (intensity > 0.7) {
-          navigator.vibrate([8, 15, 8]);
-        } else if (intensity > 0.4) {
-          navigator.vibrate([6, 10, 6]);
-        } else {
-          navigator.vibrate(6);
-        }
-      }
-      // iOS / macOS haptic via HapticFeedback (if available)
-      if (window.HapticFeedback && window.HapticFeedback.impact) {
-        try {
-          window.HapticFeedback.impact('medium');
-        } catch(_) {}
-      }
-      // fallback: try to use webkit (safari on iOS)
-      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.haptic) {
-        try { window.webkit.messageHandlers.haptic.postMessage('medium'); } catch(_) {}
-      }
-    }
-
+    // snap to nearest card with haptic
     function snapToNearest(offset, vel) {
       let rounded = Math.round(offset);
-      // if velocity is high, move one extra step (fast flick)
+      // directional bias: if velocity is high, move one extra step
       let extra = 0;
-      if (Math.abs(vel) > 4.5) {
+      const absVel = Math.abs(vel);
+      if (absVel > 4.5) {
         extra = vel > 0 ? 1 : -1;
-      } else if (Math.abs(vel) > 2.5) {
+      } else if (absVel > 2.5) {
         extra = vel > 0 ? 0.5 : -0.5;
       }
       let target = rounded + extra;
-      // wrap
       target = ((target % n) + n) % n;
-      // if the diff is large, pick the shortest path
       let diff = shortestDiff(target, offset);
       let finalOffset = offset + diff;
-      // smooth snap
-      goTo(Math.round(finalOffset), true);
-      // haptic on snap
-      triggerHaptic(Math.min(0.9, Math.abs(vel) / 8));
-    }
-
-    function startMomentum(vel) {
-      if (momentumId) cancelAnimationFrame(momentumId);
-      let startVel = vel;
-      let pos = targetOffset;
-      const damping = 0.97;
-      const minVel = 0.08;
-
-      function step() {
-        if (Math.abs(startVel) < minVel) {
-          snapToNearest(pos, startVel);
-          momentumId = null;
-          return;
-        }
-        pos += startVel * 0.012; // scale
-        startVel *= damping;
-        // wrap offset
-        if (pos > n) pos -= n;
-        if (pos < 0) pos += n;
-        targetOffset = pos;
-        render(pos);
-        momentumId = requestAnimationFrame(step);
-      }
-      momentumId = requestAnimationFrame(step);
-    }
-
-    // ----- pointer events -----
-    function onPointerDown(e) {
-      if (e.pointerType === 'mouse' && e.button !== 0) return;
-      const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
-      if (momentumId) { cancelAnimationFrame(momentumId); momentumId = null; }
-      isDragging = true;
-      pointerId = e.pointerId || 0;
-      startX = clientX;
-      lastX = clientX;
-      startOffset = targetOffset;
-      lastMoveTime = performance.now();
+      // smooth snap via animation
+      angle = finalOffset;
       velocity = 0;
+      rafId = requestAnimationFrame(animate);
+      // haptic on snap
+      triggerHaptic(Math.min(0.8, absVel / 6));
+    }
+
+    // ----- haptic (cross-device) -----
+    const supportsVibration = !!navigator.vibrate;
+    let audioCtx = null;
+
+    function ensureAudio() {
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function makeNoiseBuffer(durationSec) {
+      const sampleRate = audioCtx.sampleRate;
+      const length = Math.max(1, Math.floor(sampleRate * durationSec));
+      const buffer = audioCtx.createBuffer(1, length, sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < length; i++) {
+        data[i] = (Math.random() * 2 - 1) * (1 - i/length);
+      }
+      return buffer;
+    }
+
+    function tickSound(strength) {
+      if (!audioCtx) return;
+      const t0 = audioCtx.currentTime;
+      const isStrong = strength === 'strong';
+      const osc = audioCtx.createOscillator();
+      const oscGain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(isStrong ? 160 : 260, t0);
+      osc.frequency.exponentialRampToValueAtTime(isStrong ? 90 : 150, t0 + 0.04);
+      oscGain.gain.setValueAtTime(0.0001, t0);
+      oscGain.gain.exponentialRampToValueAtTime(isStrong ? 0.10 : 0.025, t0 + 0.003);
+      oscGain.gain.exponentialRampToValueAtTime(0.0001, t0 + (isStrong ? 0.07 : 0.04));
+      osc.connect(oscGain).connect(audioCtx.destination);
+      osc.start(t0);
+      osc.stop(t0 + 0.08);
+
+      const noiseSrc = audioCtx.createBufferSource();
+      noiseSrc.buffer = makeNoiseBuffer(0.02);
+      const noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = 'highpass';
+      noiseFilter.frequency.value = 1500;
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(isStrong ? 0.5 : 0.01, t0);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.02);
+      noiseSrc.connect(noiseFilter).connect(noiseGain).connect(audioCtx.destination);
+      noiseSrc.start(t0);
+    }
+
+    function triggerHaptic(intensity = 0.4) {
+      const ms = intensity > 0.6 ? 12 : (intensity > 0.3 ? 8 : 5);
+      const strength = ms >= 12 ? 'strong' : 'light';
+      if (supportsVibration) {
+        navigator.vibrate(ms);
+      } else {
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        tickSound(strength);
+      }
+      // visual pulse on center card
+      const idx = ((Math.round(angle) % n) + n) % n;
+      const el = cardEls[idx];
+      if (el) {
+        const glass = el.querySelector('.glass');
+        if (glass) {
+          glass.style.transition = 'box-shadow 100ms ease-out, border-color 100ms ease-out';
+          glass.style.boxShadow = '0 0 0 2px var(--text-accent), 0 0 14px rgba(245,196,81,0.5)';
+          glass.style.borderColor = 'var(--text-accent)';
+          setTimeout(() => {
+            glass.style.boxShadow = '';
+            glass.style.borderColor = '';
+          }, strength === 'strong' ? 180 : 110);
+        }
+      }
+    }
+
+    // ----- animation loop (ring-spin style) -----
+    function animate() {
+      angle += velocity;
+      velocity *= 0.94;
+      const active = render(angle);
+      if (active !== lastActive) {
+        triggerHaptic(0.3);
+        lastActive = active;
+      }
+      if (Math.abs(velocity) > 0.0008) {
+        rafId = requestAnimationFrame(animate);
+      } else {
+        const step = 1; // each card is 1 unit
+        const target = Math.round(angle / step) * step;
+        angle += (target - angle) * 0.2;
+        render(angle);
+        if (Math.abs(target - angle) > 0.001) {
+          rafId = requestAnimationFrame(animate);
+        } else {
+          angle = target;
+          render(angle);
+          triggerHaptic(0.6);
+        }
+      }
+    }
+
+    // ----- pointer events (adapted from ring-spin) -----
+    const stage = document.getElementById('viewport');
+    let dragging = false, lastX = 0, lastT = 0;
+
+    function onPointerDown(e) {
+      ensureAudio();
+      if (rafId) cancelAnimationFrame(rafId);
+      dragging = true;
+      lastX = e.clientX;
+      lastT = performance.now();
+      velocity = 0;
+      if (stage.setPointerCapture) stage.setPointerCapture(e.pointerId);
       track.classList.add('grabbing');
-      // disable transition during drag for instant response
       cardEls.forEach(el => el.style.transition = 'none');
-      // haptic at drag start (light)
-      triggerHaptic(0.2);
-      // capture
-      if (track.setPointerCapture) track.setPointerCapture(e.pointerId);
       e.preventDefault?.();
     }
 
     function onPointerMove(e) {
-      if (!isDragging) return;
-      const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
+      if (!dragging) return;
       const now = performance.now();
-      const dt = Math.max(1, now - lastMoveTime);
-      const dx = clientX - lastX;
-      velocity = (dx / dt) * 16; // normalize to ~frame velocity
-      lastX = clientX;
-      lastMoveTime = now;
-
-      const delta = (clientX - startX) / SPACING;
-      let offset = startOffset - delta;
-      // wrap
-      while (offset < 0) offset += n;
-      while (offset >= n) offset -= n;
-      targetOffset = offset;
-      render(offset);
+      const dx = e.clientX - lastX;
+      const dt = Math.max(now - lastT, 1);
+      // map drag to angle change (sensitivity)
+      angle += dx * 0.012;
+      velocity = (dx * 0.012) * (16 / dt);
+      lastX = e.clientX;
+      lastT = now;
+      render(angle);
       e.preventDefault?.();
     }
 
     function onPointerUp(e) {
-      if (!isDragging) return;
-      isDragging = false;
+      if (!dragging) return;
+      dragging = false;
       track.classList.remove('grabbing');
       cardEls.forEach(el => el.style.transition = '');
-      // compute final velocity
-      const now = performance.now();
-      const dt = Math.max(1, now - lastMoveTime);
-      if (dt < 100) {
-        // if recent move, use velocity
+      if (Math.abs(velocity) > 0.01) {
+        rafId = requestAnimationFrame(animate);
       } else {
-        velocity = 0;
+        snapToNearest(angle, velocity);
       }
-      // if velocity is significant, start momentum
-      if (Math.abs(velocity) > 0.2) {
-        startMomentum(velocity * 0.7);
-        // haptic on flick
-        triggerHaptic(Math.min(0.9, Math.abs(velocity) / 6));
-      } else {
-        snapToNearest(targetOffset, 0);
-      }
-      if (e.pointerId !== undefined && track.releasePointerCapture) {
-        try { track.releasePointerCapture(e.pointerId); } catch(_) {}
-      }
+      if (stage.releasePointerCapture) stage.releasePointerCapture(e.pointerId);
       e.preventDefault?.();
     }
 
-    // attach events (pointer + touch)
-    track.addEventListener('pointerdown', onPointerDown);
-    track.addEventListener('pointermove', onPointerMove);
-    track.addEventListener('pointerup', onPointerUp);
-    track.addEventListener('pointercancel', onPointerUp);
-    // also support touch (fallback)
-    track.addEventListener('touchstart', (e) => {
+    // attach pointer events
+    stage.addEventListener('pointerdown', onPointerDown);
+    stage.addEventListener('pointermove', onPointerMove);
+    stage.addEventListener('pointerup', onPointerUp);
+    stage.addEventListener('pointercancel', onPointerUp);
+
+    // touch fallback
+    stage.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
         const touch = e.touches[0];
-        const ev = { clientX: touch.clientX, pointerId: 0, pointerType: 'touch', preventDefault: () => e.preventDefault() };
-        onPointerDown(ev);
+        onPointerDown({ clientX: touch.clientX, pointerId: 0, preventDefault: () => e.preventDefault() });
       }
     }, { passive: false });
-    track.addEventListener('touchmove', (e) => {
+    stage.addEventListener('touchmove', (e) => {
       if (e.touches.length === 1) {
         const touch = e.touches[0];
-        const ev = { clientX: touch.clientX, preventDefault: () => e.preventDefault() };
-        onPointerMove(ev);
+        onPointerMove({ clientX: touch.clientX, preventDefault: () => e.preventDefault() });
       }
     }, { passive: false });
-    track.addEventListener('touchend', (e) => {
+    stage.addEventListener('touchend', (e) => {
       onPointerUp({ pointerId: 0, preventDefault: () => e.preventDefault() });
     }, { passive: false });
 
     // buttons
     document.getElementById('prevBtn').addEventListener('click', () => {
-      if (momentumId) cancelAnimationFrame(momentumId);
-      goTo(current - 1);
+      if (rafId) cancelAnimationFrame(rafId);
+      angle = Math.round(angle) - 1;
+      render(angle);
       triggerHaptic(0.5);
     });
     document.getElementById('nextBtn').addEventListener('click', () => {
-      if (momentumId) cancelAnimationFrame(momentumId);
-      goTo(current + 1);
+      if (rafId) cancelAnimationFrame(rafId);
+      angle = Math.round(angle) + 1;
+      render(angle);
       triggerHaptic(0.5);
     });
 
     // keyboard
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') { goTo(current - 1); triggerHaptic(0.4); e.preventDefault(); }
-      if (e.key === 'ArrowRight') { goTo(current + 1); triggerHaptic(0.4); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') {
+        if (rafId) cancelAnimationFrame(rafId);
+        angle = Math.round(angle) - 1;
+        render(angle);
+        triggerHaptic(0.4);
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowRight') {
+        if (rafId) cancelAnimationFrame(rafId);
+        angle = Math.round(angle) + 1;
+        render(angle);
+        triggerHaptic(0.4);
+        e.preventDefault();
+      }
     });
 
-    // auto-play (gentle, pauses on interaction)
-    let autoplay = setInterval(() => { goTo(current + 1); triggerHaptic(0.2); }, 3800);
+    // auto-play (gentle)
+    let autoplay = setInterval(() => {
+      if (!dragging) {
+        if (rafId) cancelAnimationFrame(rafId);
+        angle = Math.round(angle) + 1;
+        render(angle);
+        triggerHaptic(0.2);
+      }
+    }, 4000);
     function stopAutoplay() { clearInterval(autoplay); }
-    track.addEventListener('pointerdown', stopAutoplay);
-    track.addEventListener('touchstart', stopAutoplay);
+    stage.addEventListener('pointerdown', stopAutoplay);
+    stage.addEventListener('touchstart', stopAutoplay);
     document.getElementById('prevBtn').addEventListener('click', stopAutoplay);
     document.getElementById('nextBtn').addEventListener('click', stopAutoplay);
 
-    // re-init rendering
-    render(targetOffset);
+    // initial render
+    render(0);
+    lastActive = 0;
   })();
 </script>
 </body>
