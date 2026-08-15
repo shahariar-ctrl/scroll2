@@ -1219,7 +1219,7 @@
     <div class="dl-header">
       <div class="dl-header-row">
         <h2 class="prog-heading" id="deptListTitle">
-          <span id="deptListTitleText">Bachelor of Honours Program</span>
+          <span id="deptListTitleText">Bachelor Degree Honours Program</span>
         </h2>
         <span class="prog-pill pill-2024" id="deptListPill"><i class="pill-dot"></i>2024–2025 Session</span>
       </div>
@@ -1295,7 +1295,7 @@
 
 
     <div class="dept-title-row">
-      <h2 class="dept-title" id="gradingDeptTitle">Department of Accounting<br><span style="font-size:0.8em;">Bachelor of Honours | (2024–2025)</span></h2>
+      <h2 class="dept-title" id="gradingDeptTitle">Department of Accounting<br><span style="font-size:0.8em;">Bachelor Degree Honours | (2024–2025)</span></h2>
     </div>
 
     <div class="year-pills" id="yearPills"></div>
@@ -1362,7 +1362,7 @@
         <div class="si-field"><label>Session</label><input type="text" inputmode="numeric" placeholder="e.g., 2021-22" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"></div>
         <div class="si-field">
           <label>Student Type</label>
-          <select><option value="">-- Select --</option><option>Regular</option><option>Irregular</option><option>Private</option></select>
+          <select><option value="">-- Select --</option><option>Regular</option><option>Improvement</option><option>Private</option></select>
         </div>
         <div class="si-field"><label>College Name</label><input type="text" placeholder="e.g., Government College, Dhaka" oninput="this.value=this.value.replace(/[^A-Za-z0-9\s.,'-]/g,'')"></div>
         <div class="si-field readonly"><label>Subject</label><input type="text" id="siSubject" readonly></div>
@@ -1610,7 +1610,7 @@
   function deptCode(name){ return deptAbbrev(name)+'-'+deptCodeNum(name); }
 
   function displayProgramTitle(title){
-    if(title === 'Honours') return 'Bachelor of Honours';
+    if(title === 'Honours') return 'Bachelor Degree Honours';
     if(title === 'Degree Pass') return 'Bachelor Degree Pass';
     return title;
   }
