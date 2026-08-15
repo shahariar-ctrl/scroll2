@@ -203,8 +203,8 @@
       max-width:560px;margin:0 auto;padding:14px 16px;display:flex;flex-wrap:wrap;
       align-items:center;justify-content:space-between;gap:10px 12px;
     }
-    .logo{display:flex;align-items:center;gap:9px;cursor:pointer;font-family:var(--disp);font-weight:700;font-size:20px;order:1;transition:font-size .15s;}
-    .logo .dot{width:10px;height:10px;border-radius:50%;background:var(--grad1);box-shadow:0 0 14px var(--primary-light);}
+    .logo{display:flex;align-items:center;gap:9px;cursor:pointer;font-family:var(--disp);font-weight:700;font-size:21px;order:1;transition:font-size .15s;}
+    .logo .dot{width:10.5px;height:10.5px;border-radius:50%;background:var(--grad1);box-shadow:0 0 14px var(--primary-light);}
     .logo .accent{background:var(--grad1);-webkit-background-clip:text;background-clip:text;color:transparent;}
     .logo .accent2{background:var(--grad1);-webkit-background-clip:text;background-clip:text;color:transparent;animation:logoBlink 1s step-start infinite;}
     @keyframes logoBlink{50%{opacity:0;}}
@@ -247,8 +247,8 @@
 
     @media (max-width:400px){
       .site-inner{gap:8px 8px;padding:12px 12px;}
-      .logo{font-size:17px;gap:6px;}
-      .logo .dot{width:8px;height:8px;}
+      .logo{font-size:18px;gap:6px;}
+      .logo .dot{width:9px;height:9px;}
       .mobile-actions{gap:6px;}
       .icon-btn{width:33px;height:33px;font-size:13px;}
       .icon-btn svg{width:15px;height:15px;}
@@ -274,15 +274,24 @@
 
     @media (min-width:768px){.mobile-menu-overlay{display:none;}}
 
-    .header-search{position:relative;order:6;flex:1 1 100%;display:none;}
-    .header-search.open{display:block;}
+    .header-search{
+      position:relative;order:6;flex:1 1 100%;
+      max-height:0;opacity:0;overflow:hidden;transform:translateY(-6px);
+      margin-top:0;pointer-events:none;
+      transition:max-height .42s cubic-bezier(.4,0,.2,1),opacity .32s ease,transform .38s cubic-bezier(.4,0,.2,1),margin-top .38s cubic-bezier(.4,0,.2,1);
+    }
+    .header-search.open{
+      max-height:64px;opacity:1;overflow:visible;transform:translateY(0);
+      margin-top:8px;pointer-events:auto;
+    }
     .header-search input{
       width:100%;padding:11px 16px;border-radius:999px;border:1px solid var(--border);background:var(--card);
       color:var(--text);font-size:16px;outline:none;transition:.2s;
     }
     .header-search input:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-glow);}
     .global-search-results{
-      position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:60;
+      position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:60;
+      width:125%;max-width:calc(100vw - 24px);
       background:var(--surface-hi);border:1px solid var(--border);border-radius:14px;
       backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:var(--shadow);
       padding:8px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;
@@ -327,7 +336,11 @@
       .hero-cta{font-size:12.6px;padding:9.9px 19.8px;}
     }
     h1.hero-title .g{background:var(--grad1);-webkit-background-clip:text;background-clip:text;color:transparent;}
-    p.hero-sub{font-size:12.15px;color:var(--muted);max-width:520px;margin:0 auto 28px;line-height:1.6;}
+    p.hero-sub{font-size:clamp(9px,3.3vw,13px);color:var(--muted);max-width:520px;margin:0 auto 28px;line-height:1.6;}
+    .hero-sub-line{white-space:normal;display:block;}
+    @media (min-width:480px){
+      .hero-sub-line{white-space:nowrap;}
+    }
     .hero-cta{display:inline-flex;}
     .i18n-swap{display:inline-block;}
     p.i18n-swap{display:block;}
@@ -563,6 +576,9 @@
     @media (max-width:767px){ .si-field input,.si-field select{font-size:16px;} }
     .si-field.readonly input{background:var(--bg2);color:var(--muted);}
     .si-field.highlight input{background:rgba(245,158,11,.12);color:var(--accent-amber);font-weight:700;border-color:rgba(245,158,11,.3);}
+    .si-field.field-error input{border-color:#ef4444 !important;box-shadow:0 0 0 3px rgba(239,68,68,.15) !important;}
+    .si-field-msg{color:#ef4444;font-size:12px;margin-top:4px;display:none;}
+    .si-field.field-error .si-field-msg{display:block;}
     @media (min-width:560px){.si-grid{grid-template-columns:1fr 1fr;}}
     .modal-footer{padding:18px 24px 22px;border-top:1px solid var(--border);flex-shrink:0;}
     .modal-footer .btn{width:100%;}
@@ -654,9 +670,12 @@
       border:1px solid var(--border);background:var(--surface);color:var(--muted);
     }
     .year-pill.active{background:var(--grad1);color:#fff;border-color:transparent;}
-    @media (max-width:479px){
-      .year-pills{flex-wrap:nowrap;gap:5px;}
-      .year-pill{padding:8px 6px;font-size:11px;flex:1 1 0;text-align:center;white-space:nowrap;}
+    @media (max-width:767px){
+      .year-pills{flex-wrap:wrap;gap:6px;}
+      .year-pill{
+        flex:0 0 calc(25% - 4.5px);max-width:calc(25% - 4.5px);
+        padding:8px 6px;font-size:11px;text-align:center;white-space:nowrap;
+      }
       .grade-actions .btn{padding:10px 14px;font-size:12.5px;}
       .grade-actions .btn-icon{gap:6px;}
     }
@@ -808,7 +827,7 @@
       .logo{font-size:22px;gap:10px;}
       .logo .dot{width:11px;height:11px;}
       h1.hero-title{font-size:48px;}
-      p.hero-sub{font-size:17px;}
+      p.hero-sub{font-size:clamp(13px,2.1vw,17px);}
       h2.section-title{font-size:32px;margin-bottom:44px;}
       .hero{padding:49px 0 23px;}
       .features{padding:70px 0 20px;}
@@ -819,7 +838,10 @@
       nav.main-nav{display:flex;gap:26px;order:3;}
       nav.main-nav a{font-size:14px;}
       .site-inner{flex-wrap:nowrap;}
-      .header-search{display:block;order:2;flex:1 1 auto;max-width:320px;margin:0 auto;}
+      .header-search{
+        display:block;order:2;flex:1 1 42%;max-width:42%;margin:0 auto;
+        max-height:none;opacity:1;overflow:visible;transform:none;margin-top:0;pointer-events:auto;transition:none;
+      }
       .mobile-actions{display:none;}
       .rp-num{font-size:56px;}
       .result-panel{padding:36px 32px;}
@@ -833,6 +855,9 @@
       tr.total td{font-size:17px;}
       select.grade-select{font-size:14.5px;padding:10px 24px 10px 12px;}
       .sc-head{font-size:15px;}
+    }
+    @media (min-width:768px) and (max-width:1023px){
+      .global-search-results{width:160%;}
     }
     @media (min-width: 1024px){ .wrap{max-width:960px;} .site-inner{max-width:960px;} .logo{font-size:24px;gap:11px;} .logo .dot{width:12px;height:12px;} .qs-field:nth-child(3){flex:1 1 150px;max-width:220px;} }
     @media (min-width: 1280px){ .wrap{max-width:1100px;} .site-inner{max-width:1100px;} .logo{font-size:26px;gap:12px;} .logo .dot{width:13px;height:13px;} }
@@ -907,7 +932,7 @@
     <div class="hero">
       <span class="term-chip"><span class="i18n-swap" data-en="// 2024–2025 syllabus included" data-bn="// ২০২৪–২০২৫ সিলেবাস সংযোজিত">// 2024–2025 syllabus included</span> <span class="cursor"></span></span>
       <h1 class="hero-title"><span class="i18n-swap" data-en="Stop guessing your CGPA." data-bn="CGPA হিসাব নিয়ে স্ট্রেস?">Stop guessing your CGPA.</span><br><span class="g i18n-swap" style="font-size:0.7em;" data-en="We've already done the hard part." data-bn="চিল! হিসাবটা আমরা সামলে নিয়েছি।">We've already done the hard part.</span></h1>
-      <p class="hero-sub i18n-swap" data-en="The calculator NU students actually deserve — accurate math, grade-weighted calculations, auto-save, all in one place.<br>Fast, easy, zero hassle." data-bn="NU শিক্ষার্থীদের জন্য তৈরি স্মার্ট CGPA Calculator — নির্ভুল হিসাব,<br> গ্রেড-ওয়েটেড ক্যালকুলেশন ও অটো-সেভ সুবিধা, সব এক জায়গায়।<br> দ্রুত,সহজ, একদম ঝামেলাহীন।">The calculator NU students actually deserve — accurate math, grade-weighted calculations, auto-save, all in one place.<br>Fast, easy, zero hassle.</p>
+      <p class="hero-sub i18n-swap" data-en="<span class=&quot;hero-sub-line&quot;>The CGPA calculator NU students actually deserve.</span><span class=&quot;hero-sub-line&quot;>Accurate math, grade-weighted calculations, auto-save,</span><span class=&quot;hero-sub-line&quot;>all in one place. Fast, easy, zero hassle.</span>" data-bn="<span class=&quot;hero-sub-line&quot;>NU শিক্ষার্থীদের জন্য তৈরি স্মার্ট CGPA Calculator — নির্ভুল</span><span class=&quot;hero-sub-line&quot;>হিসাব, গ্রেড-ওয়েটেড ক্যালকুলেশন ও অটো-সেভ সুবিধা,</span><span class=&quot;hero-sub-line&quot;>সব এক জায়গায়। দ্রুত,সহজ, একদম ঝামেলাহীন।</span>"><span class="hero-sub-line">The CGPA calculator NU students actually deserve.</span><span class="hero-sub-line">Accurate math, grade-weighted calculations, auto-save,</span><span class="hero-sub-line">all in one place. Fast, easy, zero hassle.</span></p>
       <button class="btn btn-grad hero-cta i18n-swap" onclick="goSection('departments')" data-en="Browse programs ↓" data-bn="প্রোগ্রাম দেখুন ↓">Browse programs ↓</button>
     </div>
 
@@ -1194,7 +1219,7 @@
     <div class="dl-header">
       <div class="dl-header-row">
         <h2 class="prog-heading" id="deptListTitle">
-          <span id="deptListTitleText">Honours Program</span>
+          <span id="deptListTitleText">Bachelor of Honours Program</span>
         </h2>
         <span class="prog-pill pill-2024" id="deptListPill"><i class="pill-dot"></i>2024–2025 Session</span>
       </div>
@@ -1270,7 +1295,7 @@
 
 
     <div class="dept-title-row">
-      <h2 class="dept-title" id="gradingDeptTitle">Department of Accounting<br><span style="font-size:0.8em;">(2024–2025)</span></h2>
+      <h2 class="dept-title" id="gradingDeptTitle">Department of Accounting<br><span style="font-size:0.8em;">Bachelor of Honours | (2024–2025)</span></h2>
     </div>
 
     <div class="year-pills" id="yearPills"></div>
@@ -1328,18 +1353,18 @@
     <div class="modal-body">
       <div class="si-section-label">📋 Student Information</div>
       <div class="si-grid">
-        <div class="si-field"><label>Student Name</label><input type="text" placeholder="Enter full name"></div>
-        <div class="si-field"><label>Father's Name</label><input type="text" placeholder="Enter father's name"></div>
-        <div class="si-field"><label>Mother's Name</label><input type="text" placeholder="Enter mother's name"></div>
-        <div class="si-field"><label>Examination Roll</label><input type="text" placeholder="e.g., 1234567"></div>
-        <div class="si-field"><label>Registration No</label><input type="text" placeholder="e.g., 1234567890"></div>
-        <div class="si-field"><label>Examination Year</label><input type="text" placeholder="e.g., 2024"></div>
-        <div class="si-field"><label>Session</label><input type="text" placeholder="e.g., 2021-22"></div>
+        <div class="si-field"><label>Student Name</label><input type="text" placeholder="Enter full name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
+        <div class="si-field"><label>Father's Name</label><input type="text" placeholder="Enter father's name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
+        <div class="si-field"><label>Mother's Name</label><input type="text" placeholder="Enter mother's name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
+        <div class="si-field" id="siRollWrap"><label>Examination Roll</label><input type="text" id="siRoll" inputmode="numeric" placeholder="e.g., 1234567" maxlength="7" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRollWrap')"><div class="si-field-msg">Must be exactly 7 digits</div></div>
+        <div class="si-field" id="siRegNoWrap"><label>Registration No</label><input type="text" id="siRegNo" inputmode="numeric" placeholder="e.g., 12345678901" maxlength="11" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRegNoWrap')"><div class="si-field-msg">Must be exactly 11 digits</div></div>
+        <div class="si-field" id="siYearWrap"><label>Examination Year</label><input type="text" id="siYear" inputmode="numeric" placeholder="e.g., 2024" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siYearWrap')"><div class="si-field-msg">Must be exactly 4 digits</div></div>
+        <div class="si-field"><label>Session</label><input type="text" inputmode="numeric" placeholder="e.g., 2021-22" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"></div>
         <div class="si-field">
           <label>Student Type</label>
-          <select><option value="">-- Select --</option><option>Regular</option><option>Improvement</option><option>Private</option></select>
+          <select><option value="">-- Select --</option><option>Regular</option><option>Irregular</option><option>Private</option></select>
         </div>
-        <div class="si-field"><label>College Name</label><input type="text" placeholder="e.g., Government College, Dhaka"></div>
+        <div class="si-field"><label>College Name</label><input type="text" placeholder="e.g., Government College, Dhaka" oninput="this.value=this.value.replace(/[^A-Za-z0-9\s.,'-]/g,'')"></div>
         <div class="si-field readonly"><label>Subject</label><input type="text" id="siSubject" readonly></div>
         <div class="si-field highlight"><label>Subject Result</label><input type="text" id="siResult" readonly></div>
         <div class="si-field readonly"><label>CGPA</label><input type="text" id="siCgpa" readonly></div>
@@ -1354,7 +1379,7 @@
 <footer class="site">
   <div class="wrap footer-grid">
     <div class="foot-brand">
-      <div class="logo"><span class="dot"></span><span class="brand-text">Gradely</span><span class="logo-dots"><span class="accent">.</span><span class="accent2">.</span></span></div>
+      <div class="logo" onclick="showView('home')"><span class="dot"></span><span class="brand-text">Gradely</span><span class="logo-dots"><span class="accent">.</span><span class="accent2">.</span></span></div>
       <p>Grade-weighted. Auto-saved. The CGPA calculator NU actually deserved.</p>
     </div>
     <div class="foot-links-row">
@@ -1584,8 +1609,14 @@
   }
   function deptCode(name){ return deptAbbrev(name)+'-'+deptCodeNum(name); }
 
+  function displayProgramTitle(title){
+    if(title === 'Honours') return 'Bachelor of Honours';
+    if(title === 'Degree Pass') return 'Bachelor Degree Pass';
+    return title;
+  }
+
   function updateDeptHeading(prog, key){
-    document.getElementById('deptListTitleText').textContent = prog ? (prog.title + ' Program') : key;
+    document.getElementById('deptListTitleText').textContent = prog ? (displayProgramTitle(prog.title) + ' Program') : key;
     const pill = document.getElementById('deptListPill');
     pill.textContent = SESSION_LABELS[key] || (prog?prog.tag:'');
     pill.className = 'prog-pill ' + glassPillClassFor(key);
@@ -1742,7 +1773,7 @@
           <span class="gsr-name">${m.dept}</span>
           <span class="gsr-tag">${SESSION_SHORT[m.program.key] || m.program.tag}</span>
         </span>
-        <span class="gsr-pill ${glassPillClassFor(m.program.key)}">${m.program.title.toUpperCase()}</span>
+        <span class="gsr-pill ${glassPillClassFor(m.program.key)}">${m.program.title.toUpperCase().replace('PRELIMINARY','PRE')}</span>
       </button>`).join('');
   }
   function jumpToDept(progKey, deptName){
@@ -1779,7 +1810,33 @@
     document.getElementById('studentInfoOverlay').classList.remove('open');
     document.body.style.overflow='';
   }
+  function clearFieldError(wrapId){
+    document.getElementById(wrapId).classList.remove('field-error');
+  }
+  function validateStudentInfo(){
+    const checks = [
+      {input:'siRoll', wrap:'siRollWrap', len:7},
+      {input:'siRegNo', wrap:'siRegNoWrap', len:11},
+      {input:'siYear', wrap:'siYearWrap', len:4}
+    ];
+    let valid = true;
+    let firstInvalid = null;
+    checks.forEach(c=>{
+      const el = document.getElementById(c.input);
+      const wrap = document.getElementById(c.wrap);
+      if(el.value.length !== c.len){
+        wrap.classList.add('field-error');
+        valid = false;
+        if(!firstInvalid) firstInvalid = el;
+      } else {
+        wrap.classList.remove('field-error');
+      }
+    });
+    if(firstInvalid){ try{ firstInvalid.focus({preventScroll:false}); }catch(e){ firstInvalid.focus(); } }
+    return valid;
+  }
   function downloadTranscript(){
+    if(!validateStudentInfo()) return;
     closeStudentInfoModal();
     alert('Your PDF is ready — check your downloads in a moment.');
   }
@@ -1888,7 +1945,7 @@
   function openGrading(deptName){
     currentDept = deptName; currentYear = 1;
     const prog = PROGRAMS.find(p=>p.key===activeSyllabus);
-    document.getElementById('gradingDeptTitle').innerHTML = `Department of ${deptName}<br><span style="font-size:0.8em;">(${prog?SESSION_SHORT[prog.key]:''})</span>`;
+    document.getElementById('gradingDeptTitle').innerHTML = `Department of ${deptName}<br><span style="font-size:0.8em;">${prog?displayProgramTitle(prog.title):''} | (${prog?SESSION_SHORT[prog.key]:''})</span>`;
     renderYearPills();
     showView('grading');
     renderYear();
@@ -1927,7 +1984,7 @@
     recalc();
   }
 
-  function gradeStorageKey(dept=currentDept, year=currentYear){ return `gradely:grades:${dept}:${year}`; }
+  function gradeStorageKey(dept=currentDept, year=currentYear, syllabus=activeSyllabus){ return `gradely:grades:${syllabus}:${dept}:${year}`; }
   function saveGrades(){
     const vals = {};
     document.querySelectorAll('#subjectRows select').forEach(sel=>{ vals[sel.dataset.idx] = sel.value; });
