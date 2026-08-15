@@ -1353,18 +1353,18 @@
     <div class="modal-body">
       <div class="si-section-label">📋 Student Information</div>
       <div class="si-grid">
-        <div class="si-field"><label>Student Name</label><input type="text" placeholder="Enter full name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
-        <div class="si-field"><label>Father's Name</label><input type="text" placeholder="Enter father's name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
-        <div class="si-field"><label>Mother's Name</label><input type="text" placeholder="Enter mother's name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
-        <div class="si-field" id="siRollWrap"><label>Examination Roll</label><input type="text" id="siRoll" inputmode="numeric" placeholder="e.g., 1234567" maxlength="7" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRollWrap')"><div class="si-field-msg">Must be exactly 7 digits</div></div>
-        <div class="si-field" id="siRegNoWrap"><label>Registration No</label><input type="text" id="siRegNo" inputmode="numeric" placeholder="e.g., 12345678901" maxlength="11" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRegNoWrap')"><div class="si-field-msg">Must be exactly 11 digits</div></div>
-        <div class="si-field" id="siYearWrap"><label>Examination Year</label><input type="text" id="siYear" inputmode="numeric" placeholder="e.g., 2024" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siYearWrap')"><div class="si-field-msg">Must be exactly 4 digits</div></div>
-        <div class="si-field"><label>Session</label><input type="text" inputmode="numeric" placeholder="e.g., 2021-22" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"></div>
+        <div class="si-field"><label>Student Name</label><input type="text" id="siStudentName" placeholder="Enter full name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
+        <div class="si-field"><label>Father's Name</label><input type="text" id="siFatherName" placeholder="Enter father's name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
+        <div class="si-field"><label>Mother's Name</label><input type="text" id="siMotherName" placeholder="Enter mother's name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
+        <div class="si-field" id="siRollWrap"><label>Examination Roll</label><input type="text" id="siRoll" inputmode="numeric" placeholder="e.g., 1234567" maxlength="7" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRollWrap')"></div>
+        <div class="si-field" id="siRegNoWrap"><label>Registration No</label><input type="text" id="siRegNo" inputmode="numeric" placeholder="e.g., 12345678901" maxlength="11" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRegNoWrap')"></div>
+        <div class="si-field" id="siYearWrap"><label>Examination Year</label><input type="text" id="siYear" inputmode="numeric" placeholder="e.g., 2024" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siYearWrap')"></div>
+        <div class="si-field"><label>Session</label><input type="text" id="siSession" inputmode="numeric" placeholder="e.g., 2021-22" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"></div>
         <div class="si-field">
           <label>Student Type</label>
-          <select><option value="">-- Select --</option><option>Regular</option><option>Improvement</option><option>Private</option></select>
+          <select id="siStudentType"><option value="">-- Select --</option><option>Regular</option><option>Improvement</option><option>Private</option></select>
         </div>
-        <div class="si-field"><label>College Name</label><input type="text" placeholder="e.g., Government College, Dhaka" oninput="this.value=this.value.replace(/[^A-Za-z0-9\s.,'-]/g,'')"></div>
+        <div class="si-field"><label>College Name</label><input type="text" id="siCollege" placeholder="e.g., Government College, Dhaka" oninput="this.value=this.value.replace(/[^A-Za-z0-9\s.,'-]/g,'')"></div>
         <div class="si-field readonly"><label>Subject</label><input type="text" id="siSubject" readonly></div>
         <div class="si-field highlight"><label>Subject Result</label><input type="text" id="siResult" readonly></div>
         <div class="si-field readonly"><label>CGPA</label><input type="text" id="siCgpa" readonly></div>
@@ -1405,7 +1405,9 @@
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
+  const { jsPDF } = window.jspdf || {};
   /* ============================================================
      THEME ENGINE — auto-follow OS preference with manual override
      ============================================================ */
@@ -1795,7 +1797,9 @@
     document.body.style.overflow='';
   }
 
+  let siMode = 'year';
   function openStudentInfoModal(mode){
+    siMode = mode;
     document.getElementById('siModalTitle').textContent = mode==='transcript' ? 'Download Full Transcript' : 'Download Result';
     document.getElementById('siModalSub').textContent = mode==='transcript'
       ? "Review your information, then download your full transcript as PDF"
@@ -1814,31 +1818,75 @@
     document.getElementById(wrapId).classList.remove('field-error');
   }
   function validateStudentInfo(){
-    const checks = [
-      {input:'siRoll', wrap:'siRollWrap', len:7},
-      {input:'siRegNo', wrap:'siRegNoWrap', len:11},
-      {input:'siYear', wrap:'siYearWrap', len:4}
-    ];
-    let valid = true;
-    let firstInvalid = null;
-    checks.forEach(c=>{
-      const el = document.getElementById(c.input);
-      const wrap = document.getElementById(c.wrap);
-      if(el.value.length !== c.len){
-        wrap.classList.add('field-error');
-        valid = false;
-        if(!firstInvalid) firstInvalid = el;
-      } else {
-        wrap.classList.remove('field-error');
-      }
-    });
-    if(firstInvalid){ try{ firstInvalid.focus({preventScroll:false}); }catch(e){ firstInvalid.focus(); } }
-    return valid;
+    return true;
   }
   function downloadTranscript(){
     if(!validateStudentInfo()) return;
+
+    if(siMode === 'transcript'){
+      // Full Transcript PDF — to be implemented later.
+      closeStudentInfoModal();
+      return;
+    }
+
+    generateResultPDF();
     closeStudentInfoModal();
-    alert('Your PDF is ready — check your downloads in a moment.');
+  }
+
+  function generateResultPDF(){
+    if(!jsPDF){ alert('PDF library failed to load. Please check your internet connection and try again.'); return; }
+
+    const get = id => document.getElementById(id).value || '—';
+    const doc = new jsPDF({ unit:'pt', format:'a4' });
+    const pageW = doc.internal.pageSize.getWidth();
+    let y = 60;
+
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(18);
+    doc.text('Gradely — Result Sheet', pageW/2, y, {align:'center'});
+    y += 22;
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(11);
+    doc.setTextColor(100);
+    doc.text('National University, Bangladesh', pageW/2, y, {align:'center'});
+    doc.setTextColor(0);
+    y += 30;
+
+    doc.setDrawColor(200);
+    doc.line(50, y, pageW-50, y);
+    y += 30;
+
+    const fields = [
+      ['Student Name', get('siStudentName')],
+      ["Father's Name", get('siFatherName')],
+      ["Mother's Name", get('siMotherName')],
+      ['Examination Roll', get('siRoll')],
+      ['Registration No', get('siRegNo')],
+      ['Examination Year', get('siYear')],
+      ['Session', get('siSession')],
+      ['Student Type', get('siStudentType')],
+      ['College Name', get('siCollege')],
+      ['Subject', get('siSubject')],
+      ['Subject Result', get('siResult')],
+      ['CGPA', get('siCgpa')]
+    ];
+
+    doc.setFontSize(12);
+    fields.forEach(([label, value])=>{
+      doc.setFont('helvetica','bold');
+      doc.text(label + ':', 60, y);
+      doc.setFont('helvetica','normal');
+      doc.text(String(value), 260, y);
+      y += 26;
+    });
+
+    y += 20;
+    doc.setFontSize(9);
+    doc.setTextColor(140);
+    doc.text('Generated by Gradely — this is a preview sheet, not an official NU transcript.', pageW/2, y, {align:'center'});
+
+    const rollPart = get('siRoll') !== '—' ? get('siRoll') : 'result';
+    doc.save(`Gradely-Result-${rollPart}.pdf`);
   }
 
   function renderFaq(){
