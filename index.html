@@ -979,7 +979,7 @@
         <div class="glass feat-card acc-i1">
           <div class="feat-icon i1"><svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/><path d="M4 21h16"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M14 9h1"/><path d="M14 13h1"/><path d="M10 21v-4a2 2 0 0 1 2-2 2 2 0 0 1 2 2v4"/></svg></div>
           <h3>Auto-save</h3>
-          <p>Your grades save as you type. Close the tab, touch grass, come back — nothing's lost.</p>
+          <p>Your grades save as you type — no button to hit, nothing lost while you're working. (Grades clear when you close the tab, so download your result before you go.)</p>
         </div>
         <div class="glass feat-card acc-i2">
           <div class="feat-icon i2"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg></div>
@@ -1009,8 +1009,8 @@
     <div class="feat-grid">
       <div class="glass feat-card acc-i1">
           <div class="feat-icon i1"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/><path d="M22 10v6"/></svg></div>
-        <h3>3 programs</h3>
-        <p>Honours (BSc, BBA, BSS, BA), Degree Pass, and Masters — all in one place.</p>
+        <h3>4 programs</h3>
+        <p>Honours (BSc, BBA, BSS, BA), Degree Pass, Masters, and Preliminary to Masters — all in one place.</p>
       </div>
       <div class="glass feat-card acc-i2">
           <div class="feat-icon i2"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></div>
@@ -1065,7 +1065,7 @@
       <div class="glass feat-card acc-i2">
           <div class="feat-icon i2"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
         <h3>Suggest a program</h3>
-        <p>Studying something that isn't listed yet, like Computer Science or Masters? Let us know and we'll prioritise it.</p>
+        <p>Studying something that isn't listed yet, like Political Science? Let us know and we'll prioritise it.</p>
       </div>
       <div class="glass feat-card acc-i3">
           <div class="feat-icon i3"><svg viewBox="0 0 24 24"><path d="m10.29 3.86-8.18 14.18A2 2 0 0 0 4 21h16a2 2 0 0 0 1.89-2.96L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
@@ -1084,7 +1084,7 @@
       <div class="glass feat-card acc-i2">
           <div class="feat-icon i2"><svg viewBox="0 0 24 24"><path d="m12 2 2.4 6.5L21 11l-6.6 2.5L12 20l-2.4-6.5L3 11l6.6-2.5Z"/></svg></div>
         <h3>Request a feature</h3>
-        <p>Want a transcript export, dark mode, or something else entirely? Tell us what would make results day easier.</p>
+        <p>Want a GPA target calculator, a new department added, or something else entirely? Tell us what would make results day easier.</p>
       </div>
       <div class="glass feat-card acc-i3">
           <div class="feat-icon i3"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 4.9.8c0 1.7-2.4 2-2.4 3.7"/><path d="M12 17h.01"/></svg></div>
@@ -1131,8 +1131,8 @@
     <div class="section-eyebrow">// privacy policy</div>
     <h2 class="section-title" style="margin-bottom:24px;">Your grades stay yours</h2>
     <div class="glass" style="padding:28px 24px;">
-      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Gradely doesn't ask for an account, an email, or a password — so there's nothing to leak in the first place. The grades you enter are saved only in your own browser's local storage, on your own device.</p>
-      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Nothing you type into the calculator is sent to a server, sold, or shared with anyone, including us. Clear your browser data or hit "Reset calculator" and it's gone for good.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Gradely doesn't ask for an account, an email, or a password — so there's nothing to leak in the first place. The grades you enter are saved only in your own browser's session storage, on your own device, for as long as that browser tab stays open.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Nothing you type into the calculator is sent to a server, sold, or shared with anyone, including us. Closing the tab, or hitting the "Reset" button on a marksheet, clears that saved data for good.</p>
     </div>
 
     <h3 class="about-subhead">// what we don't collect</h3>
@@ -1141,10 +1141,10 @@
       <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">If you email us or message us through the Contact page, we only use that information to reply to you — never for marketing, and never passed on to third parties.</p>
     </div>
 
-    <h3 class="about-subhead">// how local storage works</h3>
+    <h3 class="about-subhead">// how session storage works</h3>
     <div class="glass" style="padding:28px 24px;">
-      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Your grades are stored using your browser's built-in local storage, tied to this specific browser on this specific device. They're not synced to any account, so they won't automatically follow you to another phone, laptop, or browser.</p>
-      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Clearing your browser's site data, using private/incognito mode, or hitting "Reset calculator" will permanently erase that saved data — we have no copy to restore it from.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 16px;">Your grades are stored using your browser's built-in session storage, tied to this specific tab. They're not synced to any account, so they won't automatically follow you to another phone, laptop, browser, or even a new tab.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin:0;">Closing the tab, using private/incognito mode, or hitting the "Reset" button on a marksheet will permanently erase that saved data — we have no copy to restore it from. Download your result as a PDF before you close the tab if you want to keep it.</p>
     </div>
 
     <h3 class="about-subhead">// cookies & analytics</h3>
@@ -1280,13 +1280,7 @@
 
       <div class="rp-divider"></div>
 
-      <div class="rp-stats">
-        <div class="rp-stat"><div class="rp-stat-n" id="statY1">0.00</div><div class="rp-stat-l">YEAR 1</div></div>
-        <div class="rp-stat"><div class="rp-stat-n" id="statY2">0.00</div><div class="rp-stat-l">YEAR 2</div></div>
-        <div class="rp-stat"><div class="rp-stat-n" id="statY3">0.00</div><div class="rp-stat-l">YEAR 3</div></div>
-        <div class="rp-stat"><div class="rp-stat-n" id="statY4">0.00</div><div class="rp-stat-l">YEAR 4</div></div>
-        <div class="rp-stat"><div class="rp-stat-n" id="statCredits">0</div><div class="rp-stat-l">CREDITS</div></div>
-      </div>
+      <div class="rp-stats" id="rpStats"></div>
 
       <button class="rp-export" onclick="openStudentInfoModal('transcript')">
         <span class="rp-export-icon">↓</span>Export transcript
@@ -1354,20 +1348,18 @@
       <div class="si-section-label">📋 Student Information</div>
       <div class="si-grid">
         <div class="si-field"><label>Student Name</label><input type="text" id="siStudentName" placeholder="Enter full name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
-        <div class="si-field"><label>Father's Name</label><input type="text" id="siFatherName" placeholder="Enter father's name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
-        <div class="si-field"><label>Mother's Name</label><input type="text" id="siMotherName" placeholder="Enter mother's name" oninput="this.value=this.value.replace(/[^A-Za-z\s.'-]/g,'')"></div>
-        <div class="si-field" id="siRollWrap"><label>Examination Roll</label><input type="text" id="siRoll" inputmode="numeric" placeholder="e.g., 1234567" maxlength="7" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRollWrap')"></div>
-        <div class="si-field" id="siRegNoWrap"><label>Registration No</label><input type="text" id="siRegNo" inputmode="numeric" placeholder="e.g., 12345678901" maxlength="11" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRegNoWrap')"></div>
-        <div class="si-field" id="siYearWrap"><label>Examination Year</label><input type="text" id="siYear" inputmode="numeric" placeholder="e.g., 2024" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siYearWrap')"></div>
+        <div class="si-field" id="siRollWrap"><label>Examination Roll</label><input type="text" id="siRoll" inputmode="numeric" placeholder="e.g., 1234567" maxlength="7" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRollWrap')"><div class="si-field-msg">Max 7 digits</div></div>
+        <div class="si-field" id="siRegNoWrap"><label>Registration No</label><input type="text" id="siRegNo" inputmode="numeric" placeholder="e.g., 12345678901" maxlength="11" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siRegNoWrap')"><div class="si-field-msg">Max 11 digits</div></div>
+        <div class="si-field" id="siYearWrap"><label>Examination Year</label><input type="text" id="siYear" inputmode="numeric" placeholder="e.g., 2024" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'');clearFieldError('siYearWrap')"><div class="si-field-msg">Max 4 digits</div></div>
         <div class="si-field"><label>Session</label><input type="text" id="siSession" inputmode="numeric" placeholder="e.g., 2021-22" oninput="this.value=this.value.replace(/[^0-9-]/g,'')"></div>
         <div class="si-field">
           <label>Student Type</label>
-          <select id="siStudentType"><option value="">-- Select --</option><option>Regular</option><option>Improvement</option><option>Private</option></select>
+          <select id="siStudentType"><option value="">-- Select --</option><option>Regular</option><option>Irregular</option><option>Improvement</option><option>Private</option></select>
         </div>
         <div class="si-field"><label>College Name</label><input type="text" id="siCollege" placeholder="e.g., Government College, Dhaka" oninput="this.value=this.value.replace(/[^A-Za-z0-9\s.,'-]/g,'')"></div>
         <div class="si-field readonly"><label>Subject</label><input type="text" id="siSubject" readonly></div>
         <div class="si-field highlight"><label>Subject Result</label><input type="text" id="siResult" readonly></div>
-        <div class="si-field readonly"><label>CGPA</label><input type="text" id="siCgpa" readonly></div>
+        <div class="si-field readonly"><label id="siCgpaLabel">CGPA</label><input type="text" id="siCgpa" readonly></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -1375,6 +1367,8 @@
     </div>
   </div>
 </div>
+
+<div id="grdSheetHost" style="position:fixed; left:-10000px; top:0; z-index:-1;"></div>
 
 <footer class="site">
   <div class="wrap footer-grid">
@@ -1401,11 +1395,156 @@
     </div>
   </div>
   <div class="wrap">
-    <div class="foot-copy">© 2026 Gradely · Educational demo project · not affiliated with National University Bangladesh</div>
+    <div class="foot-copy">© 2026 Gradely · An independent student project · not affiliated with National University Bangladesh</div>
   </div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style id="grdSheetStyle">
+  /* ============================================================
+     RESULT SHEET v2 — "luxury" design, ported from the provided
+     result-sheet template. Everything is prefixed "rs2-" and scoped
+     under #grdSheetHost so it can never collide with the app's own
+     styles (e.g. its own .code / .title / .credit table classes).
+  ============================================================ */
+  #grdSheetHost{
+    --rs2-bg-canvas:#f6f8fb; --rs2-surface:#ffffff; --rs2-surface-subtle:#f8fafc; --rs2-surface-muted:#f1f5f9;
+    --rs2-ink-primary:#0f172a; --rs2-ink-secondary:#334155; --rs2-ink-muted:#64748b; --rs2-ink-faint:#94a3b8;
+    --rs2-border-light:#e2e8f0; --rs2-border-hairline:#edf2f7;
+    --rs2-accent-brand:#0f2744; --rs2-accent-sage:#0d9488; --rs2-accent-sage-soft:#f0fdfa;
+    --rs2-accent-champagne:#b48c48; --rs2-accent-champagne-light:#fdfbf7; --rs2-accent-champagne-border:#e9dec9;
+    --rs2-accent-rose:#e11d48; --rs2-accent-rose-soft:#fff1f2; --rs2-accent-rose-border:rgba(225,29,72,.25);
+    --rs2-radius-md:10px; --rs2-radius-sm:6px;
+    font-family:'Plus Jakarta Sans', -apple-system, sans-serif;
+  }
+  #grdSheetHost .rs2-doc *{ box-sizing:border-box; margin:0; padding:0; }
+  #grdSheetHost .rs2-doc{
+    width:7.27in; min-height:10.69in; height:auto; aspect-ratio:auto; overflow:visible;
+    background:var(--rs2-surface); border-radius:12px; position:relative;
+    padding:34px 42px 30px; display:flex; flex-direction:column; justify-content:space-between;
+    color:var(--rs2-ink-primary);
+  }
+  #grdSheetHost .rs2-doc::before{
+    content:''; position:absolute; top:0; left:0; right:0; height:4px;
+    background:linear-gradient(90deg,#0f2744 0%,#b48c48 50%,#0d9488 100%);
+  }
+  #grdSheetHost .rs2-header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-bottom:16px; border-bottom:1px solid var(--rs2-border-light); margin-bottom:16px;
+  }
+  #grdSheetHost .rs2-brand-group{ display:flex; align-items:center; gap:16px; }
+  #grdSheetHost .rs2-brand-qr{
+    width:64px; height:64px; padding:3px; border-radius:8px; border:1.5px solid var(--rs2-border-light);
+    background:#fff; box-shadow:0 2px 8px rgba(15,23,42,.06); display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  #grdSheetHost .rs2-brand-qr img{ width:100%; height:100%; object-fit:contain; display:block; }
+  #grdSheetHost .rs2-brand-text h1{ font-size:26px; font-weight:800; letter-spacing:-.03em; color:var(--rs2-accent-brand); line-height:1.1; }
+  #grdSheetHost .rs2-brand-text p{ font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.12em; color:var(--rs2-accent-champagne); margin-top:3px; }
+  #grdSheetHost .rs2-badge{ text-align:right; }
+  #grdSheetHost .rs2-status-pill{
+    display:inline-flex; align-items:center; gap:6px; padding:5px 12px;
+    background:var(--rs2-accent-sage-soft); border:1px solid rgba(13,148,136,.25); border-radius:999px;
+    font-size:11px; font-weight:700; color:var(--rs2-accent-sage); text-transform:uppercase; letter-spacing:.05em;
+  }
+  #grdSheetHost .rs2-status-pill.rs2-fail{ background:var(--rs2-accent-rose-soft); border-color:var(--rs2-accent-rose-border); color:var(--rs2-accent-rose); }
+  #grdSheetHost .rs2-status-pill .rs2-dot{ width:6px; height:6px; border-radius:50%; background:currentColor; }
+  #grdSheetHost .rs2-exam-banner{ text-align:center; margin-bottom:16px; }
+  #grdSheetHost .rs2-exam-banner h2{ font-size:16.5px; font-weight:700; color:var(--rs2-ink-primary); letter-spacing:-.015em; margin-bottom:3px; }
+  #grdSheetHost .rs2-exam-banner p{ font-size:12px; font-weight:500; color:var(--rs2-ink-muted); letter-spacing:.02em; }
+  #grdSheetHost .rs2-record-card{
+    border:1px solid var(--rs2-border-light); border-radius:var(--rs2-radius-md); overflow:hidden;
+    background:var(--rs2-surface); margin-bottom:14px; box-shadow:0 1px 2px rgba(0,0,0,.02);
+  }
+  #grdSheetHost .rs2-record-grid{ display:grid; grid-template-columns:1fr 1fr; }
+  #grdSheetHost .rs2-record-item{
+    display:flex; border-bottom:1px solid var(--rs2-border-hairline); border-right:1px solid var(--rs2-border-hairline); min-height:33px;
+  }
+  #grdSheetHost .rs2-record-item.rs2-full{ grid-column:span 2; border-right:none; }
+  #grdSheetHost .rs2-record-item:nth-child(2n){ border-right:none; }
+  #grdSheetHost .rs2-record-grid > .rs2-record-item:nth-last-child(-n+2){ border-bottom:none; }
+  #grdSheetHost .rs2-field-label{
+    width:130px; flex-shrink:0; background:var(--rs2-surface-subtle); padding:6.5px 12px; font-size:10px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.04em; color:var(--rs2-ink-muted); border-right:1px solid var(--rs2-border-hairline);
+    display:flex; align-items:center;
+  }
+  #grdSheetHost .rs2-field-value{ padding:6.5px 14px; font-size:12px; font-weight:600; color:var(--rs2-ink-secondary); display:flex; align-items:center; flex:1; word-break:break-word; }
+  #grdSheetHost .rs2-record-item.rs2-highlight{ background:var(--rs2-accent-champagne-light); }
+  #grdSheetHost .rs2-record-item.rs2-highlight .rs2-field-label{ background:rgba(180,140,72,.08); color:var(--rs2-accent-champagne); border-right-color:var(--rs2-accent-champagne-border); }
+  #grdSheetHost .rs2-record-item.rs2-highlight .rs2-field-value{ color:var(--rs2-accent-brand); font-weight:800; font-size:13.5px; }
+  #grdSheetHost .rs2-record-item.rs2-highlight .rs2-field-value small{ font-size:10.5px; font-weight:600; color:var(--rs2-ink-muted); margin-left:3px; }
+  #grdSheetHost .rs2-record-item.rs2-fail{ background:var(--rs2-accent-rose-soft); }
+  #grdSheetHost .rs2-record-item.rs2-fail .rs2-field-label{ background:rgba(225,29,72,.06); color:var(--rs2-accent-rose); border-right-color:var(--rs2-accent-rose-border); }
+  #grdSheetHost .rs2-record-item.rs2-fail .rs2-field-value{ color:var(--rs2-accent-rose); font-weight:800; }
+  #grdSheetHost .rs2-metric-ribbon{ display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:14px; }
+  #grdSheetHost .rs2-metric-card{ background:var(--rs2-surface-subtle); border:1px solid var(--rs2-border-light); border-radius:6px; padding:5px 14px; display:flex; align-items:center; gap:8px; }
+  #grdSheetHost .rs2-metric-card .rs2-val{ font-size:13.5px; font-weight:800; color:var(--rs2-ink-primary); font-family:'JetBrains Mono',monospace; }
+  #grdSheetHost .rs2-metric-card .rs2-lbl{ font-size:9.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--rs2-ink-muted); font-weight:600; }
+  #grdSheetHost .rs2-table-shell{ border:1px solid var(--rs2-border-light); border-radius:var(--rs2-radius-md); overflow:hidden; background:var(--rs2-surface); box-shadow:0 1px 2px rgba(0,0,0,.02); }
+  #grdSheetHost table.rs2-course-table{ width:100%; border-collapse:collapse; text-align:left; }
+  #grdSheetHost table.rs2-course-table thead tr.rs2-section-row th{
+    background:var(--rs2-accent-brand); color:#fff; font-size:12px; font-weight:700; letter-spacing:.02em; text-align:center;
+    padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  #grdSheetHost table.rs2-course-table thead tr.rs2-col-header-row th{
+    background:var(--rs2-surface-subtle); color:var(--rs2-ink-secondary); font-size:9.5px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.05em; padding:6.5px 10px; border-bottom:1px solid var(--rs2-border-light); border-right:1px solid var(--rs2-border-hairline); text-align:center;
+  }
+  #grdSheetHost table.rs2-course-table thead tr.rs2-col-header-row th:last-child{ border-right:none; }
+  #grdSheetHost table.rs2-course-table tbody tr:nth-child(even){ background:#fafbfd; }
+  #grdSheetHost table.rs2-course-table td{ padding:7px 10px; font-size:11px; color:var(--rs2-ink-secondary); border-bottom:1px solid var(--rs2-border-hairline); border-right:1px solid var(--rs2-border-hairline); text-align:center; }
+  #grdSheetHost table.rs2-course-table td:last-child{ border-right:none; }
+  #grdSheetHost table.rs2-course-table td.rs2-code{ font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:600; color:var(--rs2-ink-muted); }
+  #grdSheetHost table.rs2-course-table td.rs2-ttl{ text-align:left; font-weight:600; color:var(--rs2-ink-primary); font-size:11px; padding-left:12px; }
+  #grdSheetHost table.rs2-course-table td.rs2-credit{ font-weight:600; color:var(--rs2-ink-secondary); }
+  #grdSheetHost .rs2-grade-badge{
+    display:inline-flex; align-items:center; justify-content:center; min-width:26px; padding:2px 6px; border-radius:4px;
+    background:var(--rs2-surface-subtle); border:1px solid var(--rs2-border-light); font-weight:700; font-size:10.5px; color:var(--rs2-accent-brand);
+  }
+  #grdSheetHost .rs2-grade-badge.rs2-fail{ background:var(--rs2-accent-rose-soft); border-color:var(--rs2-accent-rose-border); color:var(--rs2-accent-rose); }
+  #grdSheetHost table.rs2-course-table tfoot td{ background:var(--rs2-accent-champagne-light); border-top:2px solid var(--rs2-accent-champagne-border); border-bottom:none; padding:7.5px 10px; font-size:11.5px; font-weight:700; color:var(--rs2-ink-primary); }
+  #grdSheetHost table.rs2-course-table tfoot .rs2-total-title{ text-align:center; padding-right:14px; text-transform:uppercase; letter-spacing:.05em; font-size:10px; color:var(--rs2-accent-champagne); }
+  #grdSheetHost table.rs2-course-table tfoot .rs2-gpa-val{ color:var(--rs2-accent-brand); font-weight:800; }
+  #grdSheetHost .rs2-footer{ margin-top:16px; padding-top:12px; border-top:1px solid var(--rs2-border-light); display:flex; align-items:flex-end; justify-content:space-between; gap:16px; }
+  #grdSheetHost .rs2-verification-info{ font-family:'JetBrains Mono',monospace; font-size:9.5px; color:var(--rs2-ink-muted); line-height:1.5; flex:1; }
+  #grdSheetHost .rs2-verification-info strong{ color:var(--rs2-ink-primary); }
+  #grdSheetHost .rs2-auth-stamp{ display:flex; align-items:flex-start; gap:6px; padding:6px 10px; border-radius:6px; background:var(--rs2-surface-subtle); border:1px dashed var(--rs2-border-light); font-size:9px; color:var(--rs2-ink-muted); font-weight:500; line-height:1.4; max-width:320px; text-align:left; }
+  #grdSheetHost .rs2-auth-stamp svg{ flex-shrink:0; margin-top:1px; }
+  #grdSheetHost .rs2-sub-label{ font-size:8px; font-weight:600; text-transform:none; letter-spacing:0; color:var(--rs2-ink-faint); }
+
+  /* ---- Consolidated multi-year Transcript table (Download Full Transcript) ---- */
+  #grdSheetHost table.rs2-transcript-table{ width:100%; border-collapse:collapse; text-align:center; }
+  #grdSheetHost table.rs2-transcript-table thead tr.rs2-section-row th{
+    background:var(--rs2-accent-brand); color:#fff; font-size:12px; font-weight:700; letter-spacing:.02em; text-align:center;
+    padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  #grdSheetHost table.rs2-transcript-table thead tr.rs2-year-row th{
+    background:var(--rs2-surface-subtle); color:var(--rs2-ink-primary); font-size:10.5px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.04em; padding:6.5px 4px; border-bottom:1px solid var(--rs2-border-light); border-right:1px solid var(--rs2-border-light);
+  }
+  #grdSheetHost table.rs2-transcript-table thead tr.rs2-year-row th:last-child{ border-right:none; }
+  #grdSheetHost table.rs2-transcript-table thead tr.rs2-sub-col-row th{
+    background:var(--rs2-surface-muted); color:var(--rs2-ink-secondary); font-size:9px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.03em; padding:6.5px 3px; border-bottom:1px solid var(--rs2-border-light); border-right:1px solid var(--rs2-border-hairline);
+  }
+  #grdSheetHost table.rs2-transcript-table thead tr.rs2-sub-col-row th:last-child{ border-right:none; }
+  #grdSheetHost table.rs2-transcript-table tbody tr:nth-child(even){ background:#fafbfd; }
+  #grdSheetHost table.rs2-transcript-table tbody td{
+    padding:7px 4px; font-size:11px; color:var(--rs2-ink-secondary); border-bottom:1px solid var(--rs2-border-hairline);
+    border-right:1px solid var(--rs2-border-hairline); vertical-align:middle; word-break:break-word;
+  }
+  #grdSheetHost table.rs2-transcript-table tbody td:last-child{ border-right:none; }
+  #grdSheetHost table.rs2-transcript-table tbody td.rs2-tcode{ font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600; color:var(--rs2-ink-muted); white-space:nowrap; }
+  #grdSheetHost table.rs2-transcript-table tbody td.rs2-tlg{ font-weight:700; color:var(--rs2-ink-primary); }
+  #grdSheetHost table.rs2-transcript-table th.rs2-year-sep,
+  #grdSheetHost table.rs2-transcript-table td.rs2-year-sep{ border-right:1.5px solid var(--rs2-border-light) !important; }
+  #grdSheetHost table.rs2-transcript-table tfoot td{
+    background:var(--rs2-accent-champagne-light); border-top:2px solid var(--rs2-accent-champagne-border); border-bottom:none;
+    padding:7.5px 4px; font-size:11px; font-weight:800; color:var(--rs2-accent-brand); border-right:1.5px solid var(--rs2-accent-champagne-border);
+  }
+  #grdSheetHost table.rs2-transcript-table tfoot td:last-child{ border-right:none; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script>
   const { jsPDF } = window.jspdf || {};
   /* ============================================================
@@ -1524,6 +1663,58 @@
     'prelim2024':2, 'prelim2013':2,
   };
 
+  // Header wording used on the printable Result Sheet, per program type.
+  const PROGRAM_HEADER_PREFIX = {
+    '2024':'Bachelor Degree (Honours)', '2013':'Bachelor Degree (Honours)',
+    'pass2024':'Bachelor Degree (Pass)', 'pass2013':'Bachelor Degree (Pass)',
+    'masters2024':"Master's", 'masters2013':"Master's",
+    'prelim2024':"Preliminary to Master's", 'prelim2013':"Preliminary to Master's",
+  };
+  const MASTERS_KEYS = ['masters2024','masters2013'];
+
+  // Builds the shared "Gradely_<Program>[_<Nth>_Year]" prefix used for downloaded
+  // PDF file names, e.g. "Gradely_Honours_1st_Year" or "Gradely_Masters_Final".
+  function pdfFileNamePrefix(includeYear){
+    const prog = PROGRAMS.find(p=>p.key===activeSyllabus);
+    const isMasters = MASTERS_KEYS.includes(activeSyllabus);
+    const totalYears = PROGRAM_YEARS[activeSyllabus] || 1;
+    const progLabel = isMasters ? 'Masters_Final' : (prog ? prog.title.replace(/\s+/g,'_') : 'Program');
+    const yearPart = (includeYear && !isMasters && totalYears > 1)
+      ? `_${(YEAR_NUM_LABEL[currentYear] || currentYear+'th')}_Year`
+      : '';
+    return `Gradely_${progLabel}${yearPart}`;
+  }
+
+  // Appends "_<roll>" and/or "_<reg>" only when the student actually entered
+  // them, so a blank field doesn't leave placeholder text like "_Roll_Reg"
+  // in the downloaded file name.
+  function pdfIdSuffix(roll, reg){
+    const parts = [];
+    if(roll) parts.push(roll);
+    if(reg) parts.push(reg);
+    return parts.length ? `_${parts.join('_')}` : '';
+  }
+
+  // Builds the exam header line, e.g. "Bachelor Degree (Honours) 1st Year Examination — 2020"
+  // or, for transcripts / Masters (single-year programs), "Master's Final Examination — 2020".
+  function buildExamHeaderLine(mode, examYearOverride){
+    const prog = PROGRAMS.find(p=>p.key===activeSyllabus);
+    const totalYears = PROGRAM_YEARS[activeSyllabus] || 1;
+    const progPrefix = PROGRAM_HEADER_PREFIX[activeSyllabus] || (prog ? prog.title : 'Examination');
+    const examYear = examYearOverride || (document.getElementById('siYear').value || '').trim() || '—';
+    const isMasters = MASTERS_KEYS.includes(activeSyllabus);
+    let middle;
+    if(isMasters){
+      middle = 'Final Examination';
+    } else if(mode === 'transcript'){
+      middle = 'Examination';
+    } else {
+      const yearOrdinal = totalYears > 1 ? (YEAR_NUM_LABEL[currentYear] || currentYear+'th') + ' Year ' : '';
+      middle = `${yearOrdinal}Examination`;
+    }
+    return `${progPrefix} ${middle} — ${examYear}`;
+  }
+
   const SUBJECTS_BY_YEAR = {
     1: [
       {code:'ACC-101', name:'Principles of Accounting', credit:4},
@@ -1565,11 +1756,11 @@
     ['What\'s the NU grading scale?','Standard 4.00 scale: A+ (4.00) down to F (0.00), split across ten bands from 80% Above down to below 40%. It\'s built into every calculator here.','General'],
     ['Is Gradely free to use?','Completely — no account, no subscription, no hidden paywall. It\'s a passion project built by students, for students.','General'],
     ['How accurate is this compared to my official NU result?','As accurate as the grade points and credits you enter. We use NU\'s official grading formula, so if your inputs match your marksheet, your CGPA will match too — but always treat your official NU result as final.','General'],
-    ['Which programs are covered?','BSc, BBA, BSS and BA Honours, plus the Degree Pass course, across both the 2024–2025 and 2013–2014 syllabuses.','Departments & coverage'],
+    ['Which programs are covered?','BSc, BBA, BSS and BA Honours, the Degree Pass course, Masters, and Preliminary to Masters. Honours and Degree Pass cover both the 2024–2025 and 2013–2014 syllabuses; Masters and Preliminary to Masters are currently available for the 2013–2014 syllabus.','Departments & coverage'],
     ['What if my department or subject isn\'t listed yet?','Head to the Contact page and tell us what\'s missing — we\'re adding departments regularly and prioritise based on what students ask for.','Departments & coverage'],
     ['Can I calculate my CGPA across all four years at once?','Yes — enter grades year by year and Gradely rolls them up into one running CGPA automatically, no manual re-adding required.','Departments & coverage'],
-    ['Does this save my progress?','Yes — everything saves locally in your browser as you go. No account, no sign-up, no cap.','Data & privacy'],
-    ['Is my data stored on a server somewhere?','No. Your grades stay on your own device in your browser\'s local storage — we never see them, and nothing is uploaded anywhere.','Data & privacy'],
+    ['Does this save my progress?','Yes, for as long as your browser tab stays open — everything saves automatically as you go, no account or sign-up needed. Just note it clears when you close the tab, so download your result before you leave.','Data & privacy'],
+    ['Is my data stored on a server somewhere?','No. Your grades stay on your own device in your browser\'s session storage — we never see them, and nothing is uploaded anywhere.','Data & privacy'],
     ['Does Gradely work on mobile?','Yes, it\'s built mobile-first — every calculator, table and dropdown is designed to work cleanly on a phone screen, not just a laptop.','Using Gradely'],
   ];
 
@@ -1806,7 +1997,15 @@
       : "Review your information, then download this result as PDF";
     document.getElementById('siSubject').value = `${deptCodeNum(currentDept)} - ${currentDept}`;
     document.getElementById('siResult').value = 'In Progress';
-    document.getElementById('siCgpa').value = document.getElementById('sealCgpa').textContent;
+    if(mode==='transcript'){
+      // Full transcript: show the overall CGPA across every year.
+      document.getElementById('siCgpaLabel').textContent = 'CGPA';
+      document.getElementById('siCgpa').value = document.getElementById('sealCgpa').textContent;
+    } else {
+      // Single year result: show only that year's GPA, not the cumulative CGPA.
+      document.getElementById('siCgpaLabel').textContent = 'GPA (' + (YEAR_LABELS[currentYear] || 'This Year') + ')';
+      document.getElementById('siCgpa').value = yearStats(currentDept, currentYear).gpa.toFixed(2);
+    }
     document.getElementById('studentInfoOverlay').classList.add('open');
     document.body.style.overflow='hidden';
   }
@@ -1818,75 +2017,410 @@
     document.getElementById(wrapId).classList.remove('field-error');
   }
   function validateStudentInfo(){
-    return true;
+    const checks = [
+      {input:'siRoll', wrap:'siRollWrap', len:7},
+      {input:'siRegNo', wrap:'siRegNoWrap', len:11},
+      {input:'siYear', wrap:'siYearWrap', len:4}
+    ];
+    let valid = true;
+    let firstInvalid = null;
+    checks.forEach(c=>{
+      const el = document.getElementById(c.input);
+      const wrap = document.getElementById(c.wrap);
+      if(el.value.length > c.len){
+        wrap.classList.add('field-error');
+        valid = false;
+        if(!firstInvalid) firstInvalid = el;
+      } else {
+        wrap.classList.remove('field-error');
+      }
+    });
+    if(firstInvalid){ try{ firstInvalid.focus({preventScroll:false}); }catch(e){ firstInvalid.focus(); } }
+    return valid;
   }
   function downloadTranscript(){
     if(!validateStudentInfo()) return;
 
     if(siMode === 'transcript'){
-      // Full Transcript PDF — to be implemented later.
+      generateTranscriptPDF();
       closeStudentInfoModal();
       return;
     }
 
-    generateResultPDF();
+    generateResultSheetPDF();
     closeStudentInfoModal();
   }
 
-  function generateResultPDF(){
-    if(!jsPDF){ alert('PDF library failed to load. Please check your internet connection and try again.'); return; }
+  // Builds the official-style Result Sheet markup (matching the NU layout),
+  // rasterizes it with html2canvas, and saves it as a PDF via jsPDF.
+  async function generateResultSheetPDF(){
+    if(!jsPDF || !window.html2canvas){ alert('PDF library failed to load. Please check your internet connection and try again.'); return; }
 
-    const get = id => document.getElementById(id).value || '—';
-    const doc = new jsPDF({ unit:'pt', format:'a4' });
-    const pageW = doc.internal.pageSize.getWidth();
-    let y = 60;
+    const get = id => (document.getElementById(id).value || '').trim();
 
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(18);
-    doc.text('Gradely — Result Sheet', pageW/2, y, {align:'center'});
-    y += 22;
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(11);
-    doc.setTextColor(100);
-    doc.text('National University, Bangladesh', pageW/2, y, {align:'center'});
-    doc.setTextColor(0);
-    y += 30;
+    const studentName = get('siStudentName') || '—';
+    const rollNo = get('siRoll');
+    const regNo = get('siRegNo');
+    const college = get('siCollege') || '—';
+    const session = get('siSession') || '—';
+    const studentType = get('siStudentType') || '—';
+    const examYear = get('siYear') || '—';
 
-    doc.setDrawColor(200);
-    doc.line(50, y, pageW-50, y);
-    y += 30;
+    const prog = PROGRAMS.find(p=>p.key===activeSyllabus);
+    const totalYears = PROGRAM_YEARS[activeSyllabus] || 1;
+    const yearOrdinal = totalYears > 1 ? (YEAR_NUM_LABEL[currentYear] || currentYear+'th') + ' Year ' : '';
+    const headerLine = buildExamHeaderLine('year', examYear);
+    const sectionTitle = `${prog ? prog.title : ''} ${yearOrdinal}Course wise Grade`.trim();
 
-    const fields = [
-      ['Student Name', get('siStudentName')],
-      ["Father's Name", get('siFatherName')],
-      ["Mother's Name", get('siMotherName')],
-      ['Examination Roll', get('siRoll')],
-      ['Registration No', get('siRegNo')],
-      ['Examination Year', get('siYear')],
-      ['Session', get('siSession')],
-      ['Student Type', get('siStudentType')],
-      ['College Name', get('siCollege')],
-      ['Subject', get('siSubject')],
-      ['Subject Result', get('siResult')],
-      ['CGPA', get('siCgpa')]
-    ];
+    const subjects = SUBJECTS_BY_YEAR[currentYear] || [];
+    let vals = {};
+    try{ vals = JSON.parse(sessionStorage.getItem(gradeStorageKey(currentDept, currentYear))) || {}; }catch(e){ vals = {}; }
 
-    doc.setFontSize(12);
-    fields.forEach(([label, value])=>{
-      doc.setFont('helvetica','bold');
-      doc.text(label + ':', 60, y);
-      doc.setFont('helvetica','normal');
-      doc.text(String(value), 260, y);
-      y += 26;
-    });
+    let creditsEarned = 0, points = 0, gradedCount = 0, hasFail = false;
+    const courseRows = subjects.map((s,i)=>{
+      const gCode = vals[i];
+      const grade = GRADES.find(g=>g.g===gCode);
+      const gradeFail = grade && grade.g === 'F';
+      if(grade){
+        gradedCount++;
+        creditsEarned += s.credit;
+        points += s.credit*grade.pt;
+        if(gradeFail) hasFail = true;
+      }
+      return `<tr>
+        <td class="rs2-code">${s.code}</td>
+        <td class="rs2-ttl">${s.name.toUpperCase()}</td>
+        <td class="rs2-credit">${s.credit}</td>
+        <td><span class="rs2-grade-badge${gradeFail?' rs2-fail':''}">${grade ? grade.g : '—'}</span></td>
+      </tr>`;
+    }).join('');
 
-    y += 20;
-    doc.setFontSize(9);
-    doc.setTextColor(140);
-    doc.text('Generated by Gradely — this is a preview sheet, not an official NU transcript.', pageW/2, y, {align:'center'});
+    const yGpa = creditsEarned ? points/creditsEarned : 0;
 
-    const rollPart = get('siRoll') !== '—' ? get('siRoll') : 'result';
-    doc.save(`Gradely-Result-${rollPart}.pdf`);
+    let resultStatus = 'In Progress';
+    if(subjects.length > 0 && gradedCount === subjects.length){
+      const isFinalYear = currentYear === totalYears;
+      resultStatus = hasFail ? (isFinalYear ? 'Not Passed' : 'Not Promoted') : (isFinalYear ? 'Passed' : 'Promoted');
+    }
+
+    const subjectLine = `(${deptCodeNum(currentDept)} - ${currentDept.toUpperCase()})`;
+    const todayStr = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+
+    const isFail = resultStatus === 'Not Passed' || resultStatus === 'Not Promoted';
+    const statusPillText = resultStatus;
+
+    const sheetHTML = `
+    <div class="rs2-doc">
+      <div>
+        <header class="rs2-header">
+          <div class="rs2-brand-group">
+            <div class="rs2-brand-qr">
+              <img src="qr-code.svg" alt="Verification QR Code" onerror="this.parentElement.style.display='none'">
+            </div>
+            <div class="rs2-brand-text">
+              <h1>Gradely</h1>
+              <p>Academic Grade &amp; Overall CGPA Evaluation</p>
+            </div>
+          </div>
+          <div class="rs2-badge">
+            <span class="rs2-status-pill${isFail?' rs2-fail':''}"><span class="rs2-dot"></span>${statusPillText}</span>
+          </div>
+        </header>
+
+        <div class="rs2-exam-banner">
+          <h2>${headerLine}</h2>
+          <p>Official Academic Result Sheet &amp; Statement of Grades by Gradely</p>
+        </div>
+
+        <section class="rs2-record-card">
+          <div class="rs2-record-grid">
+            <div class="rs2-record-item"><div class="rs2-field-label">Exam Roll</div><div class="rs2-field-value">${rollNo || '—'}</div></div>
+            <div class="rs2-record-item"><div class="rs2-field-label">Reg. No.</div><div class="rs2-field-value">${regNo || '—'}</div></div>
+            <div class="rs2-record-item rs2-full"><div class="rs2-field-label">Student Name</div><div class="rs2-field-value">${studentName}</div></div>
+            <div class="rs2-record-item rs2-full"><div class="rs2-field-label">College Name</div><div class="rs2-field-value">${college}</div></div>
+            <div class="rs2-record-item"><div class="rs2-field-label">Session</div><div class="rs2-field-value">${session}</div></div>
+            <div class="rs2-record-item"><div class="rs2-field-label">Student Type</div><div class="rs2-field-value">${studentType}</div></div>
+            <div class="rs2-record-item rs2-full"><div class="rs2-field-label">Subject</div><div class="rs2-field-value">${subjectLine}</div></div>
+            <div class="rs2-record-item${isFail?' rs2-fail':''}"><div class="rs2-field-label">Result Status</div><div class="rs2-field-value">${statusPillText}</div></div>
+            <div class="rs2-record-item rs2-highlight"><div class="rs2-field-label">GPA</div><div class="rs2-field-value">${yGpa.toFixed(2)} <small>/ 4.00</small></div></div>
+          </div>
+        </section>
+
+        <div class="rs2-metric-ribbon">
+          <div class="rs2-metric-card"><span class="rs2-val">${String(subjects.length).padStart(2,'0')}</span><span class="rs2-lbl">Courses Evaluated</span></div>
+          <div class="rs2-metric-card"><span class="rs2-val">${creditsEarned}</span><span class="rs2-lbl">Earned Credits</span></div>
+          <div class="rs2-metric-card"><span class="rs2-val">${yGpa.toFixed(2)}</span><span class="rs2-lbl">Grade Point Avg</span></div>
+        </div>
+
+        <div class="rs2-table-shell">
+          <table class="rs2-course-table">
+            <thead>
+              <tr class="rs2-section-row"><th colspan="4">${sectionTitle}</th></tr>
+              <tr class="rs2-col-header-row">
+                <th style="width:14%;">Code</th>
+                <th class="rs2-title-col" style="width:56%;">Title of Course</th>
+                <th style="width:14%;">Credit</th>
+                <th style="width:16%;">Letter Grade</th>
+              </tr>
+            </thead>
+            <tbody>${courseRows}</tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" class="rs2-total-title">Total Result Summary</td>
+                <td><strong>${creditsEarned}</strong></td>
+                <td class="rs2-gpa-val">GPA ${yGpa.toFixed(2)}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <footer class="rs2-footer">
+        <div class="rs2-verification-info">
+          Result Published Date:<br />
+          Generated on <strong>${todayStr}</strong> by Gradely.
+        </div>
+        <div class="rs2-auth-stamp">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>Gradely uses your institution&rsquo;s official grading system. For reference only&mdash;not an official record.</span>
+        </div>
+      </footer>
+    </div>`;
+
+    const host = document.getElementById('grdSheetHost');
+    host.innerHTML = sheetHTML;
+    const target = host.querySelector('.rs2-doc');
+
+    let canvas;
+    try{
+      canvas = await window.html2canvas(target, { scale:3, backgroundColor:'#ffffff', useCORS:true });
+    } catch(e){
+      host.innerHTML = '';
+      alert('Could not generate the result sheet. Please try again.');
+      return;
+    }
+    host.innerHTML = '';
+
+    saveCanvasAsA4Pdf(canvas, `${pdfFileNamePrefix(true)}_Result${pdfIdSuffix(rollNo, regNo)}.pdf`);
+  }
+
+  // Builds the official-style, multi-year consolidated Transcript markup
+  // (matching the luxury result-sheet template), rasterizes it with
+  // html2canvas, and saves it as a PDF via jsPDF — same pipeline as
+  // generateResultSheetPDF() so both downloads share one visual language.
+  // Places a rasterized result/transcript canvas onto a single true-A4
+  // page (with a consistent 0.5in margin) and saves the result as a PDF.
+  // The canvas is always scaled down to fit within one page — never
+  // sliced across multiple pages — so the document is guaranteed to be
+  // exactly one page long regardless of how much content it has.
+  // Because the file is a genuine A4 document, printing it "fit to page"
+  // on any other paper size scales the whole sheet uniformly; the ratio
+  // is never stretched.
+  function saveCanvasAsA4Pdf(canvas, filename){
+    const A4_W_IN = 8.27, A4_H_IN = 11.69, MARGIN_IN = 0.5;
+    const contentWidthIn = A4_W_IN - MARGIN_IN * 2;   // 7.27in
+    const contentHeightIn = A4_H_IN - MARGIN_IN * 2;  // 10.69in
+
+    const pdf = new jsPDF({ unit:'in', format:[A4_W_IN, A4_H_IN], orientation:'portrait' });
+
+    // Always fit the whole document onto a single A4 page: scale the
+    // rasterized canvas down (preserving its aspect ratio) so both its
+    // width and height fit inside the printable area, instead of
+    // slicing it across multiple pages. Whichever dimension is the
+    // tighter constraint determines the scale; the other dimension is
+    // then centered within its remaining margin so the sheet stays
+    // visually balanced no matter how tall the content is.
+    const canvasAspect = canvas.width / canvas.height;
+    let drawWidthIn = contentWidthIn;
+    let drawHeightIn = drawWidthIn / canvasAspect;
+    if(drawHeightIn > contentHeightIn){
+      drawHeightIn = contentHeightIn;
+      drawWidthIn = drawHeightIn * canvasAspect;
+    }
+    const offsetXIn = MARGIN_IN + (contentWidthIn - drawWidthIn) / 2;
+    const offsetYIn = MARGIN_IN + (contentHeightIn - drawHeightIn) / 2;
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.97);
+    pdf.addImage(imgData, 'JPEG', offsetXIn, offsetYIn, drawWidthIn, drawHeightIn);
+
+    pdf.save(filename);
+  }
+
+  async function generateTranscriptPDF(){
+    if(!jsPDF || !window.html2canvas){ alert('PDF library failed to load. Please check your internet connection and try again.'); return; }
+
+    const get = id => (document.getElementById(id).value || '').trim();
+
+    const studentName = get('siStudentName') || '—';
+    const rollNo = get('siRoll');
+    const regNo = get('siRegNo');
+    const college = get('siCollege') || '—';
+    const session = get('siSession') || '—';
+    const studentType = get('siStudentType') || '—';
+    const examYear = get('siYear') || '—';
+
+    const prog = PROGRAMS.find(p=>p.key===activeSyllabus);
+    const totalYears = PROGRAM_YEARS[activeSyllabus] || 1;
+    const headerLine = buildExamHeaderLine('transcript', examYear);
+    const sectionTitle = `${prog ? prog.title : ''} Course wise Letter Grade`.trim();
+
+    // Gather every year's subjects + saved grades, and roll them up into
+    // one cumulative CGPA — same math as updateSummaryCard()/yearStats().
+    const yearsData = [];
+    let totalEarnedPoints = 0, totalCreditsAll = 0, totalPossibleCredits = 0;
+    let allGraded = true, hasFailAny = false;
+
+    for(let yr=1; yr<=totalYears; yr++){
+      const subjects = SUBJECTS_BY_YEAR[yr] || [];
+      let vals = {};
+      try{ vals = JSON.parse(sessionStorage.getItem(gradeStorageKey(currentDept, yr))) || {}; }catch(e){ vals = {}; }
+
+      let creditsEarned = 0, points = 0, gradedCount = 0;
+      const rows = subjects.map((s,i)=>{
+        const gCode = vals[i];
+        const grade = GRADES.find(g=>g.g===gCode);
+        totalPossibleCredits += s.credit;
+        if(grade){
+          gradedCount++;
+          creditsEarned += s.credit;
+          points += s.credit*grade.pt;
+          if(grade.g === 'F') hasFailAny = true;
+        }
+        return { code:s.code, credit:s.credit, grade: grade ? grade.g : null };
+      });
+
+      const yGpa = creditsEarned ? points/creditsEarned : 0;
+      if(creditsEarned > 0){ totalEarnedPoints += creditsEarned*yGpa; totalCreditsAll += creditsEarned; }
+      if(subjects.length === 0 || gradedCount !== subjects.length) allGraded = false;
+
+      yearsData.push({ yr, label: YEAR_LABELS[yr] || ('Year ' + yr), rows, gpa: yGpa });
+    }
+
+    const cumulativeGpa = totalCreditsAll > 0 ? totalEarnedPoints / totalCreditsAll : 0;
+
+    let resultStatus = 'In Progress';
+    if(totalPossibleCredits > 0 && allGraded){
+      resultStatus = hasFailAny ? 'Not Passed' : 'Passed';
+    }
+    const isFail = resultStatus === 'Not Passed';
+
+    const subjectLine = `(${deptCodeNum(currentDept)} - ${currentDept.toUpperCase()})`;
+    const todayStr = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+
+    // Build the consolidated course table: one code+LG column pair per
+    // year, rows padded to the tallest year so everything lines up.
+    const maxRows = yearsData.reduce((m,y)=>Math.max(m,y.rows.length), 0);
+    let bodyRows = '';
+    for(let r=0; r<maxRows; r++){
+      bodyRows += '<tr>';
+      yearsData.forEach((yd, idx)=>{
+        const sep = idx === yearsData.length-1 ? '' : ' rs2-year-sep';
+        const row = yd.rows[r];
+        if(row){
+          bodyRows += `<td class="rs2-tcode">${row.code}(${String(row.credit).padStart(2,'0')})</td><td class="rs2-tlg${sep}">${row.grade || '—'}</td>`;
+        } else {
+          bodyRows += `<td></td><td class="${sep.trim()}"></td>`;
+        }
+      });
+      bodyRows += '</tr>';
+    }
+    if(maxRows === 0){
+      bodyRows = `<tr><td colspan="${Math.max(2, totalYears*2)}" style="padding:16px;color:var(--rs2-ink-muted);">No subjects graded yet.</td></tr>`;
+    }
+
+    // Same 17%:8% (code:LG) ratio as the original template, scaled so each
+    // year's pair of columns still divides the full table width evenly —
+    // this is what actually sets column widths (auto table layout reads
+    // the widths from these header cells), not a 50/50 split.
+    const pairWidthPct = 100 / yearsData.length;
+    const codeWidthPct = +(pairWidthPct * 0.80).toFixed(2);
+    const lgWidthPct = +(pairWidthPct * 0.20).toFixed(2);
+
+    const yearRowHTML = yearsData.map((yd, idx)=>`<th colspan="2"${idx===yearsData.length-1?'':' class="rs2-year-sep"'}>${yd.label}</th>`).join('');
+    const subColRowHTML = yearsData.map((yd, idx)=>`<th style="width:${codeWidthPct}%;">Course Code(credit)</th><th style="width:${lgWidthPct}%;"${idx===yearsData.length-1?'':' class="rs2-year-sep"'}>LG</th>`).join('');
+    const footRowHTML = yearsData.map((yd, idx)=>`<td colspan="2"${idx===yearsData.length-1?'':' class="rs2-year-sep"'}>GPA: ${yd.gpa.toFixed(2)}</td>`).join('');
+
+    const sheetHTML = `
+    <div class="rs2-doc">
+      <div>
+        <header class="rs2-header">
+          <div class="rs2-brand-group">
+            <div class="rs2-brand-qr">
+              <img src="qr-code.svg" alt="Verification QR Code" onerror="this.parentElement.style.display='none'">
+            </div>
+            <div class="rs2-brand-text">
+              <h1>Gradely</h1>
+              <p>Academic Grade &amp; Overall CGPA Evaluation</p>
+            </div>
+          </div>
+          <div class="rs2-badge">
+            <span class="rs2-status-pill${isFail?' rs2-fail':''}"><span class="rs2-dot"></span>${resultStatus}</span>
+          </div>
+        </header>
+
+        <div class="rs2-exam-banner">
+          <h2>${headerLine}</h2>
+          <p>Official Academic Transcript &amp; Statement of Grades by Gradely</p>
+        </div>
+
+        <section class="rs2-record-card">
+          <div class="rs2-record-grid">
+            <div class="rs2-record-item"><div class="rs2-field-label">Exam Roll</div><div class="rs2-field-value">${rollNo || '—'}</div></div>
+            <div class="rs2-record-item"><div class="rs2-field-label">Reg. No.</div><div class="rs2-field-value">${regNo || '—'}</div></div>
+            <div class="rs2-record-item rs2-full"><div class="rs2-field-label">Student Name</div><div class="rs2-field-value">${studentName}</div></div>
+            <div class="rs2-record-item rs2-full"><div class="rs2-field-label">College Name</div><div class="rs2-field-value">${college}</div></div>
+            <div class="rs2-record-item"><div class="rs2-field-label">Session</div><div class="rs2-field-value">${session}</div></div>
+            <div class="rs2-record-item"><div class="rs2-field-label">Student Type</div><div class="rs2-field-value">${studentType}</div></div>
+            <div class="rs2-record-item rs2-full"><div class="rs2-field-label">Subject</div><div class="rs2-field-value">${subjectLine}</div></div>
+            <div class="rs2-record-item"><div class="rs2-field-label">Credit <span class="rs2-sub-label">(Earned/Total)</span></div><div class="rs2-field-value">${totalCreditsAll} / ${totalPossibleCredits}</div></div>
+            <div class="rs2-record-item rs2-highlight"><div class="rs2-field-label">CGPA</div><div class="rs2-field-value">${cumulativeGpa.toFixed(2)} <small>/ 4.00</small></div></div>
+          </div>
+        </section>
+
+        <div class="rs2-table-shell">
+          <table class="rs2-transcript-table">
+            <thead>
+              <tr class="rs2-section-row"><th colspan="${Math.max(2, totalYears*2)}">${sectionTitle}</th></tr>
+              <tr class="rs2-year-row">${yearRowHTML}</tr>
+              <tr class="rs2-sub-col-row">${subColRowHTML}</tr>
+            </thead>
+            <tbody>${bodyRows}</tbody>
+            <tfoot><tr>${footRowHTML}</tr></tfoot>
+          </table>
+        </div>
+      </div>
+
+      <footer class="rs2-footer">
+        <div class="rs2-verification-info">
+          Result Published Date:<br />
+          Generated on <strong>${todayStr}</strong> by Gradely.
+        </div>
+        <div class="rs2-auth-stamp">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>Gradely uses your institution&rsquo;s official grading system. For reference only&mdash;not an official record.</span>
+        </div>
+      </footer>
+    </div>`;
+
+    const host = document.getElementById('grdSheetHost');
+    host.innerHTML = sheetHTML;
+    const target = host.querySelector('.rs2-doc');
+
+    let canvas;
+    try{
+      canvas = await window.html2canvas(target, { scale:3, backgroundColor:'#ffffff', useCORS:true });
+    } catch(e){
+      host.innerHTML = '';
+      alert('Could not generate the transcript. Please try again.');
+      return;
+    }
+    host.innerHTML = '';
+
+    saveCanvasAsA4Pdf(canvas, `${pdfFileNamePrefix(false)}_Transcript${pdfIdSuffix(rollNo, regNo)}.pdf`);
   }
 
   function renderFaq(){
@@ -1990,10 +2524,24 @@
     wrap.innerHTML = html;
   }
 
+  // Builds the CGPA-panel stat tiles (one per year, plus Credits) to match
+  // this program's actual year count, instead of always showing 4 years.
+  function renderYearStatTiles(){
+    const wrap = document.getElementById('rpStats');
+    const totalYears = PROGRAM_YEARS[activeSyllabus] || 1;
+    let html = '';
+    for(let y=1; y<=totalYears; y++){
+      html += `<div class="rp-stat"><div class="rp-stat-n" id="statY${y}">0.00</div><div class="rp-stat-l">YEAR ${y}</div></div>`;
+    }
+    html += `<div class="rp-stat"><div class="rp-stat-n" id="statCredits">0</div><div class="rp-stat-l">CREDITS</div></div>`;
+    wrap.innerHTML = html;
+  }
+
   function openGrading(deptName){
     currentDept = deptName; currentYear = 1;
     const prog = PROGRAMS.find(p=>p.key===activeSyllabus);
     document.getElementById('gradingDeptTitle').innerHTML = `Department of ${deptName}<br><span style="font-size:0.8em;">${prog?displayProgramTitle(prog.title):''} | (${prog?SESSION_SHORT[prog.key]:''})</span>`;
+    renderYearStatTiles();
     renderYearPills();
     showView('grading');
     renderYear();
@@ -2036,11 +2584,11 @@
   function saveGrades(){
     const vals = {};
     document.querySelectorAll('#subjectRows select').forEach(sel=>{ vals[sel.dataset.idx] = sel.value; });
-    try{ localStorage.setItem(gradeStorageKey(), JSON.stringify(vals)); }catch(e){}
+    try{ sessionStorage.setItem(gradeStorageKey(), JSON.stringify(vals)); }catch(e){}
   }
   function loadGrades(){
     let vals = {};
-    try{ vals = JSON.parse(localStorage.getItem(gradeStorageKey())) || {}; }catch(e){ vals = {}; }
+    try{ vals = JSON.parse(sessionStorage.getItem(gradeStorageKey())) || {}; }catch(e){ vals = {}; }
     document.querySelectorAll('#subjectRows select').forEach(sel=>{
       if(vals[sel.dataset.idx] !== undefined) sel.value = vals[sel.dataset.idx];
     });
@@ -2049,7 +2597,7 @@
   function yearStats(dept, year){
     const subjects = SUBJECTS_BY_YEAR[year] || [];
     let vals = {};
-    try{ vals = JSON.parse(localStorage.getItem(gradeStorageKey(dept, year))) || {}; }catch(e){ vals = {}; }
+    try{ vals = JSON.parse(sessionStorage.getItem(gradeStorageKey(dept, year))) || {}; }catch(e){ vals = {}; }
     let creditsEarned=0, points=0;
     subjects.forEach((s,i)=>{
       const g = vals[i];
@@ -2063,9 +2611,11 @@
     let totalEarnedPoints = 0;
     let totalCreditsAll = 0;
 
-    for(let y=1; y<=4; y++){
+    const totalYears = PROGRAM_YEARS[activeSyllabus] || 1;
+    for(let y=1; y<=totalYears; y++){
       const st = yearStats(currentDept, y);
-      document.getElementById('statY'+y).textContent = st.gpa.toFixed(2);
+      const tile = document.getElementById('statY'+y);
+      if(tile) tile.textContent = st.gpa.toFixed(2);
       if(st.credits > 0){
         totalEarnedPoints += st.credits * st.gpa;
         totalCreditsAll += st.credits;
@@ -2105,7 +2655,7 @@
   }
   function resetGrades(){
     document.querySelectorAll('#subjectRows select').forEach(s=>s.value='');
-    try{ localStorage.removeItem(gradeStorageKey()); }catch(e){}
+    try{ sessionStorage.removeItem(gradeStorageKey()); }catch(e){}
     recalc();
   }
 
